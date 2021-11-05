@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/CoctailApp-front
+    docker:
+      - image: circleci/node:14-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: AngularCircleCI-{{ .Branch }}-{{ checksum "package.json" }}
+      - run: npm install
+      - save_cache:
+          key: AngularCircleCI-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - "node_modules"
