@@ -1,6 +1,6 @@
 {
   "/api/**": {
-    "target": "${SERVER_URL}/",
+    "target": "https://bakensweets.herokuapp.com/",
     "secure": false,
     "changeOrigin": true
   }
