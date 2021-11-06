@@ -1,6 +1,7 @@
 {
-  "/api/*": {
+  "/api/**": {
     "target": "${SERVER_URL}/",
-    "secure": false
+    "secure": false,
+    "changeOrigin": true
   }
 }
