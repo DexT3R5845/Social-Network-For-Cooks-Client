@@ -12,7 +12,7 @@ export class UserService {
 
   constructor(private http:HttpClient) {}
 
-  private userUrl = 'https://bakensweets.herokuapp.com';
+  private userUrl = 'https://bakensweets-server.herokuapp.com';
 
   public getUsers() {
     return this.http.get<User[]>(this.userUrl);
