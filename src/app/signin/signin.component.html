@@ -1,0 +1,26 @@
+<div class="main">
+    <div class="register-form-container">
+        <h1 class="form-title">
+            Sign In
+        </h1>
+        <div class="form-text">
+            <span class="text">Don`t have an account? <a href="#" style="color: #27313B">Create one</a> </span>
+        </div>
+        <div class="form-fields">
+            <div class="form-field">
+                <input type="text" [(ngModel)]="creds.email" placeholder="Email address">
+            </div>
+            <div class="form-field">
+                <input type="password" [(ngModel)]="creds.password" placeholder="Password">
+            </div>
+            <p *ngIf="incorrect">Incorrect login or password!</p><button *ngIf="incorrect" (click)="removeWarning()">
+                OK
+            </button>
+            <div class="form-buttons">
+                <button class="button" (click)="authorize(creds)">
+                    Sign in
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
