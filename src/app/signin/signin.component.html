@@ -16,8 +16,9 @@
             <p *ngIf="incorrect">Incorrect login or password!</p><button *ngIf="incorrect" (click)="removeWarning()">
                 OK
             </button>
+            <ngx-recaptcha2 #captchaElem *ngIf="showCaptcha" [siteKey]="siteKey" (success)="handleCaptchaSuccess($event)"></ngx-recaptcha2>
             <div class="form-buttons">
-                <button class="button" (click)="authorize(creds)">
+                <button class="button" (click)="authorize(creds)" [disabled]="disableButton">
                     Sign in
                 </button>
             </div>

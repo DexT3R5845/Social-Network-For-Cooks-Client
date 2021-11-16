@@ -13,7 +13,7 @@ import { Credentials } from './credentials';
 })
 export class AccountService {
 
-  private serverUrl = 'https://bakensweets-server.herokuapp.com/';
+  private serverUrl = 'http://localhost:8080/api';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -24,14 +24,18 @@ export class AccountService {
   accounts: Account[] = [{id: 1, firstName: "name", lastName: "lasyname", 
   birthDate: new Date('2001-01-01'), gender: 'MALE', image: 'aaa', 
   role: {id: 1, roleName: 'user'}, 
-  credentials: {id: 1, email: 'a@gmail.com', password: '1234'}}];
+  credentials: {email: 'a@gmail.com', password: '1234'}}];
 
   constructor(private http: HttpClient) { }
 
   signIn(creds: Credentials): Observable<Account> {
     const url = `${this.serverUrl}/sign-in`;
-    // return this.http.post<Account>(url, creds, this.httpOptions).pipe(
-    //   catchError(this.handleError<Account>('signIn'))
+    // const httpOptions = {
+    //   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    //   params: {email: creds.email, password: creds.password},
+    // };
+    // return this.http.post<string>(url, {}, httpOptions).pipe(
+    //   catchError(this.handleError<string>('signIn'))
     // );
     const result = this.accounts.find(i => i.credentials.email === creds.email && 
       i.credentials.password === creds.password);
@@ -61,7 +65,6 @@ export class AccountService {
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       //temporary
-      console.error(error);
       return of(result as T);
     };
   }
