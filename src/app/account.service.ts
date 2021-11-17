@@ -28,23 +28,24 @@ export class AccountService {
 
   constructor(private http: HttpClient) { }
 
-  signIn(creds: Credentials): Observable<Account> {
+  signIn(creds: Credentials): Observable<string> {
     const url = `${this.serverUrl}/sign-in`;
-    // const httpOptions = {
-    //   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    //   params: {email: creds.email, password: creds.password},
-    // };
-    // return this.http.post<string>(url, {}, httpOptions).pipe(
-    //   catchError(this.handleError<string>('signIn'))
-    // );
-    const result = this.accounts.find(i => i.credentials.email === creds.email && 
-      i.credentials.password === creds.password);
-    if (result) {
-      return of(result);
-    }
-    else {
-      return of();
-    }
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      params: {email: creds.email, password: creds.password},
+    };
+    console.log("url: " + url);
+    return this.http.post<string>(url, {}, httpOptions).pipe(
+      catchError(this.handleError<string>('signIn'))
+    );
+    // const result = this.accounts.find(i => i.credentials.email === creds.email && 
+    //   i.credentials.password === creds.password);
+    // if (result) {
+    //   return of(result);
+    // }
+    // else {
+    //   return of();
+    // }
   }
 
   signUp(accountDto: AccountSignUpDto): Observable<Account> {
