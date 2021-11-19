@@ -16,7 +16,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   signIn(creds: Credentials): Observable<AuthResponse> {
-    const url = `${environment.serverUrl}/signin`;
+    const url = `${environment.serverUrl}/auth/signin`;
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       params: {email: creds.email, password: creds.password},

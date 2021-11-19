@@ -21,7 +21,7 @@ export class TestService {
         Authorization: 'Bearer ' + this.tokenService.getToken()
       })
     };
-    const url = `${environment.serverUrl}/test`;
+    const url = `${environment.serverUrl}/auth/test`;
     return this.http.get<TestResponse>(url, httpOptions).pipe(
       catchError(this.handleError())
     );
@@ -35,7 +35,7 @@ export class TestService {
     };
   }
 
-  // logout(): void {
-  //   this.tokenService.deleteToken();
-  // }
+  logout(): void {
+    this.tokenService.deleteToken();
+  }
 }

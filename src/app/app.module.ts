@@ -9,6 +9,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { SigninComponent } from './signin/signin.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { RequestInterceptor } from './interceptor';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,9 @@ import { RequestInterceptor } from './interceptor';
     HttpClientModule,
     FormsModule, 
     ReactiveFormsModule,
-    NgxCaptchaModule
+    NgxCaptchaModule,
+    
+    JwtModule
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }

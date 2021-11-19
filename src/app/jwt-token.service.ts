@@ -17,7 +17,7 @@ export class JwtTokenService {
     this.cookieService.set(environment.tokenName, token);
   }
 
-  // deleteToken(): void {
-  //   return this.cookieService.delete(environment.tokenName);
-  // }
+  deleteToken(): void {
+    return this.cookieService.delete(environment.tokenName);
+  }
 }

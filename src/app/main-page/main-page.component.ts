@@ -18,9 +18,9 @@ export class MainPageComponent implements OnInit {
     .subscribe(response => console.log(response));
   }
 
-  // logout(): void {
-  //   this.testService.logout();
-  //   this.router.navigate(['signin']);
-  // }
+  logout(): void {
+    this.testService.logout();
+    this.router.navigate(['signin']);
+  }
 
 }
