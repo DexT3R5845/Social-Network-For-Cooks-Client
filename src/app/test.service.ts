@@ -28,7 +28,6 @@ export class TestService {
 
   private handleError(result?: TestResponse) {
     return (error: HttpErrorResponse): Observable<TestResponse> => {
-      console.log(error);
       const response: TestResponse = {status: error.error.status, email: ''};
       return of(response);
     };
