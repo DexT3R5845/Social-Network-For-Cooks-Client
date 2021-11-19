@@ -30,20 +30,6 @@ export class AuthService {
     );
   }
 
-  // signUp(accountDto: AccountSignUpDto): Observable<Account> {
-  //   const url = `${this.serverUrl}/sign-up`;
-  //   // return this.http.post<Account>(url, accountDto, this.httpOptions).pipe(
-  //   //   catchError(this.handleError<Account>('signUp'))
-  //   // );
-  //   this.accounts.push({id: this.curr_id, firstName: accountDto.firstName, 
-  //   lastName: accountDto.lastName, 
-  //   birthDate: accountDto.birthDate, gender: accountDto.gender, image: 'aaa', 
-  //   role: {id: 1, roleName: 'user'},
-  //   credentials: accountDto.credentials});
-  //   this.curr_id = this.curr_id + 1;
-  //   const result = this.accounts[this.accounts.length - 1];
-  //   return of(result);
-  // }
 
   private handleError(operation = 'operation', result?: AuthResponse) {
     return (error: HttpErrorResponse): Observable<AuthResponse> => {
