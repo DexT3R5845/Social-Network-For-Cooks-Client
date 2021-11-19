@@ -4,7 +4,7 @@ import { first } from 'rxjs';
 import { AuthService } from '../authentication.service';
 import { Credentials } from '../credentials';
 import {ReCaptcha2Component} from 'ngx-captcha';
-import { AuthResponse } from '../auth_repsonse';
+import { AuthResponse } from '../auth-repsonse';
 import { JwtTokenService } from '../jwt-token.service';
 
 @Component({

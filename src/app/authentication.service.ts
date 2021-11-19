@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Credentials } from './credentials';
-import { AuthResponse } from './auth_repsonse';
+import { AuthResponse } from './auth-repsonse';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
