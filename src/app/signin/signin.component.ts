@@ -39,12 +39,11 @@ export class SigninComponent implements OnInit {
       }
       else {
         this.incorrect = true;
-        if (this.attemptCounter >= 5) {
+        if (response.enableCaptcha === true) {
           this.showCaptcha = true;
           this.disableButton = true;
           this.captchaElem.resetCaptcha();
         }
-        this.attemptCounter += 1;
       }
     });
   }

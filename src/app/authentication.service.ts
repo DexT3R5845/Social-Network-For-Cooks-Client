@@ -24,6 +24,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(url, {}, httpOptions).pipe(
       map(data => {
         data.status = 200;
+        data.enableCaptcha = false;
         return data;
       }),
       catchError(this.handleError())
@@ -31,9 +32,12 @@ export class AuthService {
   }
 
 
-  private handleError(operation = 'operation', result?: AuthResponse) {
+  private handleError(result?: AuthResponse) {
     return (error: HttpErrorResponse): Observable<AuthResponse> => {
-      const response: AuthResponse = {status: error.error.status, token: ''};
+      const response: AuthResponse = {status: error.status, token: '', enableCaptcha: false};
+      if(error.error.message === "Need captcha") {
+        response.enableCaptcha = true;
+      }
       return of(response);
     };
   }
