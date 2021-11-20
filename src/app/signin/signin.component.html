@@ -1,32 +1,4 @@
-<div class="main">
-    <div class="register-form-container">
-        <h1 class="form-title">
-            Sign In
-        </h1>
-        <div class="form-text">
-            <span class="text">Don`t have an account? <a href="#" style="color: #27313B">Create one</a> </span>
-        </div>
-        <div class="form-fields">
-            <div class="form-field">
-                <input type="text" [(ngModel)]="creds.email" placeholder="Email address">
-            </div>
-            <div class="form-field">
-                <input type="password" [(ngModel)]="creds.password" placeholder="Password">
-            </div>
-            <p *ngIf="incorrect">Incorrect login or password!</p><button *ngIf="incorrect" (click)="removeWarning()">
-                OK
-            </button>
-            <ngx-recaptcha2 #captchaElem *ngIf="showCaptcha" [siteKey]="siteKey" (success)="handleCaptchaSuccess($event)"></ngx-recaptcha2>
-            <div class="form-buttons">
-                <button class="button" (click)="authorize(creds)" [disabled]="disableButton">
-                    Sign in
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -43,7 +15,7 @@
 <body>
     <div class="authorization">
         <div class="authorization__body ">
-            <div class="authorization__title title">Log into your account</div>
+            <div class="authorization__title title">Sign in</div>
 
             <form class="authorization__form" [formGroup]="authorizeForm">
 
@@ -52,7 +24,7 @@
                 <div class="authorization__fields">
 
                     <div class="authorization__field ">
-                        <input type="text" class="form-field" formControlName="email" placeholder="Email address*" [(ngModel)]="creds.email">
+                        <input type="text" class="form-field" formControlName="email" placeholder="Email address*">
                         <div *ngIf="email.invalid && email.touched">
                             <span class="error" *ngIf="email.errors?.required"  > email is required </span>
                             <span class="error" *ngIf="email.errors?.email" > email is invalid </span>
@@ -60,7 +32,7 @@
                     </div>
 
                     <div class="authorization__field">
-                        <input type="password" class="form-field sub-field" formControlName="password" placeholder="Password*" [(ngModel)]="creds.password">
+                        <input type="password" class="form-field sub-field" formControlName="password" placeholder="Password*">
                         <div *ngIf="password.invalid && password.touched">
                             <span class="error" *ngIf="password.errors?.required"> password is requierd </span>
                             <span class="error" *ngIf="password.errors?.pattern"> password is invalid </span> 
@@ -68,18 +40,19 @@
                     </div>
 
                 </div>
-
+                <ngx-recaptcha2 #captchaElem *ngIf="showCaptcha" [siteKey]="siteKey" (success)="handleCaptchaSuccess($event)"></ngx-recaptcha2>
+                
                 <div class="authorization__button">
-                    <button class = "form-button" [disabled]="!authorizeForm.valid" routerLink="">Sign in</button>
+                    <button class = "form-button" [disabled]="!authorizeForm.valid || disableButton" (click)="authorize()">Sign in</button>
                 </div>  
 
             </form>
 
             <div class="authorization__sign-up-text text">
-                Don`t have an account? <a href="#" style="color: #27313B">Create one</a>
+                Don`t have an account? <a href="#" class="authorization__sign-up-link">Create one</a>
             </div>
             
         </div> 
     </div>
 </body>
-</html> -->
+</html>

@@ -6,6 +6,7 @@ import { Credentials } from '../credentials';
 import {ReCaptcha2Component} from 'ngx-captcha';
 import { AuthResponse } from '../auth-repsonse';
 import { JwtTokenService } from '../jwt-token.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signin',
@@ -16,22 +17,41 @@ export class SigninComponent implements OnInit {
 
   creds: Credentials = {email: '', password: ''};
   incorrect: boolean = false;
-  response: AuthResponse;
   siteKey: string = "6Le3qCodAAAAAJWMyzjp3R7igz2rIEQoM7UWRbns";
   showCaptcha: boolean = false;
+  captchaResponse: string;
   disableButton: boolean = false;
-  attemptCounter: number = 1;
   @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
+  authorizeForm :any;
+  get email(){return this.authorizeForm.get("email")}
+  get password(){return this.authorizeForm.get("password")}
   
   constructor(private router: Router, 
     private authService: AuthService, 
     private jwtService: JwtTokenService ) { }
 
   ngOnInit(): void {
+    this.authorizeForm = new FormGroup({    
+
+      "email": new FormControl("", [
+         Validators.required,
+          Validators.email
+        ]),
+    
+      "password": new FormControl("", [
+        Validators.required,
+        Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,35}$')
+      ])
+      
+    });
   }
 
-  authorize(creds: Credentials) : void {
-    this.authService.signIn(this.creds).pipe(first())
+  authorize() : void {
+    const creds: Credentials = this.authorizeForm.value;
+    if (this.showCaptcha) {
+      this.captchaResponse = this.captchaElem.getResponse();
+    }
+    this.authService.signIn(creds, this.captchaResponse).pipe(first())
     .subscribe(response => {
       if (response.status === 200) {
         this.jwtService.setToken(response.token);
@@ -42,7 +62,10 @@ export class SigninComponent implements OnInit {
         if (response.enableCaptcha === true) {
           this.showCaptcha = true;
           this.disableButton = true;
-          this.captchaElem.resetCaptcha();
+          if (this.captchaElem)
+          {
+            this.captchaElem.resetCaptcha();
+          }
         }
       }
     });

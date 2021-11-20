@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -15,11 +15,15 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  signIn(creds: Credentials): Observable<AuthResponse> {
+  signIn(creds: Credentials, captchaResponse: string): Observable<AuthResponse> {
     const url = `${environment.serverUrl}/auth/signin`;
+    let params = new HttpParams().set('email', creds.email).set('password', creds.password);
+    if (captchaResponse) {
+      params = params.set('g-recaptcha-response', captchaResponse);
+    }
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      params: {email: creds.email, password: creds.password},
+      params: params
     };
     return this.http.post<AuthResponse>(url, {}, httpOptions).pipe(
       map(data => {
