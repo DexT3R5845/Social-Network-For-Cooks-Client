@@ -16,11 +16,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class SigninComponent implements OnInit {
 
   creds: Credentials = {email: '', password: ''};
-  incorrect: boolean = false;
   siteKey: string = "6Le3qCodAAAAAJWMyzjp3R7igz2rIEQoM7UWRbns";
   showCaptcha: boolean = false;
   captchaResponse: string;
   disableButton: boolean = false;
+  invalidEmailFormat: boolean = false;
+  invalidPassFormat: boolean = false;
+  invalidCreds: boolean = false;
   @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
   authorizeForm :any;
   get email(){return this.authorizeForm.get("email")}
@@ -53,12 +55,11 @@ export class SigninComponent implements OnInit {
     }
     this.authService.signIn(creds, this.captchaResponse).pipe(first())
     .subscribe(response => {
-      if (response.status === 200) {
+      if (response.token) {
         this.jwtService.setToken(response.token);
         this.router.navigate(['main_page']);
       }
       else {
-        this.incorrect = true;
         if (response.enableCaptcha === true) {
           this.showCaptcha = true;
           this.disableButton = true;
@@ -67,12 +68,11 @@ export class SigninComponent implements OnInit {
             this.captchaElem.resetCaptcha();
           }
         }
+        this.invalidEmailFormat = response.invalidEmailFormat;
+        this.invalidPassFormat = response.invalidPassFormat;
+        this.invalidCreds = response.invalidCreds;
       }
     });
-  }
-
-  removeWarning(): void {
-    this.incorrect = false;
   }
 
   handleCaptchaSuccess(event: any): void {

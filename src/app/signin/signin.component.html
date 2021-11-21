@@ -22,12 +22,11 @@
                 <div class="authorization__require-text">* required fields</div>
 
                 <div class="authorization__fields">
-
                     <div class="authorization__field ">
                         <input type="text" class="form-field" formControlName="email" placeholder="Email address*">
                         <div *ngIf="email.invalid && email.touched">
                             <span class="error" *ngIf="email.errors?.required"  > email is required </span>
-                            <span class="error" *ngIf="email.errors?.email" > email is invalid </span>
+                            <span class="error" *ngIf="email.errors?.email || invalidEmailFormat" > email fromat is invalid </span>
                         </div>
                     </div>
 
@@ -35,9 +34,10 @@
                         <input type="password" class="form-field sub-field" formControlName="password" placeholder="Password*">
                         <div *ngIf="password.invalid && password.touched">
                             <span class="error" *ngIf="password.errors?.required"> password is requierd </span>
-                            <span class="error" *ngIf="password.errors?.pattern"> password is invalid </span> 
+                            <span class="error" *ngIf="password.errors?.pattern  || invalidPassFormat"> password format is invalid </span> 
                         </div>
                     </div>
+                    <span class="error" *ngIf="invalidCreds"> Incorrect login and/or password </span>
 
                 </div>
                 <ngx-recaptcha2 #captchaElem *ngIf="showCaptcha" [siteKey]="siteKey" (success)="handleCaptchaSuccess($event)"></ngx-recaptcha2>
