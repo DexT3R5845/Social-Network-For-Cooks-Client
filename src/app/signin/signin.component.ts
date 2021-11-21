@@ -43,7 +43,9 @@ export class SigninComponent implements OnInit {
       "password": new FormControl("", [
         Validators.required,
         Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,35}$')
-      ])
+      ]),
+
+      "recaptcha": new FormControl(['', Validators.required])
       
     });
   }

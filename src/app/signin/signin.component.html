@@ -40,7 +40,7 @@
                     <span class="error" *ngIf="invalidCreds"> Incorrect login and/or password </span>
 
                 </div>
-                <ngx-recaptcha2 #captchaElem *ngIf="showCaptcha" [siteKey]="siteKey" (success)="handleCaptchaSuccess($event)"></ngx-recaptcha2>
+                <ngx-recaptcha2 #captchaElem *ngIf="showCaptcha" formControlName="recaptcha" [siteKey]="siteKey" (success)="handleCaptchaSuccess($event)"></ngx-recaptcha2>
                 
                 <div class="authorization__button">
                     <button class = "form-button" [disabled]="!authorizeForm.valid || disableButton" (click)="authorize()">Sign in</button>
