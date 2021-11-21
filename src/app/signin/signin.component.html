@@ -38,9 +38,12 @@
                         </div>
                     </div>
                     <span class="error" *ngIf="invalidCreds"> Incorrect login and/or password </span>
+                    <span class="error" *ngIf="banned"> Your account is banned. If you think it's a mistake contact an administrator of the resource </span>
 
                 </div>
+                <div  class = "captcha">
                 <ngx-recaptcha2 #captchaElem *ngIf="showCaptcha" formControlName="recaptcha" [siteKey]="siteKey" (success)="handleCaptchaSuccess($event)"></ngx-recaptcha2>
+            </div>
                 
                 <div class="authorization__button">
                     <button class = "form-button" [disabled]="!authorizeForm.valid || disableButton" (click)="authorize()">Sign in</button>

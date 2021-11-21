@@ -5,4 +5,5 @@ export interface AuthResponse {
     invalidCreds: boolean;
     invalidEmailFormat: boolean;
     invalidPassFormat: boolean;
+    banned: boolean;
 }

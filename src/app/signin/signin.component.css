@@ -128,4 +128,11 @@ input{
     color: #27313B
 }
 
+.captcha {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px; 
+    width: 52%;
+}
+
 

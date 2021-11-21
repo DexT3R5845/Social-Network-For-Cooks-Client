@@ -39,20 +39,21 @@ export class AuthService {
   private handleError(result?: AuthResponse) {
     return (error: HttpErrorResponse): Observable<AuthResponse> => {
       const response: AuthResponse = {status: error.status, token: '', enableCaptcha: false, 
-    invalidCreds: false, invalidEmailFormat: false, invalidPassFormat: false};
-      if (error.error.message === "Need captcha" || "Recaptcha token is invalid") {
-        response.enableCaptcha = true;
-      }
-      if (error.error.message === "Invalid username/password supplied") {
+    invalidCreds: false, invalidEmailFormat: false, invalidPassFormat: false, banned: false};
+        response.enableCaptcha = error.error.need_captcha;
+      if (error.status === 401) {
         response.invalidCreds = true;
       }
-      if (error.error.message === "VALIDATION_FAILED") {
+      else if (error.status === 400) {
         if (error.error.data.email) {
           response.invalidEmailFormat = true;
         }
         if (error.error.data.password) {
           response.invalidPassFormat = true;
         }
+      }
+      else if (error.status === 403) {
+        response.banned = true;
       }
       return of(response);
     };

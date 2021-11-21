@@ -23,6 +23,7 @@ export class SigninComponent implements OnInit {
   invalidEmailFormat: boolean = false;
   invalidPassFormat: boolean = false;
   invalidCreds: boolean = false;
+  banned: boolean = false;
   @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
   authorizeForm :any;
   get email(){return this.authorizeForm.get("email")}
@@ -62,6 +63,7 @@ export class SigninComponent implements OnInit {
         this.router.navigate(['main_page']);
       }
       else {
+        console.log(response);
         if (response.enableCaptcha === true) {
           this.showCaptcha = true;
           this.disableButton = true;
@@ -70,9 +72,13 @@ export class SigninComponent implements OnInit {
             this.captchaElem.resetCaptcha();
           }
         }
+        else {
+          this.showCaptcha = false;
+        }
         this.invalidEmailFormat = response.invalidEmailFormat;
         this.invalidPassFormat = response.invalidPassFormat;
         this.invalidCreds = response.invalidCreds;
+        this.banned = response.banned;
       }
     });
   }
