@@ -1,122 +1,138 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300&display=swap');
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+html,body{
+    width: 100%;
+    height: 100%;
 }
 
-body{
+.authorization{
     font-family: Raleway;
-    font-weight: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    left: 0;
+    right: 0;
 }
 
-input{
-    max-width: 575.27px;
-    width: 100%;
-    height: 84.37px;
-    font-size: 23.01px;
-    line-height: 19px;
-    background: #FFFFFF;
-    border: 1.53407px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 15.3407px;
-    color: rgba(0, 0, 0, 0.5);
-    padding-left: 20px;
-    padding-top: 32px;
-    padding-bottom: 32.37px;
+input.ng-touched.ng-invalid {
+    border:solid red 5px;
 }
 
-.form-title{
-    text-align: center;
-    color: #273139;
-    font-size: 55.2264px;
-    line-height: 72px;
-    margin-bottom: 63.4px;
+.error{
+    color: red;
 }
 
-.register-form-container{
-    max-width: 698px;
-    width: 100%;
+.authorization__body{
+    width: 698px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding-top: 46px;
+
+    
+
     background: #E6E2DF;
     border: 2px solid #27313B;
     box-sizing: border-box;
     border-radius: 49.0901px;
-    padding-left: 59px;
-    padding-right: 63.73px;
-    padding-top: 67.5px;
+}
+
+
+
+.authorization__fields{
+    margin-bottom: 19px;
+}
+
+.authorization__field{
+    margin-bottom: 21px;
 
     
 }
+
+input{
+    font-size: 23.01px;
+    line-height: 19px;
+}
+
 
 .form-field{
-    margin-bottom: 22.63px;
+    width: 575.27px;
+    height: 70px;
+
+    background: #FFFFFF;
+    border: 1.53407px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15.3407px;
 }
-.form-fields{
-    
+
+
+
+input{
+    padding-left: 20px;
 }
-.form-buttons{
-    text-align: center;
-    margin-top: 129.59px;
-    margin-bottom: 31.49px;
-    
+
+.authorization__button{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 21.09px;
 }
-.button{
+
+.form-button{
+
+    width: 391.19px;
+    height: 70px;
+
     font-weight: bold;
     font-size: 33.7495px;
     line-height: 44px;
     max-width: 391.19px;
-    width: 100%;
-    height: 90.51px;
+    
     background: #9FAFBE;
     border-radius: 23.011px;
     color: #FFFFFF;
     border: 0px;
 }
-.text{
-    font-style: normal;
+
+.authorization__requite-text{
+    font-size: 18px;
+    line-height: 19px;
+    margin-bottom: 15px;
+}
+
+.authorization__sign-up-text{
     font-size: 21.4769px;
     line-height: 28px;
     /* or 130% */
+    text-align: center;
     color: #27313B;
 }
-.form-text{
-    text-align: center;
-    margin-bottom: 22.66px;
+.authorization__sign-up-text{
+    margin-bottom: 40px;
+}
+
+.authorization__title{
+    font-size: 55.2264px;
+    line-height: 72px;
+    margin-bottom: 20px;
+
     
 }
 
-.main{
-    background-color: white;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-
+.authorization__sign-up-link {
+    color: #27313B
 }
 
-/*.rectangle{
-    max-width: 950px;
-    width: 100%;
-    height: 950px;
-    position: absolute;
-    background: #AAA096;
-    border-radius: 160px;
-    transform: rotate(-45deg);
+.captcha {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px; 
+    width: 52%;
 }
 
-#rectangle-top{
-    left: -460px;
-    top: -360.75px;
-}
 
-#rectangle-bottom{
-    left: 1036px;
-    top: 543.33px;
-}
-
-.rectangle{
-    z-index: 1;
-}*/

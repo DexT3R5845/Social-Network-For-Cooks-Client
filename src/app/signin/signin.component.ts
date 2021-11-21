@@ -6,6 +6,7 @@ import { Credentials } from '../credentials';
 import {ReCaptcha2Component} from 'ngx-captcha';
 import { AuthResponse } from '../auth-repsonse';
 import { JwtTokenService } from '../jwt-token.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signin',
@@ -15,42 +16,71 @@ import { JwtTokenService } from '../jwt-token.service';
 export class SigninComponent implements OnInit {
 
   creds: Credentials = {email: '', password: ''};
-  incorrect: boolean = false;
-  response: AuthResponse;
   siteKey: string = "6Le3qCodAAAAAJWMyzjp3R7igz2rIEQoM7UWRbns";
   showCaptcha: boolean = false;
+  captchaResponse: string;
   disableButton: boolean = false;
-  attemptCounter: number = 1;
+  invalidEmailFormat: boolean = false;
+  invalidPassFormat: boolean = false;
+  invalidCreds: boolean = false;
+  banned: boolean = false;
   @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
+  authorizeForm :any;
+  get email(){return this.authorizeForm.get("email")}
+  get password(){return this.authorizeForm.get("password")}
   
   constructor(private router: Router, 
     private authService: AuthService, 
     private jwtService: JwtTokenService ) { }
 
   ngOnInit(): void {
+    this.authorizeForm = new FormGroup({    
+
+      "email": new FormControl("", [
+         Validators.required,
+          Validators.email
+        ]),
+    
+      "password": new FormControl("", [
+        Validators.required,
+        Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,35}$')
+      ]),
+
+      "recaptcha": new FormControl(['', Validators.required])
+      
+    });
   }
 
-  authorize(creds: Credentials) : void {
-    this.authService.signIn(this.creds).pipe(first())
+  authorize() : void {
+    const creds: Credentials = this.authorizeForm.value;
+    if (this.showCaptcha) {
+      this.captchaResponse = this.captchaElem.getResponse();
+    }
+    this.authService.signIn(creds, this.captchaResponse).pipe(first())
     .subscribe(response => {
-      if (response.status === 200) {
+      if (response.token) {
         this.jwtService.setToken(response.token);
         this.router.navigate(['main_page']);
       }
       else {
-        this.incorrect = true;
-        if (this.attemptCounter >= 5) {
+        console.log(response);
+        if (response.enableCaptcha === true) {
           this.showCaptcha = true;
           this.disableButton = true;
-          this.captchaElem.resetCaptcha();
+          if (this.captchaElem)
+          {
+            this.captchaElem.resetCaptcha();
+          }
         }
-        this.attemptCounter += 1;
+        else {
+          this.showCaptcha = false;
+        }
+        this.invalidEmailFormat = response.invalidEmailFormat;
+        this.invalidPassFormat = response.invalidPassFormat;
+        this.invalidCreds = response.invalidCreds;
+        this.banned = response.banned;
       }
     });
-  }
-
-  removeWarning(): void {
-    this.incorrect = false;
   }
 
   handleCaptchaSuccess(event: any): void {
