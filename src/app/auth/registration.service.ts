@@ -29,13 +29,13 @@ export class RegistrationService {
    signUp(info:User): Observable<any> {
     return this.http.post<any>(
       this.signupUrl,
-      {name: info.getName(),
-        surname: info.getSurname(),
+      {firstName: info.getName(),
+        lastName: info.getSurname(),
         birthDate: info.getBirthDate(),
         gender: info.getGender().gender,
         email: info.getEmail(),
         password: info.getPassword(),
-        confirmPassword: info.getConfirmPassword()
+        // confirmPassword: info.getConfirmPassword()
       },
       this.httpOptions
       ).pipe(
