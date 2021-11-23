@@ -83,7 +83,7 @@ onSubmit() {
   
    this.registrationService.signUp(user).pipe(first())
    .subscribe(response => {
-     if (response.status = 200) {
+     if (response.status === 200) {
        this.router.navigate(['/signin']);
      };
 
