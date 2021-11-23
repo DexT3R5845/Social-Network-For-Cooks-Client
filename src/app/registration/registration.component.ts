@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators} from "@angular/forms";
-
+import { first } from 'rxjs';
 import { RegistrationService } from '../auth/registration.service';
+import { Router } from '@angular/router';
 
 import { User } from '../user';
 
@@ -11,6 +12,7 @@ import { User } from '../user';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css']
 })
+
 export class RegistrationComponent implements OnInit {
 
   registerForm :any;
@@ -64,9 +66,7 @@ ngOnInit() {
   });
 }
 
-constructor(private registrationService: RegistrationService){
-
-}
+constructor(private registrationService: RegistrationService, private router: Router){}
 
 
 
@@ -80,9 +80,14 @@ onSubmit() {
     this.registerForm.value.password,
     this.registerForm.value.confirmPassword
   )
-   this.registrationService.signUp(user);
+  
+   this.registrationService.signUp(user).pipe(first())
+   .subscribe(response => {
+     if (response.status = 200) {
+       this.router.navigate(['/signin']);
+     };
 
    console.log(this.registerForm.value);
+});
 }
-
 }

@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
   { path: 'signin', component: SigninComponent, canActivate: [UserFormsGuardService]  },
   { path: 'main_page', component: MainPageComponent, canActivate: [AuthGuardService] },
-  { path: 'registration', component: RegistrationComponent },
+  { path: 'registration', component: RegistrationComponent, canActivate: [UserFormsGuardService] },
   { path: '**', redirectTo: '/signin', pathMatch: 'full' }
 ];
 
