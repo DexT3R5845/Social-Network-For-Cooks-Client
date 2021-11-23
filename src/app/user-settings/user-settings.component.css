@@ -1,0 +1,88 @@
+.form-group{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 25%;
+  margin: 199px auto 25px auto;
+}
+
+.img-profile{
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.form-group input{
+  flex: 1 1 auto;
+  background: #E6E2DF;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 0 15px 0 15px;
+  height: 40px;
+  font-family: Raleway;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  border: none;
+}
+
+.form-group .inputs{
+  display: flex;
+  width: 100%;
+}
+
+.date-gender{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.date-gender .gender{
+  width: 30%;
+}
+
+.date-gender .date{
+  width: 70%;
+}
+
+.buttons{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: white;
+  font-family: Raleway;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  background: #9FAFBE;
+  border-radius: 50px;
+  height: 40px;
+  border: none;
+}
+
+.two-buttons{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 80%;
+}
+
+.buttons:active {
+  border: 3px solid black;
+}
+
+#b-change{
+  width: 150px;
+}
+#b-save{
+  width: 120px;
+}
+#b-logout{
+  width: 100px;
+}
+
+
+

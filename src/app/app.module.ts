@@ -10,20 +10,21 @@ import { SigninComponent } from './signin/signin.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { RequestInterceptor } from './interceptor';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SigninComponent
+    SigninComponent,
+    UserSettingsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
     NgxCaptchaModule,
-    
     JwtModule
   ],
   providers: [
