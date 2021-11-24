@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+
+import { RegistrationService } from './auth/registration.service';
+import { RegistrationComponent } from './registration/registration.component';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
@@ -16,7 +19,8 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
   declarations: [
     AppComponent,
     SigninComponent,
-    UserSettingsComponent
+    UserSettingsComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -25,10 +29,12 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
     FormsModule,
     ReactiveFormsModule,
     NgxCaptchaModule,
+
     JwtModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true},
+    RegistrationService
   ],
   bootstrap: [AppComponent]
 })

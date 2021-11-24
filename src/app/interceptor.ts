@@ -17,7 +17,8 @@ export class RequestInterceptor implements HttpInterceptor {
         if (token && !this.jwtHelper.isTokenExpired(token)) {
             const cloned = req.clone({
                 headers: req.headers.set("Authorization",
-                    "Bearer " + token)
+                    "Bearer " + token),
+                    withCredentials: true
             });
 
             return next.handle(cloned);
