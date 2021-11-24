@@ -2,26 +2,30 @@
   <img class="img-profile" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
 
   <div class="inputs">
-    <input type="text"  value="FirstName">
+    <input type="text" class="user-edit" placeholder="Firstname">
+    <!--<img src="../../assets/images/img.png" alt="edit" class="edit-icon">-->
   </div>
 
   <div class="inputs">
-    <input type="text"  value="LastName">
+    <input type="text" class="user-edit" placeholder="Lastname">
   </div>
 
   <div class="date-gender">
-    <input type="date" class="date" value="17.10.2001">
-    <input type="text" class="gender" value="Female">
+    <input type="date" class="date"/>
+    <select class="gender">
+      <option>Female</option>
+      <option>Male</option>
+    </select>
   </div>
 
   <div class="inputs">
-    <input type="email" value="Rebecca@website.com">
+    <input type="email" class="user-edit" placeholder="example@email.com">
   </div>
 
-  <button type="submit" class="buttons" id="b-save">save changes</button>
+  <button type="submit" class="save">save changes</button>
 
   <div class="two-buttons">
-    <button type="submit" class="buttons" id="b-change">change password</button>
-    <button type="submit" class="buttons" id="b-logout">log out</button>
+    <button type="submit" class="change">change password</button>
+    <button type="submit" class="logout">log out</button>
   </div>
 </form>

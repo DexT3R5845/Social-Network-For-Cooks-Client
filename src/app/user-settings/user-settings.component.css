@@ -1,88 +1,119 @@
-.form-group{
+.form-group {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 25%;
-  margin: 199px auto 25px auto;
+  margin: 100px auto 25px auto;
+  width: 20%;
 }
 
-.img-profile{
+.img-profile {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   margin-bottom: 5px;
 }
 
-.form-group input{
-  flex: 1 1 auto;
-  background: #E6E2DF;
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  padding: 0 15px 0 15px;
-  height: 40px;
-  font-family: Raleway;
+.form-group input, select {
+  background-color: #E6E2DF;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  font-family: Raleway, serif;
   font-style: normal;
   font-weight: bold;
   font-size: 15px;
+  color: #27313B;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 44px;
   border: none;
 }
 
-.form-group .inputs{
+.form-group .user-edit {
+  background-image: url("../../assets/images/img.png");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+  background-size: 25px 25px;
+}
+
+.user-edit {
+  width: 100%;
+  padding: 0 15px 0 15px;
+}
+
+input::placeholder {
+  color: #27313B;
+}
+
+.form-group .inputs {
   display: flex;
   width: 100%;
 }
 
-.date-gender{
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.date-gender .gender{
+.gender {
   width: 30%;
+  padding: 0 5px 0 5px;
+  appearance: none;
+  background-image: url("../../assets/images/arrow.png");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+  background-size: 25px 25px;
 }
 
-.date-gender .date{
-  width: 70%;
+.date {
+  width: 60%;
+  padding: 0 5px 0 15px;
 }
 
-.buttons{
+.date[type="date"] {
+  background-image: url("../../assets/images/calendar.png");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+  background-size: 25px 25px;
+}
+
+.date[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+.date[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+.date-gender {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+button {
   margin-top: 5px;
   margin-bottom: 5px;
   color: white;
-  font-family: Raleway;
+  font-family: Raleway, serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   background: #9FAFBE;
   border-radius: 50px;
-  height: 40px;
+  height: 35px;
   border: none;
+  padding: 5px 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
 }
 
-.two-buttons{
+.two-buttons {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
   width: 80%;
 }
 
-.buttons:active {
-  border: 3px solid black;
+button:active {
+  box-shadow: none;
 }
 
-#b-change{
-  width: 150px;
-}
-#b-save{
-  width: 120px;
-}
-#b-logout{
-  width: 100px;
-}
 
 
 
