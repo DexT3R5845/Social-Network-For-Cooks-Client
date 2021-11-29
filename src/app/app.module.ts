@@ -14,6 +14,7 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { RequestInterceptor } from './interceptor';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -22,19 +23,19 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
     UserSettingsComponent,
     RegistrationComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgxCaptchaModule,
-
-    JwtModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgxCaptchaModule,
+        JwtModule,
+    ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true},
-    RegistrationService
+    RegistrationService,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

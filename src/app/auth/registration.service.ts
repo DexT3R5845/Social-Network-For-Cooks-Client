@@ -13,8 +13,6 @@ import { User } from '../user';
   providedIn: 'platform'
 })
 
-
-
 export class RegistrationService {
 
   constructor(private http: HttpClient) { }
@@ -25,11 +23,11 @@ export class RegistrationService {
   };
 
 
-
    signUp(info:User): Observable<any> {
     return this.http.post<any>(
       this.signupUrl,
-      {firstName: info.getName(),
+      {
+        firstName: info.getName(),
         lastName: info.getSurname(),
         birthDate: info.getBirthDate(),
         gender: info.getGender().gender,

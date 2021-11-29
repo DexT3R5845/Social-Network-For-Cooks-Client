@@ -2,7 +2,7 @@ export class Gender{
     gender:string;
 
     private stringToGender(strGender:string): string {
-        if(strGender==="Male"){
+        if(strGender==="Male" || strGender ==="M"){
             return "M";
         }
         return "F";

@@ -1,31 +1,28 @@
-<form class="form-group">
-  <img class="img-profile" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+<form class="form-group" [formGroup]="settingsForm" (ngSubmit) = "submit()">
+  <img class="img-profile" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""><!--formControlName="imgUrl" ngDefaultControl-->
 
   <div class="inputs">
-    <input type="text" class="user-edit" placeholder="Firstname">
-    <!--<img src="../../assets/images/img.png" alt="edit" class="edit-icon">-->
+    <input type="text" class="user-edit" formControlName="firstName">
   </div>
 
   <div class="inputs">
-    <input type="text" class="user-edit" placeholder="Lastname">
+    <input type="text" class="user-edit" formControlName="lastName">
   </div>
 
   <div class="date-gender">
-    <input type="date" class="date"/>
-    <select class="gender">
-      <option>Female</option>
+    <input type="date" class="date" formControlName="date" >
+    <select class="gender" formControlName="gender" >
       <option>Male</option>
+      <option>Female</option>
     </select>
-  </div>
-
-  <div class="inputs">
-    <input type="email" class="user-edit" placeholder="example@email.com">
   </div>
 
   <button type="submit" class="save">save changes</button>
 
   <div class="two-buttons">
-    <button type="submit" class="change">change password</button>
-    <button type="submit" class="logout">log out</button>
+    <button class="change">change password</button>
+    <button class="logout">log out</button>
   </div>
+
 </form>
+
