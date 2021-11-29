@@ -1,0 +1,80 @@
+<mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h2>Registration</h2>
+        <div *ngIf="isInvalidData" class="alert alert-danger" role="alert">
+            {{alertMessage}}
+          </div>
+          <div *ngIf="isValidData" class="alert alert-success" role="alert">
+            Registration successful
+          </div>
+
+        <mat-form-field class="full-width-input">
+          <input matInput placeholder="First Name" formControlName="firstName" required>
+          <mat-error>
+            Please provide a valid name
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width-input">
+            <input matInput placeholder="Last Name" formControlName="lastName" required>
+            <mat-error>
+              Please provide a valid last name
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input">
+            <input matInput [matDatepicker]="picker" placeholder="Birthdate" formControlName="birthDate" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error>
+                Please provide a valid birthdate
+              </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="M">Male</mat-option>
+              <mat-option value="F">Female</mat-option>
+            </mat-select>
+            <mat-error>You must make a selection</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input">
+            <input matInput placeholder="Email" formControlName="email" required>
+            <mat-error>
+              Please provide a valid email
+            </mat-error>
+          </mat-form-field>
+
+        <mat-form-field class="full-width-input" >
+            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password" required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            <mat-error *ngIf="f['password'].hasError('required')">
+                Enter your password, please
+            </mat-error>
+            <mat-error *ngIf="f['password'].hasError('pattern')">
+                The password contains at least 8 symbol, one uppercase letter, a lowercase letter, and a number
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input">
+            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Confirm password" formControlName="confirmPassword" required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            <mat-error *ngIf="f['confirmPassword'].hasError('required')">
+                Enter your password, please
+            </mat-error>
+            <mat-error *ngIf="f['confirmPassword'].hasError('mustMatch')">
+                Passwords do not match
+            </mat-error>
+          </mat-form-field>
+
+        <button type="submit" mat-raised-button color="primary">Register</button>
+      </form>
+    </mat-card-content>
+  </mat-card>

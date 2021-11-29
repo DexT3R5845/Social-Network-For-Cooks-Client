@@ -1,6 +1,6 @@
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -13,6 +13,10 @@ import { SigninComponent } from './signin/signin.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { RequestInterceptor } from './interceptor';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularMaterialModule } from './angular-material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { CommonModule } from '@angular/common';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import {DatePipe} from "@angular/common";
 
@@ -23,20 +27,25 @@ import {DatePipe} from "@angular/common";
     UserSettingsComponent,
     RegistrationComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NgxCaptchaModule,
-        JwtModule,
-    ],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxCaptchaModule,
+    HttpClientModule,
+    JwtModule,
+    BrowserAnimationsModule,
+    AngularMaterialModule,
+    FlexLayoutModule
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true},
-    RegistrationService,
-    DatePipe
+    RegistrationService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

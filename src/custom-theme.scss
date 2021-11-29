@@ -33,3 +33,11 @@ $bakensweetsapp-theme: mat.define-light-theme((
 // that you are using.
 @include mat.all-component-themes($bakensweetsapp-theme);
 
+
+$my-custom-typography: mat.define-typography-config(
+  $title: mat.define-typography-level(30px, 32px, 500, $letter-spacing: normal),
+  $button: mat.define-typography-level(20px, 32px, 500),
+  // $input: mat.define-typography-level(20px, 32px, 500),
+);
+
+@include mat.core($my-custom-typography);

@@ -7,18 +7,20 @@ import { UserFormsGuardService } from './user-forms-guard.service';
 import {UserSettingsComponent} from "./user-settings/user-settings.component";
 import { RegistrationComponent } from './registration/registration.component';
 
+const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
+
 const routes: Routes = [
-  { path: '', redirectTo: '/signin', pathMatch: 'full' },
+  { path: '', redirectTo: '/account/signin', pathMatch: 'full' },
   { path: 'signin', component: SigninComponent, canActivate: [UserFormsGuardService]  },
   { path: 'main_page', component: MainPageComponent, canActivate: [AuthGuardService] },
   { path: 'user', component: UserSettingsComponent },
   { path: 'registration', component: RegistrationComponent, canActivate: [UserFormsGuardService] },
-  { path: '**', redirectTo: '/signin', pathMatch: 'full' }
+  { path: 'account', loadChildren: accountModule },
+  { path: '**', redirectTo: '/account/signin', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  declarations: []
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }
