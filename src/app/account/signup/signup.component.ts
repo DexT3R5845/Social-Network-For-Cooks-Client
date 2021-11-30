@@ -15,7 +15,7 @@ export class SignupComponent implements OnInit {
   alertMessage: string;
   isInvalidData = false;
   isValidData = false;
-  hide = false;
+  hide = true;
 
 constructor(
   private formBuilder: FormBuilder,

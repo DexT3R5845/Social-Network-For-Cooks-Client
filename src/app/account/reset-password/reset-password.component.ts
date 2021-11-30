@@ -21,7 +21,7 @@ export class ResetPasswordComponent implements OnInit {
   alertMessage: string;
   isInvalidData = false;
   isValidData = false;
-  hide = false;
+  hide = true;
   TokenStatus = TokenStatus;
   tokenStatus = TokenStatus.Validating;
   token: string = "";

@@ -17,7 +17,7 @@ export class SigninComponent implements OnInit {
   form: FormGroup;
   alertMessage: string;
   isInvalidData = false;
-  hide = false;
+  hide = true;
   siteKey = environment.siteKey;
   isCaptcha = false;
   @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
