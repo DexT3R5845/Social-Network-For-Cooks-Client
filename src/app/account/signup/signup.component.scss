@@ -8,18 +8,17 @@ mat-card {
   }
   
   mat-form-field {
-    margin-top: 2em auto;
     display: block;
     font-size: 20px;
   }
 
 mat-form-field.ng-invalid.ng-touched {
-  animation: example;
+  animation: margError;
   animation-duration: 0.3s;
   margin-bottom: 13px;
 }
 
-@keyframes example {
+@keyframes margError {
   from {margin-bottom: 0;}
   to {margin-bottom: 13px;}
 }

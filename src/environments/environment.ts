@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   serverUrl: 'http://localhost:8080/api',
-  tokenName: 'bakensweetsToken'
+  tokenName: 'bakensweetsToken',
+  siteKey: '6Lf8XUodAAAAAN_wbdoV37oas0iRYiRSBmSdCKJG'
 };
 
 /*

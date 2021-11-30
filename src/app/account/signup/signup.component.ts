@@ -24,8 +24,8 @@ constructor(
   private router: Router,
 ){
   this.form = this.formBuilder.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
+    lastName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
     birthDate: ['', Validators.required],
     email: ['', Validators.email],
     password: [null, [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]],
@@ -34,6 +34,13 @@ constructor(
   }, {
     validator: MustMatch('password', 'confirmPassword')
   });
+}
+
+get firstNameErrorMessage(): string {
+  return this.f['firstName'].hasError('required') ?
+    'Please provide a valid name' :
+    this.f['firstName'].hasError('pattern') ?
+    'The name must contain only letters. Min length 3 characters' : '';
 }
 
 ngOnInit(){

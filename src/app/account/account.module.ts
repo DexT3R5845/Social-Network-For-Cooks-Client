@@ -11,6 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     AngularMaterialModule,
     FlexLayoutModule,
     CommonModule,
+    NgxCaptchaModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
