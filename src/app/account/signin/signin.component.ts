@@ -5,6 +5,7 @@ import { ReCaptcha2Component } from 'ngx-captcha';
 import { CookieService } from 'ngx-cookie-service';
 import { finalize, first, ReplaySubject, takeUntil } from 'rxjs';
 import { CookieStorageService } from 'src/app/_helpers/cookies.storage';
+import { AlertService } from 'src/app/_services';
 import { AuthService } from 'src/app/_services/auth.service';
 import { environment } from 'src/environments/environment';
 
@@ -17,7 +18,6 @@ export class SigninComponent implements OnInit,OnDestroy {
   form: FormGroup;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  isInvalidData = false;
   hide = true;
   siteKey = environment.siteKey;
   isCaptcha = false;
@@ -28,6 +28,7 @@ constructor(
   private authService: AuthService,
   private router: Router,
   private cookie: CookieStorageService,
+  private alertService: AlertService,
 ){
   this.form = this.formBuilder.group({
     email: ['', Validators.email],
@@ -40,13 +41,12 @@ constructor(
     this.destroy.complete();
   }
 
-ngOnInit(){
-}
+ngOnInit(){}
 
 get control(){return this.form.controls}
 
 onSubmit() {
-  this.isInvalidData = false;
+  this.alertService.clear();
   if (this.form.valid) {
     this.authService.signIn(this.control['email'].value, this.control['password'].value, this.control['recaptcha'].value)
             .pipe(takeUntil(this.destroy))
@@ -63,9 +63,6 @@ onSubmit() {
                       case 401:
                         this.alertMessage = "Invalid username/password supplied";
                         break;
-                    case 404:
-                      this.alertMessage = error.error.message;
-                      break;
                       case 422:
                         this.alertMessage = "Prove you're not a robot";
                         this.isCaptcha = true;
@@ -75,9 +72,10 @@ onSubmit() {
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;
                   }                  
-                this.isInvalidData = true;}
+                this.alertService.error(this.alertMessage);}
             });
-            this.captchaElem.resetCaptcha();
+    if (this.isCaptcha)
+      this.captchaElem.resetCaptcha();
   }
 }
 

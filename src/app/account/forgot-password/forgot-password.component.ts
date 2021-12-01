@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { finalize, first, takeUntil } from 'rxjs/operators';
+import { AlertService } from 'src/app/_services';
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
@@ -12,13 +13,12 @@ import { AuthService } from 'src/app/_services/auth.service';
 export class ForgotPasswordComponent implements OnDestroy {
   form: FormGroup;
   alertMessage: string;
-  isInvalidData = false;
-  isValidData = false;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
 
 constructor(
   private formBuilder: FormBuilder,
-  private authService: AuthService
+  private authService: AuthService,
+  private alertService: AlertService
 ){
   this.form = this.formBuilder.group({
     email: ['', Validators.email]
@@ -32,26 +32,25 @@ constructor(
 get control(){return this.form.controls}
 
 onSubmit() {
-  this.isInvalidData = false;
-  this.isValidData = false;
+  this.alertService.clear();
   if (this.form.valid) {
     this.authService.forgotPassword(this.control['email'].value)
             .pipe(takeUntil(this.destroy))
             .subscribe({
-                next: () => this.isValidData = true,
+                next: () => this.alertService.success("A letter with instructions has been sent to your email."),
                 error: error => {
                   switch(error.status){
                     case 400:
                       this.alertMessage = "Email format is invalid";
                       break;
                     case 404:
-                      this.alertMessage = error.error.message;
+                      this.alertMessage = `Account ${this.control['email'].value} not found.`;
                       break;
                       default:
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;
                   }                  
-                this.isInvalidData = true;}
+                this.alertService.error(this.alertMessage);}
             });
   }
 }

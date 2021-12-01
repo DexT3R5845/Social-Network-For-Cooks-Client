@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
 import { MustMatch } from 'src/app/_helpers/must-match.validator';
 import { first, ReplaySubject, takeUntil } from 'rxjs';
+import { AlertService } from 'src/app/_services';
+import { PasswordValidatorShared } from '../sharedClass/passwordValidatorShared';
 
 enum TokenStatus {
   Validating,
@@ -16,12 +18,9 @@ enum TokenStatus {
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
-export class ResetPasswordComponent implements OnInit, OnDestroy {
-  form: FormGroup;
+export class ResetPasswordComponent extends PasswordValidatorShared implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  isInvalidData = false;
-  isValidData = false;
   hide = true;
   TokenStatus = TokenStatus;
   tokenStatus = TokenStatus.Validating;
@@ -32,7 +31,9 @@ constructor(
   private authService: AuthService,
   private route: ActivatedRoute,
   private router: Router,
+  private alertService: AlertService
 ){
+  super();
   this.form = this.formBuilder.group({
     password: [null, [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=[^0-9]*[0-9]).{8,}$')]],
     confirmPassword: ['', Validators.required]
@@ -60,34 +61,30 @@ ngOnInit(){
   });
 }
 
-get control(){return this.form.controls}
-
 onSubmit() {
-  this.isInvalidData = false;
-  this.isValidData = false;
+  this.alertService.clear();
   this.alertMessage = "";
   if (this.form.valid) {
     this.authService.resetPassword(this.token, this.control['password'].value, this.control['confirmPassword'].value)
             .pipe(takeUntil(this.destroy))
             .subscribe({
+              next: ()  => {
+                this.alertService.success('Password reset successful, you can now login', true);
+                this.router.navigate(['../../signin'], { relativeTo: this.route });
+              },
                 error: error => {
                   switch(error.status){
-                    case 200:
-                      this.isValidData = true;
-                      setTimeout(() => { this.router.navigate(['../../signin'], { relativeTo: this.route }); }, 3000);
-                      break;
                     case 400:
                       Object.keys(error.error.data).forEach(key => {
                         this.alertMessage += error.error.data[key];
-                      });;
+                      });
                       break;
                       default:
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;
                   }  
-                  if(error.status >= 400)                
-                this.isInvalidData = true;}
-            });
+                  this.alertService.error(this.alertMessage);
+            }});
   }
 }
 

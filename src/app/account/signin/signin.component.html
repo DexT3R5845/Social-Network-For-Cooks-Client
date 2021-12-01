@@ -1,10 +1,5 @@
-<mat-card>
-    <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <h2>Log In</h2>
-        <div *ngIf="isInvalidData" class="alert alert-danger" role="alert">
-            {{alertMessage}}
-          </div>
         <mat-form-field class="full-width-input">
           <input matInput placeholder="Email" formControlName="email" required>
           <mat-error>
@@ -30,5 +25,3 @@
       <div class="text-center">
         <a routerLink="../forgot-password" class="btn btn-link pr-0">Forgot Password?</a>
     </div>
-    </mat-card-content>
-  </mat-card>

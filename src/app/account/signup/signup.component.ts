@@ -3,19 +3,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, first, ReplaySubject, takeUntil } from 'rxjs';
 import { MustMatch } from 'src/app/_helpers/must-match.validator';
-import { AuthService } from 'src/app/_services/auth.service';
+import { AlertService, AuthService } from 'src/app/_services';
+import { PasswordValidatorShared } from '../sharedClass/passwordValidatorShared';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit, OnDestroy {
-  form: FormGroup;
+export class SignupComponent extends PasswordValidatorShared implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  isInvalidData = false;
-  isValidData = false;
   hide = true;
 
 constructor(
@@ -23,7 +21,9 @@ constructor(
   private authService: AuthService,
   private route: ActivatedRoute,
   private router: Router,
+  private alertService: AlertService
 ){
+  super();
   this.form = this.formBuilder.group({
     firstName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
     lastName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
@@ -51,18 +51,15 @@ get firstNameErrorMessage(): string {
 ngOnInit(){
 }
 
-get control(){return this.form.controls}
-
 onSubmit() {
-  this.isInvalidData = false;
-  this.isValidData = false;
+  this.alertService.clear();
   if (this.form.valid) {
     this.authService.signUp(this.form.value)
             .pipe(takeUntil(this.destroy))
             .subscribe({
               next: () => {
-                this.isValidData = true;
-                      setTimeout(() => { this.router.navigate(['../signin'], { relativeTo: this.route }); }, 3000);
+                this.alertService.success('Registration successful', true);
+                this.router.navigate(['../signin'], { relativeTo: this.route });
               },
                 error: error => {
                   switch(error.status){
@@ -79,9 +76,8 @@ onSubmit() {
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;
                   }  
-                  if(error.status >= 400)                
-                this.isInvalidData = true;}
-            });
+                  this.alertService.error(this.alertMessage);
+            }});
   }
 }
 

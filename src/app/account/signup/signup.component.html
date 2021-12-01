@@ -1,13 +1,5 @@
-<mat-card>
-    <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <h2>Registration</h2>
-        <div *ngIf="isInvalidData" class="alert alert-danger" role="alert">
-            {{alertMessage}}
-          </div>
-          <div *ngIf="isValidData" class="alert alert-success" role="alert">
-            Registration successful
-          </div>
 
         <mat-form-field class="full-width-input">
           <input matInput placeholder="First Name" formControlName="firstName" required>
@@ -53,11 +45,8 @@
             <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
-            <mat-error *ngIf="control['password'].hasError('required')">
-                Enter your password, please
-            </mat-error>
-            <mat-error *ngIf="control['password'].hasError('pattern')">
-                The password contains at least 8 symbol, one uppercase letter, a lowercase letter, and a number
+            <mat-error>
+                {{passwordErrorMessage}}
             </mat-error>
           </mat-form-field>
 
@@ -66,15 +55,10 @@
             <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
-            <mat-error *ngIf="control['confirmPassword'].hasError('required')">
-                Enter your password, please
-            </mat-error>
-            <mat-error *ngIf="control['confirmPassword'].hasError('mustMatch')">
-                Passwords do not match
+            <mat-error>
+                {{confirmPasswordErrorMessage}}
             </mat-error>
           </mat-form-field>
 
         <button type="submit" mat-raised-button color="primary">Register</button>
       </form>
-    </mat-card-content>
-  </mat-card>

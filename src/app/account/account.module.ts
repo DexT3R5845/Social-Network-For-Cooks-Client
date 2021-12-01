@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { ApplicationModule, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AccountRoutingModule } from './account-routing.module';
@@ -12,6 +12,7 @@ import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     LayoutComponent,
     SigninComponent,
     SignupComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
   ],
   imports: [
     AccountRoutingModule,
@@ -28,6 +29,7 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     FlexLayoutModule,
     CommonModule,
     NgxCaptchaModule,
+    SharedModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
