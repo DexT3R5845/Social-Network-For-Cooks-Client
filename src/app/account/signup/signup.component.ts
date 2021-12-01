@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize, first } from 'rxjs';
+import { finalize, first, ReplaySubject, takeUntil } from 'rxjs';
 import { MustMatch } from 'src/app/_helpers/must-match.validator';
 import { AuthService } from 'src/app/_services/auth.service';
 
@@ -10,8 +10,9 @@ import { AuthService } from 'src/app/_services/auth.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
   form: FormGroup;
+  destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
   isInvalidData = false;
   isValidData = false;
@@ -35,39 +36,45 @@ constructor(
     validator: MustMatch('password', 'confirmPassword')
   });
 }
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
+  }
 
 get firstNameErrorMessage(): string {
-  return this.f['firstName'].hasError('required') ?
+  return this.control['firstName'].hasError('required') ?
     'Please provide a valid name' :
-    this.f['firstName'].hasError('pattern') ?
+    this.control['firstName'].hasError('pattern') ?
     'The name must contain only letters. Min length 3 characters' : '';
 }
 
 ngOnInit(){
 }
 
-get f(){return this.form.controls}
+get control(){return this.form.controls}
 
 onSubmit() {
   this.isInvalidData = false;
   this.isValidData = false;
   if (this.form.valid) {
     this.authService.signUp(this.form.value)
-            .pipe(first())
-            .pipe(finalize(() => ""))
+            .pipe(takeUntil(this.destroy))
             .subscribe({
+              next: () => {
+                this.isValidData = true;
+                      setTimeout(() => { this.router.navigate(['../signin'], { relativeTo: this.route }); }, 3000);
+              },
                 error: error => {
                   switch(error.status){
-                    case 200:
-                      this.isValidData = true;
-                      setTimeout(() => { this.router.navigate(['../signin'], { relativeTo: this.route }); }, 3000);
-                      break;
                     case 400:
                       this.alertMessage = "Somethig went wrong";
                       break;
                     case 409:
                       this.alertMessage = error.error.message;
                       break;
+                      case 422:
+                      this.alertMessage = "Email already exists";
+                        break;
                       default:
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;

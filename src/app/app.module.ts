@@ -34,7 +34,6 @@ import { CookieStorageService, JwtInterceptor } from './_helpers';
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     JwtHelperService,
-    CookieStorageService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

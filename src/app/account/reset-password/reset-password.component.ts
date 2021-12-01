@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
 import { MustMatch } from 'src/app/_helpers/must-match.validator';
-import { first } from 'rxjs';
+import { first, ReplaySubject, takeUntil } from 'rxjs';
 
 enum TokenStatus {
   Validating,
@@ -16,8 +16,9 @@ enum TokenStatus {
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit, OnDestroy {
   form: FormGroup;
+  destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
   isInvalidData = false;
   isValidData = false;
@@ -33,17 +34,21 @@ constructor(
   private router: Router,
 ){
   this.form = this.formBuilder.group({
-    password: [null, [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]],
+    password: [null, [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=[^0-9]*[0-9]).{8,}$')]],
     confirmPassword: ['', Validators.required]
   }, {
     validator: MustMatch('password', 'confirmPassword')
   });
 }
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
+  }
 
 ngOnInit(){
   const token = this.route.snapshot.params['token'];
   this.authService.validateResetToken(token)
-  .pipe(first())
+  .pipe(takeUntil(this.destroy))
   .subscribe({
       next: () => {
           this.token = token;
@@ -55,15 +60,15 @@ ngOnInit(){
   });
 }
 
-get f(){return this.form.controls}
+get control(){return this.form.controls}
 
 onSubmit() {
   this.isInvalidData = false;
   this.isValidData = false;
   this.alertMessage = "";
   if (this.form.valid) {
-    this.authService.resetPassword(this.token, this.f['password'].value, this.f['confirmPassword'].value)
-            .pipe(first())
+    this.authService.resetPassword(this.token, this.control['password'].value, this.control['confirmPassword'].value)
+            .pipe(takeUntil(this.destroy))
             .subscribe({
                 error: error => {
                   switch(error.status){

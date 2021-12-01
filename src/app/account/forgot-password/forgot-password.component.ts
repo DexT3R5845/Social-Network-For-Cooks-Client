@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { finalize, first } from 'rxjs/operators';
+import { ReplaySubject, Subscription } from 'rxjs';
+import { finalize, first, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
@@ -8,11 +9,12 @@ import { AuthService } from 'src/app/_services/auth.service';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss']
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent implements OnDestroy {
   form: FormGroup;
   alertMessage: string;
   isInvalidData = false;
   isValidData = false;
+  destroy: ReplaySubject<any> = new ReplaySubject<any>();
 
 constructor(
   private formBuilder: FormBuilder,
@@ -22,19 +24,19 @@ constructor(
     email: ['', Validators.email]
   });
 }
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
+  }
 
-ngOnInit(){
-}
-
-get f(){return this.form.controls}
+get control(){return this.form.controls}
 
 onSubmit() {
   this.isInvalidData = false;
-  this.isInvalidData = false;
+  this.isValidData = false;
   if (this.form.valid) {
-    this.authService.forgotPassword(this.f['email'].value)
-            .pipe(first())
-            .pipe(finalize(() => ""))
+    this.authService.forgotPassword(this.control['email'].value)
+            .pipe(takeUntil(this.destroy))
             .subscribe({
                 next: () => this.isValidData = true,
                 error: error => {

@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReCaptcha2Component } from 'ngx-captcha';
 import { CookieService } from 'ngx-cookie-service';
-import { finalize, first } from 'rxjs';
+import { finalize, first, ReplaySubject, takeUntil } from 'rxjs';
 import { CookieStorageService } from 'src/app/_helpers/cookies.storage';
 import { AuthService } from 'src/app/_services/auth.service';
 import { environment } from 'src/environments/environment';
@@ -13,8 +13,9 @@ import { environment } from 'src/environments/environment';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit,OnDestroy {
   form: FormGroup;
+  destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
   isInvalidData = false;
   hide = true;
@@ -34,6 +35,10 @@ constructor(
     recaptcha: []
   });
 }
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
+  }
 
 ngOnInit(){
 }
@@ -44,8 +49,7 @@ onSubmit() {
   this.isInvalidData = false;
   if (this.form.valid) {
     this.authService.signIn(this.control['email'].value, this.control['password'].value, this.control['recaptcha'].value)
-            .pipe(first())
-            .pipe(finalize(() => ""))
+            .pipe(takeUntil(this.destroy))
             .subscribe({
                 next: next => {
                   this.cookie.setToken(next.token);
