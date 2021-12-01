@@ -14,7 +14,7 @@ import { Account } from "../_models/account";
     }
   
     setToken(token: string): void {
-      this.cookieService.set('token', token);
+      this.cookieService.set('token', token, {path: '/'});
     }
   
     deleteToken(): void {

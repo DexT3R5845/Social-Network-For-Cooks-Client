@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
-import { JwtInterceptor } from './_helpers';
+import { CookieStorageService, JwtInterceptor } from './_helpers';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,8 @@ import { JwtInterceptor } from './_helpers';
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    JwtHelperService
+    JwtHelperService,
+    CookieStorageService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
