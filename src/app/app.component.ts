@@ -12,6 +12,7 @@ import { AuthService } from './_services/auth.service';
 export class AppComponent implements OnDestroy {
   title = 'Bake&Sweets';
   account : Account | null;
+  Role = Role;
   subscription: Subscription;
 
   constructor(
