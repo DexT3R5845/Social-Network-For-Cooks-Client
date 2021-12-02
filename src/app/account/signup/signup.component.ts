@@ -69,9 +69,9 @@ onSubmit() {
                     case 409:
                       this.alertMessage = error.error.message;
                       break;
-                      case 422:
-                      this.alertMessage = "Email already exists";
-                        break;
+                    case 422:
+                    this.alertMessage = "Email already exists";
+                      break;
                       default:
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;

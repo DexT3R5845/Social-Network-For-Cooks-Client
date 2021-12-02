@@ -14,10 +14,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             if ([403].includes(err.status) && this.accountService.accountValue) {
                 this.accountService.logout();
             }
-
-            const error = (err && err.error && err.error.message) || err.statusText;
-            console.error(err);
-            return throwError(error);
+             return throwError(() => err);
         }))
     }
 }

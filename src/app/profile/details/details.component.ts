@@ -20,7 +20,7 @@ loading = true;
     this.accountService.getProfileData()
     .pipe(takeUntil(this.destroy))
     .subscribe((data: Profile) => {
-      this.profileData = new Profile(data.firstName, data.lastName, data.birthDate, data.gender, data.imgUrl);
+      this.profileData = data;
       this.loading=false;
     });
    }
