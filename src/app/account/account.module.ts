@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { ApplicationModule, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AccountRoutingModule } from './account-routing.module';
@@ -11,6 +11,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,15 +20,12 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     LayoutComponent,
     SigninComponent,
     SignupComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
   ],
   imports: [
     AccountRoutingModule,
-    ReactiveFormsModule,
-    AngularMaterialModule,
-    FlexLayoutModule,
-    CommonModule,
+    NgxCaptchaModule,
+    SharedModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AccountModule { }

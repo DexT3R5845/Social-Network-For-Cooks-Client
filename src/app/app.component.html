@@ -1,10 +1,53 @@
-<!doctype html>
+<!-- <!doctype html>
 <html lang="en">
 <head>
   ...
-  <link rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 </head>
 <body>
   <router-outlet></router-outlet>
 </body>
-</html>
+</html> -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+<mat-toolbar color="primary" class="expanded-toolbar">
+  <span>
+    <button mat-button routerLink="/">{{title}}</button>
+  </span>
+  <div *ngIf="!account" fxLayout="row" fxShow="false" fxShow.gt-sm>
+    <button mat-button routerLink="/account/signin">
+      <mat-icon>power_settings_new</mat-icon>
+      Login
+    </button>
+    <button mat-button routerLink="/account/signup">
+      <mat-icon>account_circle</mat-icon>
+      Register
+    </button>
+  </div>
+  <div *ngIf="account" fxLayout="row" fxShow="false" fxShow.gt-sm>
+    <button mat-button routerLink="/profile">
+      <mat-icon>assignment_ind</mat-icon>
+      My Profile
+    </button>
+    <button mat-button (click)="logout()">
+      <mat-icon>logout_outlined</mat-icon>
+      Logout
+    </button>
+</div>
+  <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-menu x-position="before" #menu="matMenu">
+  <button mat-menu-item routerLink="/account/signup">
+    <mat-icon>account_circle</mat-icon>
+    Register
+  </button>
+  <button mat-menu-item routerLink="/account/signin">
+    <mat-icon>power_settings_new</mat-icon>
+    Login
+  </button>
+  <!-- <button mat-menu-item *ngIf="isAuthenticated" (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon>
+    Logout
+  </button> -->
+</mat-menu>
+<router-outlet></router-outlet>

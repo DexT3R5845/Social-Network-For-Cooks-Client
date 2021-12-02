@@ -1,31 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize, first } from 'rxjs';
+import { finalize, first, ReplaySubject, takeUntil } from 'rxjs';
 import { MustMatch } from 'src/app/_helpers/must-match.validator';
-import { AuthService } from 'src/app/_services/auth.service';
+import { AlertService, AuthService } from 'src/app/_services';
+import { PasswordValidatorShared } from '../sharedClass/passwordValidatorShared';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
-  form: FormGroup;
+export class SignupComponent extends PasswordValidatorShared implements OnInit, OnDestroy {
+  destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  isInvalidData = false;
-  isValidData = false;
-  hide = false;
+  hide = true;
 
 constructor(
   private formBuilder: FormBuilder,
   private authService: AuthService,
   private route: ActivatedRoute,
   private router: Router,
+  private alertService: AlertService
 ){
+  super();
   this.form = this.formBuilder.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
+    lastName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
     birthDate: ['', Validators.required],
     email: ['', Validators.email],
     password: [null, [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]],
@@ -35,39 +36,48 @@ constructor(
     validator: MustMatch('password', 'confirmPassword')
   });
 }
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
+  }
+
+get firstNameErrorMessage(): string {
+  return this.control['firstName'].hasError('required') ?
+    'Please provide a valid name' :
+    this.control['firstName'].hasError('pattern') ?
+    'The name must contain only letters. Min length 3 characters' : '';
+}
 
 ngOnInit(){
 }
 
-get f(){return this.form.controls}
-
 onSubmit() {
-  this.isInvalidData = false;
-  this.isValidData = false;
+  this.alertService.clear();
   if (this.form.valid) {
     this.authService.signUp(this.form.value)
-            .pipe(first())
-            .pipe(finalize(() => ""))
+            .pipe(takeUntil(this.destroy))
             .subscribe({
+              next: () => {
+                this.alertService.success('Registration successful', true);
+                this.router.navigate(['../signin'], { relativeTo: this.route });
+              },
                 error: error => {
                   switch(error.status){
-                    case 200:
-                      this.isValidData = true;
-                      setTimeout(() => { this.router.navigate(['../signin'], { relativeTo: this.route }); }, 3000);
-                      break;
                     case 400:
                       this.alertMessage = "Somethig went wrong";
                       break;
                     case 409:
                       this.alertMessage = error.error.message;
                       break;
+                      case 422:
+                      this.alertMessage = "Email already exists";
+                        break;
                       default:
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;
                   }  
-                  if(error.status >= 400)                
-                this.isInvalidData = true;}
-            });
+                  this.alertService.error(this.alertMessage);
+            }});
   }
 }
 

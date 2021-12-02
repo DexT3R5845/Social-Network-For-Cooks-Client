@@ -5,6 +5,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LayoutComponent } from './layout/layout.component';
 import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { CookieStorageService } from '../_helpers/cookies.storage';
+import { CookieService } from 'ngx-cookie-service';
 
 const routes: Routes = [{
   path: '', component: LayoutComponent,
@@ -18,6 +20,6 @@ const routes: Routes = [{
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AccountRoutingModule { }

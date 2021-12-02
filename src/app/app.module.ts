@@ -3,49 +3,33 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
-import { RegistrationService } from './auth/registration.service';
-import { RegistrationComponent } from './registration/registration.component';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
-import { SigninComponent } from './signin/signin.component';
-import { NgxCaptchaModule } from 'ngx-captcha';
-import { RequestInterceptor } from './interceptor';
-import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularMaterialModule } from './angular-material.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { CommonModule } from '@angular/common';
-import { UserSettingsComponent } from './user-settings/user-settings.component';
-import {DatePipe} from "@angular/common";
+import { JwtInterceptor } from './_helpers';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SigninComponent,
-    UserSettingsComponent,
-    RegistrationComponent
   ],
   imports: [
-    CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule,
-    NgxCaptchaModule,
-    HttpClientModule,
     JwtModule,
     BrowserAnimationsModule,
-    AngularMaterialModule,
-    FlexLayoutModule
+    SharedModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true},
-    RegistrationService
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    JwtHelperService,
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

@@ -1,10 +1,13 @@
 import { Role } from "./role";
 
 export class Account{
-    id: string;
-    firstName: string;
-    lastName: string;
     email: string;
     role: Role;
-    jwtToken: string;
+    token: string;
+
+    constructor(_email:string, _role: Role, _token:string){
+        this.email = _email;
+        this.role = _role;
+        this. token = _token;
+    }
 }
