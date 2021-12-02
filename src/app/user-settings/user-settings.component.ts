@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserSettingsService} from "./user-settings.service";
 import {UserUpdate} from "./user-update";
 import {FormControl, FormGroup} from "@angular/forms";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-user-settings',
@@ -21,6 +22,7 @@ export class UserSettingsComponent implements OnInit {
     gender: new FormControl(),
     imgUrl: new FormControl()
   })
+  subscription: Subscription;
 
   ngOnInit(): void {
     this.userSettingsService.getUserProfile().subscribe((data: any) => {
@@ -35,6 +37,10 @@ export class UserSettingsComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
+
   submit() {
     let user = new UserUpdate(
       this.settingsForm.value.firstName,
@@ -43,7 +49,6 @@ export class UserSettingsComponent implements OnInit {
       this.settingsForm.value.gender,
       this.settingsForm.value.imgUrl
     )
-    console.log(user);
     this.userSettingsService.putData(user).subscribe();
   }
 }
