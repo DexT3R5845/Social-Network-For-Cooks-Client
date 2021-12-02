@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlertComponent } from './alert/alert.component';
+import { AngularMaterialModule } from '../angular-material.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 
@@ -12,7 +15,11 @@ import { AlertComponent } from './alert/alert.component';
     CommonModule
   ],
   exports:[
-    AlertComponent
+    AlertComponent,
+    AngularMaterialModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    CommonModule
   ]
 })
 export class SharedModule { }

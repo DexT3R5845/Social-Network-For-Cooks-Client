@@ -24,10 +24,12 @@ export class AuthService {
     private router: Router
   ) { 
     const token = this.cookie.getToken();
-  if(token && !this.jwt.isTokenExpired(token))
-    this.accountSubject = new BehaviorSubject<Account | null>(this.jwt.decodeToken(token));
+  if(token && !this.jwt.isTokenExpired(token)){
+    const tokenData = this.jwt.decodeToken(token);
+    this.accountSubject = new BehaviorSubject<Account | null>(new Account(tokenData.sub, tokenData.auth, token));
+    }
     else
-    this.accountSubject = new BehaviorSubject<Account | null>(null);
+      this.accountSubject = new BehaviorSubject<Account | null>(null);
     this.account = this.accountSubject.asObservable();
   }
 
@@ -43,9 +45,8 @@ export class AuthService {
     let reqParams = new HttpParams().set('email', email).set('password', password).set('g-recaptcha-response', recaptchaToken ? recaptchaToken : '');
     return this.http.post<Account>(`${baseUrl}/signin`, {}, { withCredentials: true, params: reqParams })
       .pipe(map(response => {
-        const account = this.jwt.decodeToken(response.token);
-        this.accountSubject.next(account);
-      this.accountSubject.next(account);
+        const tokenData = this.jwt.decodeToken(response.token);
+        this.accountSubject.next(new Account(tokenData.sub, tokenData.auth, response.token));
       return response;
   }));
   }

@@ -1,1 +1,7 @@
-<p>details works!</p>
+<div *ngIf="loading">loading...</div>
+<div *ngIf="profileData">
+<p>First Name: {{profileData.firstName}}</p>
+<p>Last Name: {{profileData.lastName}}</p>
+<p>BirthDate: {{profileData.birthDate}}</p>
+<p>Gender: {{profileData.gender}}</p>
+</div>

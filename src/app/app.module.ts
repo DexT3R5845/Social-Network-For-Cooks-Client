@@ -1,4 +1,3 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -8,10 +7,7 @@ import { AppRoutingModule } from './app.routing.module';
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularMaterialModule } from './angular-material.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { CommonModule } from '@angular/common';
-import { CookieStorageService, JwtInterceptor } from './_helpers';
+import { JwtInterceptor } from './_helpers';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -19,17 +15,12 @@ import { SharedModule } from './shared/shared.module';
     AppComponent,
   ],
   imports: [
-    CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule, 
-    ReactiveFormsModule,
-    HttpClientModule,
     JwtModule,
     BrowserAnimationsModule,
-    AngularMaterialModule,
-    FlexLayoutModule,
     SharedModule
   ],
   providers: [

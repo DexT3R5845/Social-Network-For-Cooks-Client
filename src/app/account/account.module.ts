@@ -24,13 +24,8 @@ import { SharedModule } from '../shared/shared.module';
   ],
   imports: [
     AccountRoutingModule,
-    ReactiveFormsModule,
-    AngularMaterialModule,
-    FlexLayoutModule,
-    CommonModule,
     NgxCaptchaModule,
     SharedModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AccountModule { }
