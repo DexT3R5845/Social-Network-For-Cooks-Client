@@ -1,0 +1,30 @@
+
+<div class="form-group">
+  <div class="container panel_search">
+    <div class="row">
+      <form class="search_form" [formGroup]="searchForm" (ngSubmit)="search()">
+        <input class="item list_search" type="search" placeholder="Search by name" aria-label="Search" formControlName="search">
+
+        <select class="item list_order"  placeholder="Sorting*" formControlName="order">
+          <option class="form-field" value="" disabled selected>Sorting</option>
+          <option  class="form-field" value="asc">Sort by name (A-Z)</option>
+          <option class="form-field" value="desc">Sort by name (Z-A)</option>
+        </select>
+
+        <select class="item list_order"  placeholder="Gender*" formControlName="gender">
+          <option class="form-field" value="">Gender</option>
+          <option  class="form-field" value="M">Male</option>
+          <option class="form-field" value="F">Female</option>
+        </select>
+
+        <select class="item list_order" placeholder="Account status*" formControlName="status">
+          <option  class="form-field" value="">Account status</option>
+          <option  class="form-field" value="true">Active</option>
+          <option class="form-field" value="false">Inactive</option>
+        </select>
+
+        <button mat-raised-button class="btn item btn-item"  type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</div>

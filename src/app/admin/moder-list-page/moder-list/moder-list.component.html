@@ -1,0 +1,42 @@
+<div class="table flex-content">
+
+  <table mat-table [dataSource]="accounts">
+    <ng-component matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef>Image</th>
+      <td mat-cell *matCellDef="let account">{{account.imgUrl}}</td>
+    </ng-component>
+    <ng-component matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef>First name</th>
+      <td mat-cell *matCellDef="let account">{{account.firstName}}</td>
+    </ng-component>
+    <ng-component matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef>Last name</th>
+      <td mat-cell *matCellDef="let account">{{account.lastName}}</td>
+    </ng-component>
+    <ng-component matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Identifier</th>
+      <td mat-cell *matCellDef="let account">{{account.id}}</td>
+    </ng-component>
+    <ng-component matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let account">{{account.status}}</td>
+    </ng-component>
+
+    <ng-component matColumnDef="editBtn">
+      <th mat-header-cell *matHeaderCellDef>Edit account</th>
+      <td mat-cell *matCellDef="let account">
+        <a >
+          <button>Edit account</button>
+          <!--        <img src=""/>-->
+        </a>
+      </td>
+    </ng-component>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+  </table>
+</div>
+
+
+
+
