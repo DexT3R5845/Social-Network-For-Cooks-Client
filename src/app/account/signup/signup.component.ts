@@ -64,7 +64,7 @@ onSubmit() {
                 error: error => {
                   switch(error.status){
                     case 400:
-                      this.alertMessage = "Somethig went wrong";
+                      this.alertMessage = "Something went wrong";
                       break;
                     case 409:
                       this.alertMessage = error.error.message;
@@ -75,7 +75,7 @@ onSubmit() {
                       default:
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;
-                  }  
+                  }
                   this.alertService.error(this.alertMessage);
             }});
   }

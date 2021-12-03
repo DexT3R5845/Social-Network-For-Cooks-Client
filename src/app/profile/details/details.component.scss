@@ -1,0 +1,28 @@
+.user_profile_control {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+}
+
+.img-profile {
+  display: block;
+  margin: 10px auto 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.mat-form-field{
+  width: 100%;
+}
+
+mat-label{
+  font-size: 19px;
+}
+
+.mat-input-element:disabled, .mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after {
+  color: black;
+}
+
+

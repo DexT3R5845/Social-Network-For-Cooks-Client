@@ -16,13 +16,13 @@ export class AuthService {
 
   private accountSubject: BehaviorSubject<Account | null>;
   public account: Observable<Account | null>;
-  
+
   constructor(
     private http: HttpClient,
     private cookie:CookieStorageService,
     private jwt: JwtHelperService,
     private router: Router
-  ) { 
+  ) {
     const token = this.cookie.getToken();
   if(token && !this.jwt.isTokenExpired(token)){
     const tokenData = this.jwt.decodeToken(token);
@@ -58,6 +58,7 @@ logout(){
 }
 
 signUp(account: Account) {
+    console.log(account);
   return this.http.post(`${baseUrl}/signup`, account);
 }
 

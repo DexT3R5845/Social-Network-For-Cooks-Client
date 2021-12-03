@@ -6,12 +6,14 @@ import { DetailsComponent } from './details/details.component';
 import { LayoutComponent } from './layout/layout.component';
 import { CookieStorageService } from '../_helpers';
 import { SharedModule } from '../shared/shared.module';
+import { EditDetailsComponent } from './edit-details/edit-details.component';
 
 
 @NgModule({
   declarations: [
     DetailsComponent,
-    LayoutComponent
+    LayoutComponent,
+    EditDetailsComponent
   ],
   imports: [
     CommonModule,

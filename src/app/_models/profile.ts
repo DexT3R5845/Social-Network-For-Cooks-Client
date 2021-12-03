@@ -13,7 +13,7 @@ export class Profile{
         private _imgUrl: string
     ){
         this.firstName = _firstName;
-        this.lastName = _lastName,
+        this.lastName = _lastName;
         this.birthDate = _birthDate;
         this.gender = _gender;
         this.imgUrl = _imgUrl;
