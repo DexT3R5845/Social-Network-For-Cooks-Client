@@ -1,0 +1,78 @@
+.container {
+    // display: flex;
+    overflow: auto;
+    flex-direction: column;
+    font-size: 20px;
+  }
+
+  mat-header-cell, mat-header-row, .mat-header-cell-def {
+      font-size: 20px;
+      font-weight: bold;
+  }
+
+  mat-cell{
+      font-size: 20px;
+  }
+
+  mat-card {
+    font-family: Raleway;
+    max-width: 50%;
+    min-width: 400px;
+    margin: 2em auto;
+    text-align: center;
+  }
+
+  @mixin mat-table-columns($columns)
+{
+    .mat-column-
+    {
+        @each $colName, $props in $columns {
+
+            $width: map-get($props, 'width');
+            
+            &#{$colName} 
+            {
+                flex: 0 0 $width;
+                min-width: $width;
+            }  
+        }
+    }
+}
+
+  @include mat-table-columns(( 
+        id: (width: 10%),
+        image: (width: 15%),
+        name: (width: 20%),
+        category: (width: 20%),
+        active: (width: 20%),
+        actions: (width: 20%),
+    ));
+
+  /* Filter */
+  .form {
+    min-height: 56px;
+    max-height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 8px 24px 0;
+    font-size: 20px;
+    justify-content: space-between;
+    border-bottom: 1px solid transparent;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    flex-grow: 1;
+    margin-top: 8px;
+  }
+  
+  /* Mat table */
+  .no-results {
+    display: flex;
+    justify-content: center;
+    padding: 14px;
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  
