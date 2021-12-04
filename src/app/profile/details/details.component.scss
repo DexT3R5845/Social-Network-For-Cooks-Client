@@ -3,6 +3,11 @@
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
+  margin-top: 15px;
+}
+
+.user_profile_control_edit{
+  width: 25%;
 }
 
 .img-profile {
@@ -13,16 +18,15 @@
   border-radius: 50%;
 }
 
-.mat-form-field{
-  width: 100%;
-}
-
-mat-label{
-  font-size: 19px;
-}
-
-.mat-input-element:disabled, .mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after {
-  color: black;
+.profile-info-field {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  font-size: 18px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: gray;
+  font-weight: 500;
 }
 
 

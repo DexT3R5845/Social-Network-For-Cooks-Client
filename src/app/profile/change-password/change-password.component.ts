@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PasswordValidatorShared} from "../../account/sharedClass/passwordValidatorShared";
 import {ReplaySubject, takeUntil} from "rxjs";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {MustMatch} from "../../_helpers";
 import {AlertService} from "../../_services";
 import {ProfileService} from "../../_services/profile.service";
@@ -16,9 +16,9 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
   constructor(private fb: FormBuilder, private alertService: AlertService, private profileService: ProfileService) {
     super();
     this.form = fb.group({
-        password: new FormControl(null, [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]),
-        newPassword: new FormControl(null, [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]),
-        confirmPassword: new FormControl('', Validators.required)
+        password: new FormControl('', [Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]),
+        newPassword: new FormControl('', [Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]),
+        confirmPassword: new FormControl('')
       },
       {
         validator: MustMatch('newPassword', 'confirmPassword')
@@ -31,7 +31,7 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
   hide = true;
 
   ngOnInit(): void {
-    this.loading=false;
+    this.loading = false;
   }
 
   ngOnDestroy(): void {
@@ -55,7 +55,7 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
           this.alertService.success('Password changed', false);
         },
         error: error => {
-          switch(error.status){
+          switch (error.status) {
             case 400:
               this.alertMessage = "Wrong old password";
               break;
@@ -70,5 +70,4 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
         }
       });
   }
-
 }

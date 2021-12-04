@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { Profile } from 'src/app/_models/profile';
 import { ProfileService } from 'src/app/_services/profile.service';
-import {FormControl, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 
 @Component({
@@ -14,15 +13,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   profileData: Profile;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-
   loading = true;
-  settingsForm = new FormGroup({
-    firstName: new FormControl({value: '', disabled: true}),
-    lastName: new FormControl({value: '', disabled: true}),
-    date: new FormControl({value: '', disabled: true}),
-    gender: new FormControl({value: '', disabled: true}),
-    imgUrl: new FormControl({value: '', disabled: true})
-  })
+  gender:boolean;
+  url:string;
 
   constructor(private profileService: ProfileService, private router: Router){}
 
@@ -32,13 +25,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .subscribe((data: Profile) => {
         this.profileData = new Profile(data.firstName, data.lastName, data.birthDate, data.gender, data.imgUrl);
         this.loading=false;
-        this.settingsForm.setValue({
-          firstName: this.profileData.firstName,
-          lastName: this.profileData.lastName,
-          date: this.profileData.birthDate,
-          gender: this.profileData.gender,
-          imgUrl: this.profileData.imgUrl
-        });
+        this.gender = this.profileData.gender === "F";
+        this.url = this.profileData.imgUrl;
       });
   }
 

@@ -1,10 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ProfileService} from "../../_services/profile.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Observable, ReplaySubject, takeUntil} from "rxjs";
+import {Router} from "@angular/router";
+import {ReplaySubject, takeUntil} from "rxjs";
 import {Profile} from "../../_models/profile";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {PasswordValidatorShared} from "../../account/sharedClass/passwordValidatorShared";
 import {AlertService} from "../../_services";
 
 @Component({
@@ -18,9 +17,10 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     private router: Router,
     private alertService: AlertService,
-    private route: ActivatedRoute,
-  ) {}
+  ) {
+  }
 
+  hide = false;
   loading = true;
   profileData: Profile;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
@@ -33,12 +33,38 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     imgUrl: new FormControl('')
   })
 
+  url: string;
+  oldImageUrl: string;
+  newImageUrl: string;
+  @ViewChild('myInput')
+  imgInputVariable: ElementRef;
+
+  onSelectFile(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      this.hide = true;
+      var reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      reader.onload = (event: any) => { // called once readAsDataURL is completed
+        this.newImageUrl = event.target.result;
+        this.form.value.imgUrl = this.newImageUrl;
+        this.url = this.newImageUrl;
+      }
+    }
+  }
+
+  delete() {
+    this.hide = false
+    this.url = this.oldImageUrl;
+    this.form.value.imgUrl = this.oldImageUrl;
+    this.imgInputVariable.nativeElement.value = '';
+  }
+
   ngOnInit(): void {
     this.profileService.getProfileData()
       .pipe(takeUntil(this.destroy))
       .subscribe((data: Profile) => {
         this.profileData = new Profile(data.firstName, data.lastName, data.birthDate, data.gender, data.imgUrl);
-        this.loading=false;
+        this.loading = false;
         this.form.setValue({
           firstName: this.profileData.firstName,
           lastName: this.profileData.lastName,
@@ -46,10 +72,13 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
           gender: this.profileData.gender,
           imgUrl: this.profileData.imgUrl
         });
+        this.oldImageUrl = this.profileData.imgUrl;
+        this.url = this.oldImageUrl;
       });
   }
 
   submit() {
+    this.hide = false
     this.alertService.clear();
     let profile = new Profile(
       this.form.value.firstName,
@@ -64,20 +93,20 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
         next: () => {
           this.alertService.success('Data changed', false);
         },
-          error: error => {
-            switch(error.status){
-              case 400:
-                this.alertMessage = "Something went wrong";
-                break;
-              case 409:
-                this.alertMessage = error.error.message;
-                break;
-              default:
-                this.alertMessage = "There was an error on the server, please try again later."
-                break;
-            }
-            this.alertService.error(this.alertMessage);
+        error: error => {
+          switch (error.status) {
+            case 400:
+              this.alertMessage = "Something went wrong";
+              break;
+            case 409:
+              this.alertMessage = error.error.message;
+              break;
+            default:
+              this.alertMessage = "There was an error on the server, please try again later."
+              break;
           }
+          this.alertService.error(this.alertMessage);
+        }
       });
   }
 

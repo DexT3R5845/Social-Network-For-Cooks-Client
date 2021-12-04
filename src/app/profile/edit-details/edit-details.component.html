@@ -1,7 +1,14 @@
-<form class="edit_profile" [formGroup]="form" (ngSubmit) = "submit()">
+<form class="edit_profile" [formGroup]="form">
   <div *ngIf="loading">loading...</div>
-  <div >
-    <img class="img-profile"  src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" >
+  <div class="img-profile-changer">
+    <label class="hoverable" for="fileInput">
+      <img class="img-profile" [src]="url ? url : '../assets/images/defaultAv.png'" alt="">
+      <span class="hover-text">Choose file</span>
+      <span class="background"></span>
+    </label>
+
+    <input #myInput id="fileInput" type="file" (change)="onSelectFile($event)">
+    <button mat-raised-button color="primary" *ngIf="hide" (click)="delete()" >Cancel</button>
   </div>
 
   <mat-form-field appearance="outline">
@@ -31,14 +38,14 @@
   <mat-form-field appearance="outline">
     <mat-label >Gender:</mat-label>
     <mat-select formControlName="gender" required>
-      <mat-option value="M">M</mat-option>
-      <mat-option value="F">F</mat-option>
+      <mat-option value="M">Male</mat-option>
+      <mat-option value="F">Female</mat-option>
     </mat-select>
     <mat-error>You must make a selection</mat-error>
   </mat-form-field>
 
   <div class="user_profile_edit">
-    <button type="submit" [disabled]="form.invalid" mat-raised-button color="primary">Save</button>
+    <button type="submit" [disabled]="form.invalid" (click)="submit()" mat-raised-button color="primary">Save</button>
   </div>
 </form>
 
