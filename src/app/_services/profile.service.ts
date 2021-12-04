@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
 import { Profile } from "../_models/profile";
@@ -14,21 +14,20 @@ export class ProfileService {
       private http: HttpClient,
   ){}
 
-  putData(user: Profile) {
-    const url = `${baseUrl}/profile`;
+  saveChanges(profile: Profile) {
     return this.http.put(
-      url,
-      {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        birthDate: user.birthDate,
-        gender: user.gender,
-        imgUrl: user.imgUrl
-      }
+      `${baseUrl}/profile`, profile
     )
   }
 
   getProfileData() {
       return this.http.get<Profile>(`${baseUrl}/profile`);
+  }
+
+  changePassword(oldPassword:string, newPassword:string){
+    let reqParams = new HttpParams();
+    reqParams = reqParams.append('oldPassword', oldPassword);
+    reqParams = reqParams.append('newPassword', newPassword);
+    return this.http.put(`${baseUrl}/profile/changePassword`,{},{params:reqParams})
   }
 }

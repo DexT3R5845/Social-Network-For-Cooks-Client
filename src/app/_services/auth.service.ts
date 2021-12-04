@@ -58,7 +58,6 @@ logout(){
 }
 
 signUp(account: Account) {
-    console.log(account);
   return this.http.post(`${baseUrl}/signup`, account);
 }
 

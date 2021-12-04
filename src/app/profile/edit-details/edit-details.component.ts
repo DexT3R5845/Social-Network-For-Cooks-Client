@@ -12,33 +12,33 @@ import {AlertService} from "../../_services";
   templateUrl: './edit-details.component.html',
   styleUrls: ['./edit-details.component.scss']
 })
-export class EditDetailsComponent extends PasswordValidatorShared implements OnInit, OnDestroy {
+export class EditDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private profileService: ProfileService,
     private router: Router,
     private alertService: AlertService,
     private route: ActivatedRoute,
-  ) {
-    super();
-    this.form = new FormGroup({
-      firstName: new FormControl('', [Validators.pattern('^([A-Z a-z]){3,35}$')]),
-      lastName: new FormControl('', [Validators.pattern('^([A-Z a-z]){3,35}$')]),
-      date: new FormControl(''),
-      gender: new FormControl(''),
-      imgUrl: new FormControl('')
-    })
-  }
+  ) {}
 
+  loading = true;
   profileData: Profile;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
+  form = new FormGroup({
+    firstName: new FormControl('', [Validators.pattern('^([A-Z a-z]){3,35}$')]),
+    lastName: new FormControl('', [Validators.pattern('^([A-Z a-z]){3,35}$')]),
+    date: new FormControl(''),
+    gender: new FormControl(''),
+    imgUrl: new FormControl('')
+  })
 
   ngOnInit(): void {
     this.profileService.getProfileData()
       .pipe(takeUntil(this.destroy))
       .subscribe((data: Profile) => {
         this.profileData = new Profile(data.firstName, data.lastName, data.birthDate, data.gender, data.imgUrl);
+        this.loading=false;
         this.form.setValue({
           firstName: this.profileData.firstName,
           lastName: this.profileData.lastName,
@@ -50,18 +50,19 @@ export class EditDetailsComponent extends PasswordValidatorShared implements OnI
   }
 
   submit() {
-    let user = new Profile(
+    this.alertService.clear();
+    let profile = new Profile(
       this.form.value.firstName,
       this.form.value.lastName,
       this.form.value.date,
       this.form.value.gender,
       this.form.value.imgUrl
     )
-    this.profileService.putData(user)
+    this.profileService.saveChanges(profile)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success('Data changed', true);
+          this.alertService.success('Data changed', false);
         },
           error: error => {
             switch(error.status){
@@ -86,9 +87,16 @@ export class EditDetailsComponent extends PasswordValidatorShared implements OnI
   }
 
   get firstNameErrorMessage(): string {
-    return this.control['firstName'].hasError('required') ?
+    return this.form.controls['firstName'].hasError('required') ?
       'Please provide a valid name' :
-      this.control['firstName'].hasError('pattern') ?
+      this.form.controls['firstName'].hasError('pattern') ?
         'The name must contain only letters. Min length 3 characters' : '';
+  }
+
+  get lastNameErrorMessage(): string {
+    return this.form.controls['lastName'].hasError('required') ?
+      'Please provide a valid lastname' :
+      this.form.controls['lastName'].hasError('pattern') ?
+        'The lastname must contain only letters. Min length 3 characters' : '';
   }
 }

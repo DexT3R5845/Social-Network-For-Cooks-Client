@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { Profile } from 'src/app/_models/profile';
 import { ProfileService } from 'src/app/_services/profile.service';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 
 @Component({
@@ -44,6 +44,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   edit(){
     this.router.navigateByUrl('/profile/edit-details');
+  }
+
+  changePassword(){
+    this.router.navigateByUrl('/profile/change-password');
   }
 
   ngOnDestroy(): void {

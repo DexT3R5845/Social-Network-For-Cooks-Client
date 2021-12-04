@@ -1,5 +1,5 @@
 
-<form class="user_profile" [formGroup]="settingsForm">
+<form class="profile" [formGroup]="settingsForm">
   <div *ngIf="loading">loading...</div>
 
   <div *ngIf="profileData">
@@ -28,7 +28,7 @@
 
     <div class="user_profile_control">
       <button type="submit" mat-raised-button color="primary" (click)="edit()">Edit</button>
-      <button type="submit" mat-raised-button color="primary">Change password</button>
+      <button type="submit" mat-raised-button color="primary" (click)="changePassword()">Change password</button>
     </div>
 
   </div>
