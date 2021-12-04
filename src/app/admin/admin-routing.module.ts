@@ -6,7 +6,7 @@ import {LayoutComponent} from "./layout/layout.component";
 const routes: Routes = [{
   path:'', component:LayoutComponent,
   children: [
-    {path: 'all', component: ModerListPageComponent}
+    {path: '', component: ModerListPageComponent}
   ]
 
 

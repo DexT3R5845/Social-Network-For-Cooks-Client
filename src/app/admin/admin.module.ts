@@ -7,6 +7,8 @@ import { ModerListPageComponent } from './moder-list-page/moder-list-page.compon
 import { ModerListComponent } from './moder-list-page/moder-list/moder-list.component';
 import { SearchComponent } from './moder-list-page/search/search.component';
 import {SharedModule} from "../shared/shared.module";
+import { CreateModerComponent } from './create-moder/create-moder.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -14,11 +16,13 @@ import {SharedModule} from "../shared/shared.module";
     LayoutComponent,
     ModerListPageComponent,
     ModerListComponent,
-    SearchComponent
+    SearchComponent,
+    CreateModerComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
+    MatDialogModule,
     SharedModule
   ]
 })

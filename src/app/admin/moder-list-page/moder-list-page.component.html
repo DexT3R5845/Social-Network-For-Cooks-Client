@@ -1,22 +1,27 @@
 <div>
+  <button mat-icon-button color="primary" (click)="newModerator()">
+    <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+  </button>
   <mat-drawer-container class="example-container">
     <mat-drawer class="drawer-content" mode="side" opened>
       <app-search
-        [searchForm]="searchFormGroup"
         (searchFormEmitter)="getBySearch($event)">
       </app-search>
     </mat-drawer>
     <mat-drawer-content class="main-content">
       <app-moder-list
-        [accounts]="accounts">
+        [accounts]="pageContent.items">
       </app-moder-list>
+
       <mat-paginator
-        [length]="itemCount"
-        [pageIndex]="currentPage"
+        [length]="pageContent.itemCount"
+        [pageIndex]="pageContent.currentPage"
         [pageSize]="pageSize"
         [pageSizeOptions]="[12, 20, 40]"
-        (page)="paginationHandler($event)"
-      ></mat-paginator>
+        (page)="paginationHandler($event)">
+      </mat-paginator>
+
     </mat-drawer-content>
   </mat-drawer-container>
 </div>
+

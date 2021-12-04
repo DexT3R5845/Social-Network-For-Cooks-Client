@@ -45,6 +45,11 @@ export class AdminService {
   getAccountByPageNum(currentPage: number, pageSize: number): Observable<AccountsPerPage<AccountInList>> {
     return this.getAccounts(currentPage, this.searchParams, pageSize);
   }
+
+  addModerator(formGroup: FormGroup) {
+    console.log("sent");
+    return this.http.post(`${baseUrl}/new`, formGroup.value);
+  }
 }
 
 

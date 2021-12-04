@@ -1,40 +1,42 @@
-import {Component, OnDestroy} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {Component} from '@angular/core';
+import {FormGroup} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
-import {Subscription} from "rxjs";
+import {ReplaySubject} from "rxjs";
 import {AccountInList} from "../../_models/account-in-list";
 import {AdminService} from "../../_services/admin.service";
 import {AlertService} from "../../_services";
+import {AccountsPerPage} from "../../_models/accounts-per-page";
+import {takeUntil} from "rxjs/operators";
+import {CreateModerComponent} from "../create-moder/create-moder.component";
+import {MatDialog} from "@angular/material/dialog";
+import {Profile} from "../../_models/profile";
+
 
 @Component({
   selector: 'app-moder-list-page',
   templateUrl: './moder-list-page.component.html',
   styleUrls: ['./moder-list-page.component.scss']
 })
-export class ModerListPageComponent implements OnDestroy {
-  searchFormGroup: FormGroup = this.createFormGroup();
-  accounts: AccountInList[] = [];
-  currentPage: number;
-  itemCount: number;
+export class ModerListPageComponent {
+  pageContent: AccountsPerPage<AccountInList>;
+  destroy: ReplaySubject<any> = new ReplaySubject<any>();
   pageSize: number = 12;
-  subscription: Subscription;
   alertMessage: string;
 
   constructor(
     private service: AdminService,
     private alertService: AlertService,
+    public dialog: MatDialog
   ) { }
 
 
   getBySearch(searchForm: FormGroup): void {
-    this.subscription?.unsubscribe();
-    this.subscription = this.service.getAccountsBySearch(searchForm, this.pageSize)
+    this.service.getAccountsBySearch(searchForm, this.pageSize)
+      .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
-          this.accounts = response.items;
-          this.itemCount = response.itemCount;
-          this.currentPage = 0;
-          this.searchFormGroup = searchForm;},
+          this.pageContent = response;
+          },
         error: error => {
           if (error.status == 400) {
             this.alertMessage = "database error";
@@ -46,14 +48,13 @@ export class ModerListPageComponent implements OnDestroy {
   }
 
   paginationHandler(pageEvent: PageEvent): void {
-    this.subscription?.unsubscribe();
-    this.subscription = this.service.getAccountByPageNum(pageEvent.pageIndex, pageEvent.pageSize)
+    this.service.getAccountByPageNum(pageEvent.pageIndex, pageEvent.pageSize)
+      .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
-          this.accounts = response.items;
+          this.pageContent = response;
           this.pageSize = pageEvent.pageSize;
-          this.currentPage = pageEvent.pageIndex;
-          this.itemCount = response.itemCount;},
+          },
         error: error => {
           if (error.status == 400) {
             this.alertMessage = "database error";
@@ -64,18 +65,14 @@ export class ModerListPageComponent implements OnDestroy {
       });
   }
 
-
-  createFormGroup(): FormGroup {
-    return new FormGroup({
-      "search": new FormControl(""),
-      "order": new FormControl("asc"),
-      "gender": new FormControl(""),
-      "status": new FormControl("")
-    });
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+
+  newModerator() {
+    this.dialog.open(CreateModerComponent, {data: { profile: Profile }});
   }
 }
 
