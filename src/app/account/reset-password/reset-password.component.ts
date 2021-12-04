@@ -82,7 +82,7 @@ onSubmit() {
                       default:
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;
-                  }  
+                  }
                   this.alertService.error(this.alertMessage);
             }});
   }

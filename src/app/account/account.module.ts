@@ -13,6 +13,7 @@ import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { SharedModule } from '../shared/shared.module';
+import { ConfirmModeratorComponent } from './confirm-moderator/confirm-moderator.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SharedModule } from '../shared/shared.module';
     SigninComponent,
     SignupComponent,
     ResetPasswordComponent,
+    ConfirmModeratorComponent,
   ],
   imports: [
     AccountRoutingModule,

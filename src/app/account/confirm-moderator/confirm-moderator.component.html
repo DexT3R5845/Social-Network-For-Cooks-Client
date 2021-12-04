@@ -1,0 +1,27 @@
+<div class="invalid-token" *ngIf="tokenStatus == TokenStatus.Invalid">
+  Token is invalid or expired, inform administrator to solve the problem page.
+</div>
+<form [formGroup]="form" *ngIf="tokenStatus == TokenStatus.Valid" (ngSubmit)="onSubmit()">
+  <h2>Password Creation</h2>
+  <mat-form-field class="full-width-input" >
+    <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" onkeypress="return event.charCode != 32" formControlName="password" required>
+    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+    <mat-error>
+      {{passwordErrorMessage}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="full-width-input">
+    <input matInput [type]="hide ? 'password' : 'text'" placeholder="Confirm password" onkeypress="return event.charCode != 32" formControlName="confirmPassword" required>
+    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+    <mat-error>
+      {{confirmPasswordErrorMessage}}
+    </mat-error>
+  </mat-form-field>
+
+  <button type="submit" mat-raised-button color="primary">Submit</button>
+</form>

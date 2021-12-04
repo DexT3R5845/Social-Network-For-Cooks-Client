@@ -5,8 +5,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LayoutComponent } from './layout/layout.component';
 import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { CookieStorageService } from '../_helpers/cookies.storage';
-import { CookieService } from 'ngx-cookie-service';
+import {ConfirmModeratorComponent} from "./confirm-moderator/confirm-moderator.component";
 
 const routes: Routes = [{
   path: '', component: LayoutComponent,
@@ -14,7 +13,8 @@ const routes: Routes = [{
     {path:'forgot-password', component: ForgotPasswordComponent},
     { path: 'signin', component: SigninComponent },
     { path: 'signup', component: SignupComponent},
-    { path: 'reset-password/:token', component: ResetPasswordComponent }
+    { path: 'reset-password/:token', component: ResetPasswordComponent },
+    { path: 'confirm-moderator/:token', component: ConfirmModeratorComponent }
   ]
 }];
 
