@@ -42,4 +42,5 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.destroy.next(null);
     this.destroy.complete();
   }
+
 }

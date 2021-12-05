@@ -1,16 +1,8 @@
-<!-- <!doctype html>
-<html lang="en">
-<head>
-  ...
-</head>
-<body>
-  <router-outlet></router-outlet>
-</body>
-</html> -->
 <link rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 <mat-toolbar color="primary" class="expanded-toolbar">
   <span>
     <button mat-button routerLink="/">{{title}}</button>
+    <button *ngIf="account && account.role == Role.Moderator" mat-button routerLink="/">Ingridients</button>
   </span>
   <div *ngIf="!account" fxLayout="row" fxShow="false" fxShow.gt-sm>
     <button mat-button routerLink="/account/signin">
@@ -37,6 +29,8 @@
   </button>
 </mat-toolbar>
 <mat-menu x-position="before" #menu="matMenu">
+
+  <div *ngIf="!account">
   <button mat-menu-item routerLink="/account/signup">
     <mat-icon>account_circle</mat-icon>
     Register
@@ -45,9 +39,18 @@
     <mat-icon>power_settings_new</mat-icon>
     Login
   </button>
-  <!-- <button mat-menu-item *ngIf="isAuthenticated" (click)="logout()">
-    <mat-icon>exit_to_app</mat-icon>
+</div>
+
+<div *ngIf="account">
+  <button mat-menu-item routerLink="/profile">
+    <mat-icon>assignment_ind</mat-icon>
+    My Profile
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout_outlined</mat-icon>
     Logout
-  </button> -->
+  </button>
+</div>
+
 </mat-menu>
 <router-outlet></router-outlet>
