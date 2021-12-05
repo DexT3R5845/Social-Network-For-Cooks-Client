@@ -8,6 +8,13 @@
   border-radius: 50%;
 }
 
+.user_profile_control_edit {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-top: 15px;
+}
+
 mat-form-field.ng-invalid.ng-touched {
   margin-bottom: 18px;
 }
@@ -30,7 +37,7 @@ mat-label{
   position: absolute;
   display: none;
   top: 50%;
-  left:  50%;
+  left: 50%;
   transform: translate(-50%,-50%);
   z-index: 2;
 }

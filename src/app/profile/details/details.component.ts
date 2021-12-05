@@ -23,7 +23,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.profileService.getProfileData()
       .pipe(takeUntil(this.destroy))
       .subscribe((data: Profile) => {
-        this.profileData = new Profile(data.firstName, data.lastName, data.birthDate, data.gender, data.imgUrl);
+        this.profileData = {
+          firstName:data.firstName,
+          lastName:data.lastName,
+          birthDate:data.birthDate,
+          gender:data.gender,
+          imgUrl:data.imgUrl
+        };
         this.loading=false;
         this.gender = this.profileData.gender === "F";
         this.url = this.profileData.imgUrl;

@@ -38,21 +38,28 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   newImageUrl: string;
   @ViewChild('myInput')
   imgInputVariable: ElementRef;
+  acceptedFilesFormats: string[] = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bpg'];
 
   onSelectFile(event: any) {
+    this.alertService.clear();
     if (event.target.files && event.target.files[0]) {
-      this.hide = true;
-      var reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
-      reader.onload = (event: any) => { // called once readAsDataURL is completed
-        this.newImageUrl = event.target.result;
-        this.form.value.imgUrl = this.newImageUrl;
-        this.url = this.newImageUrl;
+      if(this.acceptedFilesFormats.includes(event.target.files[0].name.split('.').pop().toLowerCase())){
+        this.hide = true;
+        const reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = (event: any) => {
+          this.newImageUrl = event.target.result;
+          this.form.value.imgUrl = this.newImageUrl;
+          this.url = this.newImageUrl;
+        }
+        return;
       }
+      this.alertService.error('Uncorrected file format');
     }
   }
 
   delete() {
+    this.alertService.clear();
     this.hide = false
     this.url = this.oldImageUrl;
     this.form.value.imgUrl = this.oldImageUrl;
@@ -63,7 +70,13 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     this.profileService.getProfileData()
       .pipe(takeUntil(this.destroy))
       .subscribe((data: Profile) => {
-        this.profileData = new Profile(data.firstName, data.lastName, data.birthDate, data.gender, data.imgUrl);
+        this.profileData = {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          birthDate: data.birthDate,
+          gender: data.gender,
+          imgUrl: data.imgUrl
+        };
         this.loading = false;
         this.form.setValue({
           firstName: this.profileData.firstName,
@@ -80,13 +93,13 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   submit() {
     this.hide = false
     this.alertService.clear();
-    let profile = new Profile(
-      this.form.value.firstName,
-      this.form.value.lastName,
-      this.form.value.date,
-      this.form.value.gender,
-      this.form.value.imgUrl
-    )
+    let profile: Profile = {
+      firstName: this.form.value.firstName,
+      lastName: this.form.value.lastName,
+      birthDate: this.form.value.date,
+      gender: this.form.value.gender,
+      imgUrl: this.form.value.imgUrl
+    }
     this.profileService.saveChanges(profile)
       .pipe(takeUntil(this.destroy))
       .subscribe({
@@ -127,5 +140,9 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       'Please provide a valid lastname' :
       this.form.controls['lastName'].hasError('pattern') ?
         'The lastname must contain only letters. Min length 3 characters' : '';
+  }
+
+  back(){
+    this.router.navigateByUrl('/profile');
   }
 }

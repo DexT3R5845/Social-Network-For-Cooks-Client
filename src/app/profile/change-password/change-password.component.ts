@@ -5,6 +5,7 @@ import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {MustMatch} from "../../_helpers";
 import {AlertService} from "../../_services";
 import {ProfileService} from "../../_services/profile.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-change-password',
@@ -13,7 +14,12 @@ import {ProfileService} from "../../_services/profile.service";
 })
 export class ChangePasswordComponent extends PasswordValidatorShared implements OnDestroy {
 
-  constructor(private fb: FormBuilder, private alertService: AlertService, private profileService: ProfileService) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private alertService: AlertService,
+    private profileService: ProfileService
+  ) {
     super();
     this.form = fb.group({
         password: new FormControl('', [Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]),
@@ -65,5 +71,9 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
           this.alertService.error(this.alertMessage);
         }
       });
+  }
+
+  back() {
+    this.router.navigateByUrl('/profile');
   }
 }

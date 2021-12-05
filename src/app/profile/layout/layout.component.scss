@@ -6,10 +6,10 @@ mat-card {
     margin: 2em auto;
     text-align: center;
   }
-  
+
   mat-form-field {
     display: block;
-    font-size: 20px;
+    font-size: 18px;
   }
 
   mat-form-field.ng-invalid.ng-touched {
@@ -17,7 +17,7 @@ mat-card {
     animation-duration: 0.3s;
     margin-bottom: 13px;
   }
-  
+
   @keyframes margError {
     from {margin-bottom: 0;}
     to {margin-bottom: 13px;}

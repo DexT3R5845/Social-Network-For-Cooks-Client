@@ -7,7 +7,7 @@
       <span class="background"></span>
     </label>
 
-    <input #myInput id="fileInput" type="file" (change)="onSelectFile($event)">
+    <input #myInput id="fileInput" type="file" (change)="onSelectFile($event)" accept=".png, .jpg, .jpeg, .gif, .tiff, .bpg">
     <button mat-raised-button color="primary" *ngIf="hide" (click)="delete()" >Cancel</button>
   </div>
 
@@ -44,8 +44,9 @@
     <mat-error>You must make a selection</mat-error>
   </mat-form-field>
 
-  <div class="user_profile_edit">
+  <div class="user_profile_control_edit">
     <button type="submit" [disabled]="form.invalid" (click)="submit()" mat-raised-button color="primary">Save</button>
+    <button type="submit"   (click)="back()" mat-raised-button color="primary">Back</button>
   </div>
 </form>
 
