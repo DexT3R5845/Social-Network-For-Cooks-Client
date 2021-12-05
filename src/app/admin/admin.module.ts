@@ -4,8 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from './admin-routing.module';
 import { LayoutComponent } from './layout/layout.component';
 import { ModerListPageComponent } from './moder-list-page/moder-list-page.component';
-import { ModerListComponent } from './moder-list-page/moder-list/moder-list.component';
-import { SearchComponent } from './moder-list-page/search/search.component';
+
 import {SharedModule} from "../shared/shared.module";
 import { CreateModerComponent } from './create-moder/create-moder.component';
 import {MatDialogModule} from "@angular/material/dialog";
@@ -15,8 +14,7 @@ import {MatDialogModule} from "@angular/material/dialog";
   declarations: [
     LayoutComponent,
     ModerListPageComponent,
-    ModerListComponent,
-    SearchComponent,
+
     CreateModerComponent
   ],
   imports: [

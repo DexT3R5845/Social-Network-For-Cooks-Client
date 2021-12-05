@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
 import {ReplaySubject} from "rxjs";
 import {AccountInList} from "../../_models/account-in-list";
@@ -19,7 +19,9 @@ import {Profile} from "../../_models/profile";
 })
 export class ModerListPageComponent {
   pageContent: AccountsPerPage<AccountInList>;
+  searchForm: FormGroup = this.createFormGroup();
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
+  columnsToDisplay = ['image', 'firstName', 'lastName', 'id', 'status', 'actions'];
   pageSize: number = 12;
   alertMessage: string;
 
@@ -70,9 +72,24 @@ export class ModerListPageComponent {
     this.destroy.complete();
   }
 
+  ngOnInit(): void {
+    this.getBySearch(this.searchForm);
+  }
 
   newModerator() {
     this.dialog.open(CreateModerComponent, {data: { profile: Profile }});
   }
+
+  private createFormGroup(): FormGroup {
+    return new FormGroup({
+      "search": new FormControl(""),
+      "order": new FormControl("asc"),
+      "gender": new FormControl(""),
+      "status": new FormControl("")
+    });
+  }
+
+  startEdit(){}
+  deleteItem(){}
 }
 
