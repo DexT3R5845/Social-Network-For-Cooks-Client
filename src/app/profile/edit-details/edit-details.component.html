@@ -7,7 +7,7 @@
       <span class="background"></span>
     </label>
 
-    <input #myInput id="fileInput" type="file" (change)="onSelectFile($event)" accept=".png, .jpg, .jpeg, .gif, .tiff, .bpg">
+    <input #myInput id="fileInput" type="file" (change)="onSelectFile($event)" accept=".png, .jpg, .jpeg">
     <button mat-raised-button color="primary" *ngIf="hide" (click)="delete()" >Cancel</button>
   </div>
 

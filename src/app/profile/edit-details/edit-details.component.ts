@@ -38,12 +38,15 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   newImageUrl: string;
   @ViewChild('myInput')
   imgInputVariable: ElementRef;
-  acceptedFilesFormats: string[] = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bpg'];
 
   onSelectFile(event: any) {
+    const IMG_TYPE = {
+      'image/png': 'png', 'image/jpeg': 'jpeg', 'image/jpg': 'jpg'
+    };
     this.alertService.clear();
     if (event.target.files && event.target.files[0]) {
-      if(this.acceptedFilesFormats.includes(event.target.files[0].name.split('.').pop().toLowerCase())){
+      if((event.target.files[0].type === "image/png" || event.target.files[0].type === "image/jpeg" 
+      || event.target.files[0].type === "image/jpg") && event.target.files[0].size < 2000000){
         this.hide = true;
         const reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
