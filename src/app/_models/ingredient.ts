@@ -5,3 +5,8 @@ export interface Ingredient{
     ingredientCategory: string;
     active: boolean;
 }
+
+export interface IngredientListResponse {
+    content: Ingredient[];
+    totalElements: number;
+}

@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { catchError, map, merge, ReplaySubject, startWith, switchMap, of as observableOf } from 'rxjs';
 import { Ingredient } from 'src/app/_models';
 import { IngredientService } from 'src/app/_services';
 
@@ -11,33 +10,59 @@ import { IngredientService } from 'src/app/_services';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit, AfterViewInit {
+export class ListComponent implements AfterViewInit, OnDestroy {
   displayedColumns = ['id', 'image', 'name', 'category', 'active', 'actions'];
-  dataSource: MatTableDataSource<Ingredient>;
-  index: number;
-  id: number;
+  dataSource: Ingredient[] = [];
+  destroy: ReplaySubject<any> = new ReplaySubject<any>();
+  isLoadingResults = true;
+  isRateLimitReached = false;
+  resultsLength = 0;
 
   constructor(private ingredientService : IngredientService
-              // public dialog: MatDialog,
-              // public dataService: DataService
               ) {}
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 
    @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
    @ViewChild(MatSort, {static: true}) sort: MatSort;
    @ViewChild('filter', { static: true }) filter: ElementRef;
 
-  ngOnInit() {
-    this.dataSource = new MatTableDataSource();
-    this.loadData();
-    //this.loadData();
-  }
+   ngAfterViewInit(): void {
+    // If the user changes the sort order, reset back to the first page.
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-  refresh() {
-    //this.loadData();
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          return this.ingredientService.getAll(
+            // this.sort.active,
+            // this.sort.direction,
+            this.paginator.pageIndex,
+            this.paginator.pageSize,
+          ).pipe(catchError(() => observableOf(null)));;
+        }),
+        map(data => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          this.isRateLimitReached = data === null;
+
+          if (data === null) {
+            return [];
+          }
+
+          // Only refresh the result length if there is new data. In case of rate
+          // limit errors, we do not want to reset the paginator to zero, as that
+          // would prevent users from re-triggering requests.
+          this.resultsLength = data.totalElements;
+          return data.content;
+        }),
+      )
+      .subscribe(data => (this.dataSource = data));
   }
 
   addNew() {
@@ -92,40 +117,5 @@ export class ListComponent implements OnInit, AfterViewInit {
     //   }
     // });
   }
-
-
-  private refreshTable() {
-    // Refreshing table using paginator
-    // Thanks yeager-j for tips
-    // https://github.com/marinantonio/angular-mat-table-crud/issues/12
-    //this.paginator._changePageSize(this.paginator.pageSize);
-  }
-
-
-  /*   // If you don't need a filter or a pagination this can be simplified, you just use code from else block
-    // OLD METHOD:
-    // if there's a paginator active we're using it for refresh
-    if (this.dataSource._paginator.hasNextPage()) {
-      this.dataSource._paginator.nextPage();
-      this.dataSource._paginator.previousPage();
-      // in case we're on last page this if will tick
-    } else if (this.dataSource._paginator.hasPreviousPage()) {
-      this.dataSource._paginator.previousPage();
-      this.dataSource._paginator.nextPage();
-      // in all other cases including active filter we do it like this
-    } else {
-      this.dataSource.filter = '';
-      this.dataSource.filter = this.filter.nativeElement.value;
-    }*/
-
-
-
-  public loadData() {
-    this.ingredientService.getAll()
-      .subscribe((data: Ingredient[]) => {
-        console.log(data);
-        this.dataSource.data = data;
-        return data;
-    });
-  }
 }
+

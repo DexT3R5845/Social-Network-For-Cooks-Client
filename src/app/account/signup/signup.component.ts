@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize, first, ReplaySubject, takeUntil } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 import { MustMatch } from 'src/app/_helpers/must-match.validator';
 import { AlertService, AuthService } from 'src/app/_services';
 import { PasswordValidatorShared } from '../sharedClass/passwordValidatorShared';
@@ -9,7 +9,7 @@ import { PasswordValidatorShared } from '../sharedClass/passwordValidatorShared'
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent extends PasswordValidatorShared implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
@@ -54,6 +54,7 @@ ngOnInit(){
 onSubmit() {
   this.alertService.clear();
   if (this.form.valid) {
+    console.log(this.control['birthDate'].value);
     this.authService.signUp(this.form.value)
             .pipe(takeUntil(this.destroy))
             .subscribe({

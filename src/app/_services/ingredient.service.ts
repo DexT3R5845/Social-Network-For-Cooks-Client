@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { getAllLifecycleHooks } from "@angular/compiler/src/lifecycle_reflector";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { Ingredient } from "../_models";
+import { Ingredient, IngredientListResponse } from "../_models";
 
 const baseUrl = `${environment.serverUrl}/ingredient`;
 
@@ -15,7 +16,7 @@ export class IngredientService{
         private http: HttpClient
     ){}
 
-    getAll(){
-        return this.http.get<Ingredient[]>(`${baseUrl}/`);
+    getAll(page: number,size: number){
+        return this.http.get<IngredientListResponse>(`${baseUrl}?page=${page}&size=${size}`);
     }
 }
