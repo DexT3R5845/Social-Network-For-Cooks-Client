@@ -11,7 +11,7 @@ import {ProfileService} from "../../_services/profile.service";
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })
-export class ChangePasswordComponent extends PasswordValidatorShared implements OnInit, OnDestroy {
+export class ChangePasswordComponent extends PasswordValidatorShared implements OnDestroy {
 
   constructor(private fb: FormBuilder, private alertService: AlertService, private profileService: ProfileService) {
     super();
@@ -27,12 +27,8 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
 
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  loading = true;
   hide = true;
 
-  ngOnInit(): void {
-    this.loading = false;
-  }
 
   ngOnDestroy(): void {
     this.destroy.next(null);
