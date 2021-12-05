@@ -14,7 +14,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   profileData: Profile;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   loading = true;
-  gender:boolean;
   url:string;
 
   constructor(private profileService: ProfileService, private router: Router){}
@@ -23,15 +22,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.profileService.getProfileData()
       .pipe(takeUntil(this.destroy))
       .subscribe((data: Profile) => {
-        this.profileData = {
-          firstName:data.firstName,
-          lastName:data.lastName,
-          birthDate:data.birthDate,
-          gender:data.gender,
-          imgUrl:data.imgUrl
-        };
+        this.profileData = data;
         this.loading=false;
-        this.gender = this.profileData.gender === "F";
+        this.profileData.gender = this.profileData.gender === "F" ? "Female" : "Male";
         this.url = this.profileData.imgUrl;
       });
   }

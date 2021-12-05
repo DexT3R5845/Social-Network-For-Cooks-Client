@@ -23,8 +23,7 @@
 
     <div class="profile-info-field">
       <label>Gender:</label>
-      <span *ngIf="gender; else elseBlock"> Female</span>
-      <ng-template #elseBlock> Male</ng-template>
+      <span>{{profileData.gender}}</span>
     </div>
 
     <div class="user_profile_control">
