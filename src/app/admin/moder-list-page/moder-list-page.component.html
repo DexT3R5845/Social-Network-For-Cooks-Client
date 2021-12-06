@@ -30,30 +30,24 @@
       <mat-table [dataSource]="pageContent.items" #table matSort class="mat-cell">
 
         <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef
+          >ID</mat-header-cell>
           <mat-cell class="content-text" *matCellDef="let item" >{{item.id}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="image">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Image</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
           <mat-cell class="content-text" *matCellDef="let item">{{item.imgUrl}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="firstName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
           <mat-cell class="content-text" *matCellDef="let item">{{item.firstName}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="lastName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Surname</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>Surname</mat-header-cell>
           <mat-cell class="content-text" *matCellDef="let item">{{item.lastName}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-          <mat-cell class="content-text" *matCellDef="let item">
-            <mat-checkbox ([ngModel])="item.active" (click)="$event.preventDefault()" [disableRipple]="true" class="fixed"></mat-checkbox>
-          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="actions">
@@ -64,12 +58,13 @@
           </mat-header-cell>
 <!--     params     i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at-->
           <mat-cell *matCellDef="let row; let i=index;" class="s">
-            <button mat-icon-button color="accent" (click)="startEdit()">
+            <button mat-icon-button color="accent" (click)="editModerator(i, row.id)">
               <mat-icon aria-label="Edit">edit</mat-icon>
             </button>
 <!--       params     i, row.id, row.title, row.state, row.url-->
-            <button mat-icon-button color="accent" (click)="deleteItem()">
-              <mat-icon aria-label="Delete">delete</mat-icon>
+            <button mat-icon-button color="accent" (click)="changeStatus(i, row.id, row.status)">
+              <mat-icon *ngIf="row.status == true" aria-label="Change status">check_box</mat-icon>
+              <mat-icon *ngIf="row.status == false" aria-label="Change status">check_box_outline_blank</mat-icon>
             </button>
           </mat-cell>
         </ng-container>

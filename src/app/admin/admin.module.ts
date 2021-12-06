@@ -8,6 +8,7 @@ import { ModerListPageComponent } from './moder-list-page/moder-list-page.compon
 import {SharedModule} from "../shared/shared.module";
 import { CreateModerComponent } from './create-moder/create-moder.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { EditModerComponent } from './edit-moder/edit-moder.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     LayoutComponent,
     ModerListPageComponent,
 
-    CreateModerComponent
+    CreateModerComponent,
+      EditModerComponent
   ],
   imports: [
     CommonModule,

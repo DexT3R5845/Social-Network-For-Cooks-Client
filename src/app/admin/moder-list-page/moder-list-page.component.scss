@@ -2,6 +2,7 @@
 .item {
   font-size: medium;
   margin-top: 15px;
+  margin-left: 15px;
 
 }
 
@@ -66,11 +67,10 @@ mat-card {
 
 @include mat-table-columns((
   image: (width: 13%),
-  firstName: (width: 17%),
-  lastName: (width: 17%),
-  id: (width: 28%),
-  status: (width: 13%),
-  actions: (width: 12%),
+  firstName: (width: 25%),
+  lastName: (width: 25%),
+  id: (width: 25%),
+  actions: (width:12%),
 ));
 
 

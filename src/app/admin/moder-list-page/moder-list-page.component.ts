@@ -10,6 +10,7 @@ import {takeUntil} from "rxjs/operators";
 import {CreateModerComponent} from "../create-moder/create-moder.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Profile} from "../../_models/profile";
+import {EditModerComponent} from "../edit-moder/edit-moder.component";
 
 
 @Component({
@@ -21,7 +22,7 @@ export class ModerListPageComponent {
   pageContent: AccountsPerPage<AccountInList>;
   searchForm: FormGroup = this.createFormGroup();
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  columnsToDisplay = ['image', 'firstName', 'lastName', 'id', 'status', 'actions'];
+  columnsToDisplay = ['image', 'firstName', 'lastName', 'id', 'actions'];
   pageSize: number = 12;
   alertMessage: string;
 
@@ -76,10 +77,6 @@ export class ModerListPageComponent {
     this.getBySearch(this.searchForm);
   }
 
-  newModerator() {
-    this.dialog.open(CreateModerComponent, {data: { profile: Profile }});
-  }
-
   private createFormGroup(): FormGroup {
     return new FormGroup({
       "search": new FormControl(""),
@@ -89,7 +86,32 @@ export class ModerListPageComponent {
     });
   }
 
-  startEdit(){}
-  deleteItem(){}
+  newModerator() {
+    this.dialog.open(CreateModerComponent, {data: { profile: Profile }});
+  }
+
+  editModerator(index: number, id: string){
+    this.dialog.open(EditModerComponent, {data: {profile: Profile, id: id}})
+  }
+
+
+  changeStatus(index: number, id: string, status: boolean) {
+    this.service.changeStatus(id, status)
+      .pipe(takeUntil(this.destroy))
+      .subscribe({
+        next: () => {
+          this.pageContent.items[index].status = !status;
+        },
+        error: error => {
+          if (error.status == 400) {
+            this.alertMessage = "no such id in database";
+          } else {
+            this.alertMessage = "unexpected error, try later";
+          }
+          this.alertService.error(this.alertMessage);
+        }
+      }
+      )
+  }
 }
 

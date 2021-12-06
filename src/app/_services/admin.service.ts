@@ -20,7 +20,8 @@ export class AdminService {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   private getAccounts(currentPage: number, searchedParams: SearchParams, pageSize: number): Observable<AccountsPerPage<AccountInList>> {
     return this.http.get<AccountsPerPage<AccountInList>>(
@@ -46,9 +47,23 @@ export class AdminService {
     return this.getAccounts(currentPage, this.searchParams, pageSize);
   }
 
-  addModerator(formGroup: FormGroup) {
-    console.log("sent");
+  addModerator(formGroup: FormGroup): Observable<any> {
     return this.http.post(`${baseUrl}/new`, formGroup.value);
+  }
+
+  editModerator(formGroup: FormGroup): Observable<any> {
+    return this.http.put(`${baseUrl}/profile`, formGroup.value);
+  }
+
+  changeStatus(id: string, status: boolean): Observable<any> {
+    let reqParams = new HttpParams();
+    reqParams = reqParams.append('id', id);
+    reqParams = reqParams.append('status', status);
+    return this.http.put(`${baseUrl}/profile-status`, {}, {params:reqParams});
+  }
+
+  getById(id: string): Observable<any> {
+    return this.http.get(`${baseUrl}/` + id);
   }
 }
 

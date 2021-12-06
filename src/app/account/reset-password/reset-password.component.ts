@@ -66,25 +66,25 @@ onSubmit() {
   this.alertMessage = "";
   if (this.form.valid) {
     this.authService.resetPassword(this.token, this.control['password'].value, this.control['confirmPassword'].value)
-            .pipe(takeUntil(this.destroy))
-            .subscribe({
-              next: ()  => {
-                this.alertService.success('Password reset successful, you can now login', true);
-                this.router.navigate(['../../signin'], { relativeTo: this.route });
-              },
-                error: error => {
-                  switch(error.status){
-                    case 400:
-                      Object.keys(error.error.data).forEach(key => {
-                        this.alertMessage += error.error.data[key];
-                      });
-                      break;
-                      default:
-                        this.alertMessage = "There was an error on the server, please try again later."
-                        break;
-                  }
-                  this.alertService.error(this.alertMessage);
-            }});
+      .pipe(takeUntil(this.destroy))
+      .subscribe({
+        next: ()  => {
+          this.alertService.success('Password reset successful, you can now login', true);
+          this.router.navigate(['../../signin'], { relativeTo: this.route });
+        },
+        error: error => {
+          switch(error.status){
+            case 400:
+              Object.keys(error.error.data).forEach(key => {
+                this.alertMessage += error.error.data[key];
+              });
+              break;
+            default:
+              this.alertMessage = "There was an error on the server, please try again later."
+              break;
+          }
+          this.alertService.error(this.alertMessage);
+        }});
   }
 }
 
