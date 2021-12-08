@@ -44,17 +44,17 @@
   
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>
-          <button mat-icon-button color="primary" (click)="addNew()">
+          <button mat-icon-button color="primary">
             <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
           </button>
         </mat-header-cell>
   
         <mat-cell *matCellDef="let row; let i=index;">
-          <button mat-icon-button color="accent" (click)="startEdit(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">
+          <button mat-icon-button color="accent">
             <mat-icon aria-label="Edit">edit</mat-icon>
           </button>
   
-          <button mat-icon-button color="accent" (click)="deleteItem(i, row.id, row.title, row.state, row.url)">
+          <button mat-icon-button color="accent">
             <mat-icon *ngIf="row.active" aria-label="check_box">check_box</mat-icon>
             <mat-icon *ngIf="!row.active" aria-label="check_box">check_box_outline_blank</mat-icon>
           </button>

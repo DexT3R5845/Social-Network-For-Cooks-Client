@@ -7,14 +7,6 @@
     font-size: 20px;
 }
 
-  .spinner-container {
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    background-color: #fafafa; 
-    box-shadow:0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)
-  }
-
   .table-container{
     position: relative;
     min-height: 200px;
@@ -60,9 +52,9 @@
 
   @include mat-table-columns(( 
         image: (width: 25%),
-        name: (width: 35%),
+        name: (width: 33%),
         category: (width: 25%),
-        actions: (width: 15%),
+        actions: (width: 17%),
     ));
   
   .mat-form-field {
