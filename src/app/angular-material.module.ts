@@ -9,7 +9,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+import { MatNativeDateModule, MatRippleModule, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,7 +32,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 const materialModules = [
   CdkTreeModule,
@@ -67,8 +67,21 @@ const materialModules = [
   MatRadioModule,
   MatDatepickerModule,
   MatTooltipModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatMomentDateModule,
 ];
+
+export const TIME_FORMATS ={
+  parse:{
+      dateInput: 'DD/MM/YYYY',
+  },
+  display:{
+      dateInput: 'DD/MM/YYYY',
+      monthYearLabel: 'MM YYYY',
+      dateAllyLabel: 'DD/MM/YYYY',
+      monthYearAllyLabel: 'MM YYYY',
+  }
+}
 
 @NgModule({
   imports: [
@@ -78,6 +91,10 @@ const materialModules = [
   exports: [
     ...materialModules
   ],
+  providers:[
+    {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: true}},
+    {provide: MAT_DATE_FORMATS, useValue: TIME_FORMATS}
+  ]
 })
 
 export class AngularMaterialModule { }
