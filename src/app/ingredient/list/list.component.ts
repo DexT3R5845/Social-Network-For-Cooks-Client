@@ -1,8 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { catchError, map, merge, ReplaySubject, startWith, switchMap, of as observableOf } from 'rxjs';
+import { ReplaySubject, takeUntil, finalize, merge } from 'rxjs';
 import { Ingredient } from 'src/app/_models';
+import { ingredientCategory } from 'src/app/_models/ingredient.category';
+import { IngredientFilter } from 'src/app/_models/_filters/ingredient.filter';
 import { IngredientService } from 'src/app/_services';
 
 @Component({
@@ -10,59 +13,91 @@ import { IngredientService } from 'src/app/_services';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements AfterViewInit, OnDestroy {
-  displayedColumns = ['id', 'image', 'name', 'category', 'active', 'actions'];
+export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
+  formFilter: FormGroup;
+  displayedColumns = ['image', 'name', 'ingredientCategory', 'actions'];
   dataSource: Ingredient[] = [];
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   isLoadingResults = true;
-  isRateLimitReached = false;
   resultsLength = 0;
+  listCategory: ingredientCategory[];
 
-  constructor(private ingredientService : IngredientService
-              ) {}
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  constructor(private ingredientService : IngredientService,
+              private formBuilder: FormBuilder) {
+    this.formFilter = this.formBuilder.group({
+      searchText: [],
+      status: [],
+      ingredientCategories: [],
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadCategory();
+  }
+
+  ngAfterViewInit(): void {
+    this.loadData();
+    this.sort.sortChange.pipe(takeUntil(this.destroy)).subscribe(() => this.paginator.pageIndex = 0);
+   merge(this.sort.sortChange, this.paginator.page).pipe(takeUntil(this.destroy)).subscribe(() => this.loadData());
+ }
 
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
 
-   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-   @ViewChild(MatSort, {static: true}) sort: MatSort;
-   @ViewChild('filter', { static: true }) filter: ElementRef;
+  OnSubmitFilter(){
+    this.paginator.pageIndex = 0;
+    this.loadData();
+  }
 
-   ngAfterViewInit(): void {
-    // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+  get filterControl(){
+    return this.formFilter.controls;
+  }
 
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          return this.ingredientService.getAll(
-            // this.sort.active,
-            // this.sort.direction,
-            this.paginator.pageIndex,
-            this.paginator.pageSize,
-          ).pipe(catchError(() => observableOf(null)));;
-        }),
-        map(data => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          this.isRateLimitReached = data === null;
+  get searchText(){
+    return this.filterControl['searchText'].value;
+  }
 
-          if (data === null) {
-            return [];
-          }
+  get filterStatus(){
+    return this.filterControl['status'].value;
+  }
 
-          // Only refresh the result length if there is new data. In case of rate
-          // limit errors, we do not want to reset the paginator to zero, as that
-          // would prevent users from re-triggering requests.
-          this.resultsLength = data.totalElements;
-          return data.content;
-        }),
-      )
-      .subscribe(data => (this.dataSource = data));
+  get ingredientCategories(){
+    return this.formFilter.controls['ingredientCategories'].value
+  }
+
+loadData(){
+  const ingredientFilter: IngredientFilter = {
+    sortASC: this.sort.direction == 'asc', sortBy: this.sort.active, ingredientCategory: this.ingredientCategories, searchText: this.searchText,
+     numPage: this.paginator.pageIndex, sizePage: this.paginator.pageSize, status: this.filterStatus
+  }
+  this.isLoadingResults = true;
+  this.ingredientService.getAll(ingredientFilter).pipe(takeUntil(this.destroy),
+  finalize(() => this.isLoadingResults = false)).subscribe({
+  next: data => {
+      this.resultsLength = data.totalElements;
+      this.dataSource = data.content;
+      const matTable= document.getElementById('table');
+      console.log(matTable);
+      if(matTable)
+        matTable.scrollIntoView();
+  },
+  error: ()=> {
+  this.dataSource = [];
+  }
+  });
+}
+
+  loadCategory(){
+    this.ingredientService.getAllIngredientCategory().pipe(takeUntil(this.destroy))
+    .subscribe({
+      next: data => this.listCategory = data,
+      error: () => this.listCategory = []
+    });
   }
 
   addNew() {

@@ -4,6 +4,8 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Ingredient, IngredientListResponse } from "../_models";
+import { ingredientCategory } from "../_models/ingredient.category";
+import { IngredientFilter } from "../_models/_filters/ingredient.filter";
 
 const baseUrl = `${environment.serverUrl}/ingredient`;
 
@@ -16,7 +18,11 @@ export class IngredientService{
         private http: HttpClient
     ){}
 
-    getAll(page: number,size: number){
-        return this.http.get<IngredientListResponse>(`${baseUrl}?page=${page}&size=${size}`);
+    getAll(ingredientFilter: IngredientFilter){
+        return this.http.post<IngredientListResponse>(`${baseUrl}`, ingredientFilter);
+    }
+
+    getAllIngredientCategory(){
+        return this.http.get<ingredientCategory[]>(`${baseUrl}/category`);
     }
 }

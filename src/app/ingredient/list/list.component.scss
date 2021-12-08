@@ -1,25 +1,44 @@
-.container {
-    // display: flex;
-    overflow: auto;
-    flex-direction: column;
-    font-size: 20px;
-  }
-
   mat-header-cell, mat-header-row, .mat-header-cell-def {
       font-size: 20px;
       font-weight: bold;
   }
 
   mat-cell{
-      font-size: 20px;
+    font-size: 20px;
+}
+
+  .spinner-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background-color: #fafafa; 
+    box-shadow:0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)
   }
 
-  mat-card {
-    font-family: Raleway;
-    max-width: 50%;
-    min-width: 400px;
-    margin: 2em auto;
-    text-align: center;
+  .table-container{
+    position: relative;
+    min-height: 200px;
+    max-height: 80%;
+    overflow: auto;
+  }
+
+  mat-form-field{
+    margin-left: 15px;
+  }
+
+  img{
+    width: 100%;
+    height: 100%;
+    max-width: 100px;
+    max-height: 150px;
+  }
+
+  button.btn-filter{
+    margin-left: 15px;
+  }
+
+  table{
+    width: 100%;
   }
 
   @mixin mat-table-columns($columns)
@@ -40,39 +59,30 @@
 }
 
   @include mat-table-columns(( 
-        id: (width: 10%),
-        image: (width: 15%),
-        name: (width: 20%),
-        category: (width: 20%),
-        active: (width: 20%),
-        actions: (width: 20%),
+        image: (width: 25%),
+        name: (width: 35%),
+        category: (width: 25%),
+        actions: (width: 15%),
     ));
-
-  /* Filter */
-  .form {
-    min-height: 56px;
-    max-height: 56px;
-    display: flex;
-    align-items: center;
-    padding: 8px 24px 0;
-    font-size: 20px;
-    justify-content: space-between;
-    border-bottom: 1px solid transparent;
-  }
   
   .mat-form-field {
-    font-size: 14px;
-    flex-grow: 1;
-    margin-top: 8px;
+    font-size: 20px;
+    margin-top: 5px;
+
+    margin-bottom: -1%;
   }
-  
-  /* Mat table */
-  .no-results {
+
+  .loading-shade {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
     display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 14px;
-    font-size: 14px;
-    font-style: italic;
   }
 
   
