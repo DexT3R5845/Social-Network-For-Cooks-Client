@@ -27,7 +27,7 @@
     </div>
 
 
-      <mat-table [dataSource]="pageContent.items" #table matSort class="mat-cell">
+      <mat-table [dataSource]="pageContent.content" #table matSort class="mat-cell">
 
         <ng-container matColumnDef="id">
           <mat-header-cell *matHeaderCellDef
@@ -74,8 +74,8 @@
       </mat-table>
 
     <mat-paginator
-      [length]="pageContent.itemCount"
-      [pageIndex]="pageContent.currentPage"
+      [length]="pageContent.totalElements"
+      [pageIndex]="currentPage"
       [pageSize]="pageSize"
       [pageSizeOptions]="[12, 20, 40]"
       (page)="paginationHandler($event)">

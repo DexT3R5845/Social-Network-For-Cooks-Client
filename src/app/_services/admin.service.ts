@@ -5,7 +5,7 @@ import {environment} from "../../environments/environment";
 import {Injectable} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 import {SearchParams} from "../_models/search-params";
-import {AccountsPerPage} from "../_models/accounts-per-page";
+import {Page} from "../_models/page";
 import {AccountInList} from "../_models/account-in-list";
 
 const baseUrl = `${environment.serverUrl}/management`;
@@ -23,9 +23,9 @@ export class AdminService {
   ) {
   }
 
-  private getAccounts(currentPage: number, searchedParams: SearchParams, pageSize: number): Observable<AccountsPerPage<AccountInList>> {
-    return this.http.get<AccountsPerPage<AccountInList>>(
-      baseUrl + "/all",
+  private getAccounts(currentPage: number, searchedParams: SearchParams, pageSize: number): Observable<Page<AccountInList>> {
+    return this.http.get<Page<AccountInList>>(
+      baseUrl,
       {
         params: new HttpParams()
           .set('size', pageSize)
@@ -38,28 +38,25 @@ export class AdminService {
     );
   }
 
-  getAccountsBySearch(search: FormGroup, pageSize: number): Observable<AccountsPerPage<AccountInList>> {
+  getAccountsBySearch(search: FormGroup, pageSize: number): Observable<Page<AccountInList>> {
     this.searchParams = search.value;
     return this.getAccounts(0, this.searchParams, pageSize);
   }
 
-  getAccountByPageNum(currentPage: number, pageSize: number): Observable<AccountsPerPage<AccountInList>> {
+  getAccountByPageNum(currentPage: number, pageSize: number): Observable<Page<AccountInList>> {
     return this.getAccounts(currentPage, this.searchParams, pageSize);
   }
 
   addModerator(formGroup: FormGroup): Observable<any> {
-    return this.http.post(`${baseUrl}/new`, formGroup.value);
+    return this.http.post(`${baseUrl}`, formGroup.value);
   }
 
   editModerator(formGroup: FormGroup): Observable<any> {
-    return this.http.put(`${baseUrl}/profile`, formGroup.value);
+    return this.http.put(`${baseUrl}`, formGroup.value);
   }
 
-  changeStatus(id: string, status: boolean): Observable<any> {
-    let reqParams = new HttpParams();
-    reqParams = reqParams.append('id', id);
-    reqParams = reqParams.append('status', status);
-    return this.http.put(`${baseUrl}/profile-status`, {}, {params:reqParams});
+  changeStatus(id: string): Observable<any> {
+    return this.http.put(`${baseUrl}/` + id, {});
   }
 
   getById(id: string): Observable<any> {

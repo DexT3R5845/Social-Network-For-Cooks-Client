@@ -5,7 +5,7 @@ import {ReplaySubject} from "rxjs";
 import {AccountInList} from "../../_models/account-in-list";
 import {AdminService} from "../../_services/admin.service";
 import {AlertService} from "../../_services";
-import {AccountsPerPage} from "../../_models/accounts-per-page";
+import {Page} from "../../_models/page";
 import {takeUntil} from "rxjs/operators";
 import {CreateModerComponent} from "../create-moder/create-moder.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -19,11 +19,12 @@ import {EditModerComponent} from "../edit-moder/edit-moder.component";
   styleUrls: ['./moder-list-page.component.scss']
 })
 export class ModerListPageComponent {
-  pageContent: AccountsPerPage<AccountInList>;
+  pageContent: Page<AccountInList>;
   searchForm: FormGroup = this.createFormGroup();
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   columnsToDisplay = ['image', 'firstName', 'lastName', 'id', 'actions'];
   pageSize: number = 12;
+  currentPage: number;
   alertMessage: string;
 
   constructor(
@@ -34,37 +35,31 @@ export class ModerListPageComponent {
 
 
   getBySearch(searchForm: FormGroup): void {
+    this.alertService.clear();
     this.service.getAccountsBySearch(searchForm, this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
           this.pageContent = response;
+          this.currentPage = 0;
           },
-        error: error => {
-          if (error.status == 400) {
-            this.alertMessage = "database error";
-          } else {
-            this.alertMessage = "unexpected error, try later";
-          }
-          this.alertService.error(this.alertMessage);}
+        error: () => {
+          this.alertService.error("unexpected error, try later");}
       });
   }
 
   paginationHandler(pageEvent: PageEvent): void {
+    this.alertService.clear();
     this.service.getAccountByPageNum(pageEvent.pageIndex, pageEvent.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
           this.pageContent = response;
+          this.currentPage = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
           },
-        error: error => {
-          if (error.status == 400) {
-            this.alertMessage = "database error";
-          } else {
-            this.alertMessage = "unexpected error, try later";
-          }
-          this.alertService.error(this.alertMessage);}
+        error: () => {
+          this.alertService.error("unexpected error, try later");}
       });
   }
 
@@ -87,23 +82,26 @@ export class ModerListPageComponent {
   }
 
   newModerator() {
+    this.alertService.clear();
     this.dialog.open(CreateModerComponent, {data: { profile: Profile }});
   }
 
   editModerator(index: number, id: string){
+    this.alertService.clear();
     this.dialog.open(EditModerComponent, {data: {profile: Profile, id: id}})
   }
 
 
   changeStatus(index: number, id: string, status: boolean) {
-    this.service.changeStatus(id, status)
+    this.alertService.clear();
+    this.service.changeStatus(id)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.pageContent.items[index].status = !status;
+          this.pageContent.content[index].status = !status;
         },
         error: error => {
-          if (error.status == 400) {
+          if (error.status == 404) {
             this.alertMessage = "no such id in database";
           } else {
             this.alertMessage = "unexpected error, try later";

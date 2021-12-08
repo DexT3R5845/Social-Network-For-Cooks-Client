@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+}
+
+.mat-dialog-content {
+  width: auto;
+  min-height: 230px;
+}
+
+.form {
+  display: flex;
+}
+
+mat-form-field {
+  font-size: 15px;
+  flex-grow: 1;
+}
+
+.control-button {
+  top: 30px;
+}
+
+.title {
+  font-size: 25px;
+}

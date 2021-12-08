@@ -1,0 +1,31 @@
+<div class="container">
+  <h3 class="title" mat-dialog-title>Kitchenware information</h3>
+
+  <form class="mat-dialog-content" [formGroup]="form">
+    <h4>ID: {{data.id}}</h4>
+
+    <div class="form">
+      <mat-form-field>
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category" [(ngModel)]="this.kitchenware.category">
+          <mat-option *ngFor="let category of categories; let i=index" value="{{category}}">{{category}}</mat-option>
+        </mat-select>
+        <mat-error>You must make a selection</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Name"  formControlName="name" [(ngModel)]="this.kitchenware.name">
+        <mat-error>
+          Please enter kitchenware name correctly
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+      <button class="control-button" mat-button [mat-dialog-close] [disabled]="!form.valid" (click)="editKitchenware()">Submit edits</button>
+      <button class="control-button" mat-button (click)="onNoClick()">Cancel</button>
+    </div>
+  </form>
+</div>

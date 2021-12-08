@@ -77,15 +77,11 @@ export class ConfirmModeratorComponent extends PasswordValidatorShared implement
           error: error => {
             switch(error.status){
               case 410:
-                this.alertMessage = "invalid token";
-                break;
-
-              case 400:
-                this.alertMessage = "passwords do not match";
+                this.alertMessage = error.error.message;
                 break;
 
               case 404:
-                this.alertMessage = "row is not found in db";
+                this.alertMessage = error.error.message;
                 break;
 
               default:
