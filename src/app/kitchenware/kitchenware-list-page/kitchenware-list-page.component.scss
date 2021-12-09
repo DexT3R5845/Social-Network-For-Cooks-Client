@@ -53,11 +53,10 @@ table{
 }
 
 @include mat-table-columns((
-  image: (width: 13%),
-  firstName: (width: 25%),
-  lastName: (width: 25%),
-  id: (width: 25%),
-  actions: (width:12%),
+  image: (width: 25%),
+  name: (width: 33%),
+  category: (width: 25%),
+  actions: (width: 17%),
 ));
 
 

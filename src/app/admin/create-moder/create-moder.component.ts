@@ -3,9 +3,9 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {AdminService} from "../../_services/admin.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Profile} from "../../_models/profile";
 import {ReplaySubject, takeUntil} from "rxjs";
 import {AlertService} from "../../_services";
+import {AccountInList} from "../../_models/account-in-list";
 
 @Component({
   selector: 'app-create-moder',
@@ -19,7 +19,7 @@ export class CreateModerComponent implements OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<CreateModerComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Profile,
+    @Inject(MAT_DIALOG_DATA) public data: AccountInList,
     public service: AdminService,
     private formBuilder: FormBuilder,
     private alertService: AlertService
@@ -27,6 +27,7 @@ export class CreateModerComponent implements OnDestroy {
     this.form = this.formBuilder.group({
       firstName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
       lastName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
+      imgUrl: [null, [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
       birthDate: ['', Validators.required],
       email: ['', Validators.email],
       gender: ['', Validators.required]
@@ -47,14 +48,11 @@ export class CreateModerComponent implements OnDestroy {
           },
           error: error => {
             switch(error.status){
-              case 400:
-                this.alertMessage = "Something went wrong";
+              case 403:
+                this.alertMessage = error.error.message;
                 break;
               case 409:
-                this.alertMessage = "Email is not unique";
-                break;
-              case 401:
-                this.alertMessage = "Invalid email supplied";
+                this.alertMessage = error.error.message;
                 break;
               default:
                 this.alertMessage = "There was an error on the server, please try again later."
