@@ -26,7 +26,7 @@ export class AuthService {
     const token = this.cookie.getToken();
   if(token && !this.jwt.isTokenExpired(token)){
     const tokenData = this.jwt.decodeToken(token);
-    this.accountSubject = new BehaviorSubject<Account | null>(new Account(tokenData.sub, tokenData.auth, token));
+    this.accountSubject = new BehaviorSubject<Account | null>({email: tokenData.sub, role: tokenData.auth, token: token});
     }
     else
       this.accountSubject = new BehaviorSubject<Account | null>(null);
@@ -46,7 +46,7 @@ export class AuthService {
     return this.http.post<Account>(`${baseUrl}/signin`, {}, { withCredentials: true, params: reqParams })
       .pipe(map(response => {
         const tokenData = this.jwt.decodeToken(response.token);
-        this.accountSubject.next(new Account(tokenData.sub, tokenData.auth, response.token));
+        this.accountSubject.next({email: tokenData.sub, role: tokenData.auth, token: response.token});
       return response;
   }));
   }
