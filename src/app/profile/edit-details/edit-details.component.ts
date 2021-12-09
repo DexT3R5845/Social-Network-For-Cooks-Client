@@ -7,6 +7,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../_services";
 import {MatDialog} from '@angular/material/dialog';
 import {DialogViewComponent} from "../dialog-view/dialog-view.component";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit-details',
@@ -104,11 +105,10 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
           imgUrl: data.imgUrl
         };
         this.loading = false;
-        console.log(data.birthDate);
         this.form.setValue({
           firstName: this.profileData.firstName,
           lastName: this.profileData.lastName,
-          date: this.profileData.birthDate,
+           date: moment(this.profileData.birthDate, "DD/MM/YYYY"),
           gender: this.profileData.gender,
           imgUrl: this.profileData.imgUrl
         });
@@ -123,7 +123,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     let profile: Profile = {
       firstName: this.form.value.firstName,
       lastName: this.form.value.lastName,
-      birthDate: this.form.value.date,
+      birthDate: this.form.value.date.format("DD/MM/YYYY"),
       gender: this.form.value.gender,
       imgUrl: this.form.value.imgUrl
     }
