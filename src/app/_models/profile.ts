@@ -1,7 +1,7 @@
-export interface Profile {
-  firstName: string;
-  lastName: string;
-  birthDate: string;
-  gender: string;
-  imgUrl: string
+export interface Profile{
+    firstName: string;
+    lastName: string;
+    birthDate: Date;
+    gender: string;
+    imgUrl: string
 }

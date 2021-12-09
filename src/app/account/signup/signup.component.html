@@ -1,68 +1,64 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <h2>Registration</h2>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h2>Registration</h2>
 
-  <mat-form-field class="full-width-input">
-    <input matInput placeholder="First Name" formControlName="firstName" required>
-    <mat-error>
-      {{firstNameErrorMessage}}
-    </mat-error>
-  </mat-form-field>
+        <mat-form-field class="full-width-input">
+          <input matInput placeholder="First Name" formControlName="firstName" required>
+          <mat-error>
+            {{firstNameErrorMessage}}
+          </mat-error>
+        </mat-form-field>
 
-  <mat-form-field class="full-width-input">
-    <input matInput placeholder="Last Name" formControlName="lastName" required>
-    <mat-error>
-      Please provide a valid last name
-    </mat-error>
-  </mat-form-field>
+        <mat-form-field class="full-width-input">
+            <input matInput placeholder="Last Name" formControlName="lastName" required>
+            <mat-error>
+              Please provide a valid last name
+            </mat-error>
+          </mat-form-field>
 
-  <mat-form-field class="full-width-input">
-    <input matInput [matDatepicker]="picker" placeholder="Birthdate" formControlName="birthDate" required>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error>
-      Please provide a valid birthdate
-    </mat-error>
-  </mat-form-field>
+          <mat-form-field class="full-width-input">
+            <input matInput [matDatepicker]="picker" time="false" date="true" placeholder="Birthdate" formControlName="birthDate" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error>
+                Please provide a valid birthdate
+              </mat-error>
+          </mat-form-field>
 
-  <mat-form-field class="full-width-input">
-    <mat-label>Gender</mat-label>
-    <mat-select formControlName="gender">
-      <mat-option value="M">Male</mat-option>
-      <mat-option value="F">Female</mat-option>
-    </mat-select>
-    <mat-error>You must make a selection</mat-error>
-  </mat-form-field>
+          <mat-form-field class="full-width-input">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="M">Male</mat-option>
+              <mat-option value="F">Female</mat-option>
+            </mat-select>
+            <mat-error>You must make a selection</mat-error>
+          </mat-form-field>
 
-  <mat-form-field class="full-width-input">
-    <input matInput placeholder="Email" formControlName="email" required>
-    <mat-error>
-      Please provide a valid email
-    </mat-error>
-  </mat-form-field>
+          <mat-form-field class="full-width-input">
+            <input matInput placeholder="Email" formControlName="email" required>
+            <mat-error>
+              Please provide a valid email
+            </mat-error>
+          </mat-form-field>
 
-  <mat-form-field class="full-width-input">
-    <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" onkeypress="return event.charCode != 32"
-           formControlName="password" required>
-    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide">
-      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-    </button>
-    <mat-error>
-      {{passwordErrorMessage}}
-    </mat-error>
-  </mat-form-field>
+        <mat-form-field class="full-width-input" >
+            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" onkeypress="return event.charCode != 32" formControlName="password" required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            <mat-error>
+                {{passwordErrorMessage}}
+            </mat-error>
+          </mat-form-field>
 
-  <mat-form-field class="full-width-input">
-    <input matInput [type]="hide ? 'password' : 'text'" placeholder="Confirm password"
-           onkeypress="return event.charCode != 32" formControlName="confirmPassword" required>
-    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide">
-      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-    </button>
-    <mat-error>
-      {{confirmPasswordErrorMessage}}
-    </mat-error>
-  </mat-form-field>
+          <mat-form-field class="full-width-input">
+            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Confirm password" onkeypress="return event.charCode != 32" formControlName="confirmPassword" required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            <mat-error>
+                {{confirmPasswordErrorMessage}}
+            </mat-error>
+          </mat-form-field>
 
-  <button type="submit" [disabled]="!form.valid" mat-raised-button color="primary">Register</button>
-</form>
+        <button type="submit" mat-raised-button color="primary">Register</button>
+      </form>

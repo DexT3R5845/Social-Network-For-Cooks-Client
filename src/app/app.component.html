@@ -2,10 +2,15 @@
 <mat-toolbar color="primary" class="expanded-toolbar">
   <span>
     <button mat-button routerLink="/">{{title}}</button>
-    <button *ngIf="account && account.role == Role.User" mat-button routerLink="/friends">Friends</button>
-    <button *ngIf="account && account.role == Role.Moderator" mat-button routerLink="/">Ingredients</button>
   </span>
-  <div *ngIf="!account" fxLafout="row" fxShow="false" fxShow.gt-sm>
+  <span class="menu-spacer"></span>
+
+  <button *ngIf="account && account.role == Role.User" mat-button routerLink="/friends">Friends</button>
+  <div *ngIf="account && account.role == Role.Moderator" fxFlex fxShow fxHide.lt-md>
+    <button mat-button routerLink="/ingredients">Ingredients</button>
+  </div>
+
+  <div *ngIf="!account" fxLayout="row" fxShow="false" fxShow.gt-sm>
     <button mat-button routerLink="/account/signin">
       <mat-icon>power_settings_new</mat-icon>
       Login
@@ -15,6 +20,7 @@
       Register
     </button>
   </div>
+
   <div *ngIf="account" fxLayout="row" fxShow="false" fxShow.gt-sm>
     <button mat-button routerLink="/profile">
       <mat-icon>assignment_ind</mat-icon>
@@ -25,10 +31,12 @@
       Logout
     </button>
 </div>
+
   <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
     <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
+
 <mat-menu x-position="before" #menu="matMenu">
 
   <div *ngIf="!account">
@@ -43,6 +51,9 @@
 </div>
 
 <div *ngIf="account">
+  <button *ngIf="account.role == Role.Moderator" mat-menu-item routerLink="/ingredients">
+    Ingredients
+  </button>
   <button mat-menu-item routerLink="/profile">
     <mat-icon>assignment_ind</mat-icon>
     My Profile
