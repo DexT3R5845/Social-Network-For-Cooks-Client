@@ -104,6 +104,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
           imgUrl: data.imgUrl
         };
         this.loading = false;
+        console.log(data.birthDate);
         this.form.setValue({
           firstName: this.profileData.firstName,
           lastName: this.profileData.lastName,
