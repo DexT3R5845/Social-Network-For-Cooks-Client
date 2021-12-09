@@ -35,9 +35,6 @@ export class ViewFriendsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  @ViewChild('table', {static: false}) table: MatTable<any>;
-  @ViewChild('filter', {static: false}) filter: ElementRef;
-
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
 

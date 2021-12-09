@@ -1,3 +1,4 @@
+<!--
 <mat-card>
   <mat-card-content>
     <div class="form-group form">
@@ -56,12 +57,12 @@
               <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
             </button>
           </mat-header-cell>
-<!--     params     i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at-->
+&lt;!&ndash;     params     i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at&ndash;&gt;
           <mat-cell *matCellDef="let row; let i=index;" class="s">
             <button mat-icon-button color="accent" (click)="editModerator(i, row.id)">
               <mat-icon aria-label="Edit">edit</mat-icon>
             </button>
-<!--       params     i, row.id, row.title, row.state, row.url-->
+&lt;!&ndash;       params     i, row.id, row.title, row.state, row.url&ndash;&gt;
             <button mat-icon-button color="accent" (click)="changeStatus(i, row.id, row.status)">
               <mat-icon *ngIf="row.status == true" aria-label="Change status">check_box</mat-icon>
               <mat-icon *ngIf="row.status == false" aria-label="Change status">check_box_outline_blank</mat-icon>
@@ -84,3 +85,4 @@
   </mat-card-content>
 </mat-card>
 
+-->

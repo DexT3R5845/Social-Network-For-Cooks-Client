@@ -1,3 +1,4 @@
+/*
 import {Component} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
@@ -9,7 +10,7 @@ import {AccountsPerPage} from "../../_models/accounts-per-page";
 import {takeUntil} from "rxjs/operators";
 import {CreateModerComponent} from "../create-moder/create-moder.component";
 import {MatDialog} from "@angular/material/dialog";
-import {Profile} from "../../_models/profile";
+import {Profile} from "../../_models";
 import {EditModerComponent} from "../edit-moder/edit-moder.component";
 
 
@@ -115,3 +116,4 @@ export class ModerListPageComponent {
   }
 }
 
+*/

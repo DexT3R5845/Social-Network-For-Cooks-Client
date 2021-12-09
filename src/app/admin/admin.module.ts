@@ -1,3 +1,4 @@
+/*
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -27,3 +28,4 @@ import { EditModerComponent } from './edit-moder/edit-moder.component';
   ]
 })
 export class AdminModule { }
+*/

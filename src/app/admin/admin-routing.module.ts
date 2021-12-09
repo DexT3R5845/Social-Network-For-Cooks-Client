@@ -1,3 +1,4 @@
+/*
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ModerListPageComponent} from "./moder-list-page/moder-list-page.component";
@@ -17,3 +18,4 @@ const routes: Routes = [{
   exports: [RouterModule]
 })
 export class AdminRoutingModule { }
+*/

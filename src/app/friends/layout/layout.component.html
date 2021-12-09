@@ -1,5 +1,9 @@
 <mat-card>
   <mat-card-content>
+    <nav mat-tab-nav-bar>
+      <a mat-tab-link [routerLink]="['/friends/view-friends']">Your friends</a>
+      <a mat-tab-link [routerLink]="['/friends/search']" >People search</a>
+    </nav>
     <router-outlet></router-outlet>
   </mat-card-content>
 </mat-card>
