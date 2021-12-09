@@ -16,13 +16,13 @@ export class AuthService {
 
   private accountSubject: BehaviorSubject<Account | null>;
   public account: Observable<Account | null>;
-  
+
   constructor(
     private http: HttpClient,
     private cookie:CookieStorageService,
     private jwt: JwtHelperService,
     private router: Router
-  ) { 
+  ) {
     const token = this.cookie.getToken();
   if(token && !this.jwt.isTokenExpired(token)){
     const tokenData = this.jwt.decodeToken(token);
@@ -68,6 +68,15 @@ validateResetToken(token: string) {
 
 resetPassword(token: string, password: string, confirmPassword: string) {
   return this.http.put(`${baseUrl}/password/reset`, { token, password, confirmPassword });
+}
+
+validateConfirmToken(token: string) {
+  let reqParams = new HttpParams().set('token', token);
+  return this.http.get(`${baseUrl}/password/creation`, { params: reqParams });
+}
+
+confirmModerator(token: string, password: string, confirmPassword: string) {
+  return this.http.put(`${baseUrl}/password/creation`, { token, password, confirmPassword });
 }
 
 public get accountValue() : Account | null{

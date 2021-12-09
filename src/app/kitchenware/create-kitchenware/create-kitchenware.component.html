@@ -1,0 +1,39 @@
+<div class="container">
+  <h3 class="title" mat-dialog-title>Kitchenware creation</h3>
+
+  <form class="mat-dialog-content" [formGroup]="form">
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Image url"  formControlName="image" [(ngModel)]="this.kitchenware.imgUrl">
+        <mat-error>
+          Entered link has incorrect format. Set only .jpeg|.jpg|.png images.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category" [(ngModel)]="kitchenware.category">
+          <mat-option *ngFor="let category of categories; let i=index" value="{{category}}">{{category}}</mat-option>
+        </mat-select>
+        <mat-error>You must make a selection</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput  placeholder="Name" formControlName="name" required >
+        <mat-error>
+          Please enter kitchenware name correctly
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+      <button class="control-button" mat-button [mat-dialog-close] [disabled]="!form.valid" (click)="confirmAdd()">Create</button>
+      <button class="control-button" mat-button (click)="onNoClick()">Cancel</button>
+    </div>
+  </form>
+</div>
