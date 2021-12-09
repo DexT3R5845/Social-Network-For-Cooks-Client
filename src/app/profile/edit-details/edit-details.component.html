@@ -7,9 +7,19 @@
       <span class="background"></span>
     </label>
 
-    <input #myInput id="fileInput" type="file" (change)="onSelectFile($event)" accept=".png, .jpg, .jpeg">
+    <input id="fileInput" (click)="openDialog()">
     <button mat-raised-button color="primary" *ngIf="hide" (click)="delete()" >Cancel</button>
   </div>
+  <!--<div class="img-profile-changer">
+    <label class="hoverable" for="fileInput">
+      <img class="img-profile" [src]="url ? url : '../assets/images/defaultAv.png'" alt="">
+      <span class="hover-text">Choose file</span>
+      <span class="background"></span>
+    </label>
+
+    <input id="fileInput" type="file" (change)="onSelectFile($event)" accept="image/*" >
+    <button mat-raised-button color="primary" *ngIf="hide" (click)="delete()" >Cancel</button>
+  </div>-->
 
   <mat-form-field appearance="outline">
     <mat-label>First name:</mat-label>
@@ -45,8 +55,8 @@
   </mat-form-field>
 
   <div class="user_profile_control_edit">
-    <button type="submit" [disabled]="form.invalid" (click)="submit()" mat-raised-button color="primary">Save</button>
-    <button type="submit"   (click)="back()" mat-raised-button color="primary">Back</button>
+    <button type="button" [disabled]="form.invalid" (click)="submit()" mat-raised-button color="primary">Save</button>
+    <button type="button"   (click)="back()" mat-raised-button color="primary">Back</button>
   </div>
 </form>
 

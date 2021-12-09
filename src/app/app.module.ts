@@ -22,7 +22,7 @@ import { SharedModule } from './shared/shared.module';
     FormsModule,
     JwtModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

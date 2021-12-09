@@ -1,10 +1,12 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProfileService} from "../../_services/profile.service";
 import {Router} from "@angular/router";
 import {ReplaySubject, takeUntil} from "rxjs";
 import {Profile} from "../../_models/profile";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../_services";
+import {MatDialog} from '@angular/material/dialog';
+import {DialogViewComponent} from "../dialog-view/dialog-view.component";
 
 @Component({
   selector: 'app-edit-details',
@@ -17,6 +19,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     private router: Router,
     private alertService: AlertService,
+    private dialog: MatDialog
   ) {
   }
 
@@ -36,37 +39,57 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   url: string;
   oldImageUrl: string;
   newImageUrl: string;
-  @ViewChild('myInput')
-  imgInputVariable: ElementRef;
+  acceptedFilesFormats: string[] = ['png', 'jpg', 'jpeg', 'tiff', 'bpg'];
 
-  onSelectFile(event: any) {
-    const IMG_TYPE = {
-      'image/png': 'png', 'image/jpeg': 'jpeg', 'image/jpg': 'jpg'
-    };
+  openDialog() {
     this.alertService.clear();
-    if (event.target.files && event.target.files[0]) {
-      if((event.target.files[0].type === "image/png" || event.target.files[0].type === "image/jpeg" 
-      || event.target.files[0].type === "image/jpg") && event.target.files[0].size < 2000000){
-        this.hide = true;
-        const reader = new FileReader();
-        reader.readAsDataURL(event.target.files[0]);
-        reader.onload = (event: any) => {
-          this.newImageUrl = event.target.result;
+    console.log('open dialog');
+    const dialogRef = this.dialog.open(DialogViewComponent, {
+      width: '300px',
+      data: {imgUrl: this.newImageUrl},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.newImageUrl = result;
+      if (this.newImageUrl !== undefined && this.newImageUrl !== '') {
+        if (this.acceptedFilesFormats.includes(result.split('.').pop().toLocaleLowerCase())) {
           this.form.value.imgUrl = this.newImageUrl;
           this.url = this.newImageUrl;
+          this.hide = true;
+          console.log(this.newImageUrl);
+          return;
         }
-        return;
+        this.alertService.error('Uncorrected file format');
       }
-      this.alertService.error('Uncorrected file format');
-    }
+    });
   }
+
+  /*  onSelectFile(event: any) {
+      this.alertService.clear();
+      if (event.target.files && event.target.files[0]) {
+        if((event.target.files[0].type === "image/png" || event.target.files[0].type === "image/jpeg"
+        || event.target.files[0].type === "image/jpg") && event.target.files[0].size < 2000000){
+          this.hide = true;
+          const reader = new FileReader();
+          reader.readAsDataURL(event.target.files[0]);
+          let imgUrl = URL.createObjectURL(event.target.files[0]);
+          reader.onload = (event: any) => {
+            this.newImageUrl = imgUrl;
+            this.form.value.imgUrl = this.newImageUrl;
+            this.url = this.newImageUrl;
+          }
+          return;
+        }
+        this.alertService.error('Uncorrected file format');
+      }
+    }*/
 
   delete() {
     this.alertService.clear();
     this.hide = false
     this.url = this.oldImageUrl;
     this.form.value.imgUrl = this.oldImageUrl;
-    this.imgInputVariable.nativeElement.value = '';
   }
 
   ngOnInit(): void {
@@ -107,7 +130,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success('Data changed', false);
+          this.alertService.success('Data changed',);
         },
         error: error => {
           switch (error.status) {
@@ -145,7 +168,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
         'The lastname must contain only letters. Min length 3 characters' : '';
   }
 
-  back(){
+  back() {
     this.router.navigateByUrl('/profile');
   }
 }

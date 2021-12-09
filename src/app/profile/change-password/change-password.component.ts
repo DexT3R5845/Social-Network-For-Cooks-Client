@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {PasswordValidatorShared} from "../../account/sharedClass/passwordValidatorShared";
 import {ReplaySubject, takeUntil} from "rxjs";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
@@ -35,7 +35,6 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
   alertMessage: string;
   hide = true;
 
-
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
@@ -54,7 +53,7 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success('Password changed', false);
+          this.alertService.success('Password changed');
         },
         error: error => {
           switch (error.status) {

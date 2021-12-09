@@ -2,9 +2,8 @@
 
 mat-card {
   font-family: Raleway;
-  max-width: 400px;
+  max-width: 80%;
   margin: 2em auto;
-  text-align: center;
 }
 
 mat-form-field {
@@ -19,15 +18,11 @@ mat-form-field.ng-invalid.ng-touched {
 }
 
 @keyframes margError {
-  from {
-    margin-bottom: 0;
-  }
-  to {
-    margin-bottom: 13px;
-  }
+  from {margin-bottom: 0;}
+  to {margin-bottom: 13px;}
 }
 
-.mat-title {
+.mat-title{
   font-size: 55.2264px;
 }
 
