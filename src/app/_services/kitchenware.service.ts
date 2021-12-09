@@ -15,7 +15,6 @@ const baseUrl = `${environment.serverUrl}/kitchenware`;
 })
 export class KitchenwareService {
   searchParams: SearchKitchenwareParams;
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -29,18 +28,14 @@ export class KitchenwareService {
 
 
   private getKitchenwareList(currentPage: number, searchedParams: SearchKitchenwareParams, pageSize: number): Observable<Page<Kitchenware>> {
-    return this.http.get<Page<Kitchenware>>(
-      baseUrl,
-      {
+    return this.http.get<Page<Kitchenware>>(`${baseUrl}?`, {
         params: new HttpParams()
           .set('pageSize', pageSize)
           .set('pageNum', currentPage)
           .set('name', searchedParams.name)
           .set('order', searchedParams.order == 'asc')
-          .set('categories', searchedParams.categories)
           .set('active', searchedParams.active)
-      }
-    );
+          .set('categories', searchedParams.categories)});
   }
 
   getKitchenwareBySearch(search: FormGroup, pageSize: number): Observable<Page<Kitchenware>> {

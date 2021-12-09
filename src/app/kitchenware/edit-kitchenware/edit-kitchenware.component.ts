@@ -27,7 +27,7 @@ export class EditKitchenwareComponent implements OnInit, OnDestroy {
   ) {
     this.form = this.formBuilder.group({
       id: [this.data.id],
-      image: [this.data.imgUrl],
+      image: [null, [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
       name: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){1,35}$')]],
       category: ['', [Validators.required]]
     });

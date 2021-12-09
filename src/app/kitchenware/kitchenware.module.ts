@@ -7,6 +7,10 @@ import {SharedModule} from "../shared/shared.module";
 import {MatDialogModule} from "@angular/material/dialog";
 import { CreateKitchenwareComponent } from './create-kitchenware/create-kitchenware.component';
 import { EditKitchenwareComponent } from './edit-kitchenware/edit-kitchenware.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {FormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 
 
@@ -18,6 +22,10 @@ import { EditKitchenwareComponent } from './edit-kitchenware/edit-kitchenware.co
     EditKitchenwareComponent
   ],
   imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatCheckboxModule,
     CommonModule,
     SharedModule,
     KitchenwareRoutingModule,

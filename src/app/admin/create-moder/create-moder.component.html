@@ -52,6 +52,15 @@
       </mat-form-field>
     </div>
 
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Image url"  formControlName="imgUrl">
+        <mat-error>
+          Entered link has incorrect format. Set only .jpeg|.jpg|.png images.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
     <div mat-dialog-actions>
       <button class="control-button" mat-button [mat-dialog-close] [disabled]="!form.valid" (click)="confirmAdd()">Create</button>
       <button class="control-button" mat-button (click)="onNoClick()">Cancel</button>

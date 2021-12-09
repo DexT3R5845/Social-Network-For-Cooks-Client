@@ -1,86 +1,91 @@
-<mat-card>
-  <mat-card-content>
-    <div class="form-group form">
-      <form class="search_form" [formGroup]="searchForm" (ngSubmit)="getBySearch(searchForm)">
-        <button mat-raised-button class="btn item btn-item"  type="submit">Search</button>
 
-        <input class="item list_search" type="search" placeholder="Search by name" aria-label="Search" formControlName="search">
+<div>
+  <form [formGroup]="searchForm" (ngSubmit)="getBySearch(searchForm)">
+    <button mat-raised-button class="btn-filter"  type="submit">Search</button>
 
-        <select class="item list_order" placeholder="Sorting*" formControlName="order">
-          <option value="" disabled selected>Sorting</option>
-          <option value="asc">Sort by name (A-Z)</option>
-          <option value="desc">Sort by name (Z-A)</option>
-        </select>
+    <mat-form-field class="full-width-input">
+      <input matInput placeholder="Search by name" formControlName="search">
+    </mat-form-field>
 
-        <select class="item list_order"  placeholder="Gender*" formControlName="gender">
-          <option value="">Gender</option>
-          <option value="M">Male</option>
-          <option value="F">Female</option>
-        </select>
+    <mat-form-field class="full-width-input">
+      <mat-select placeholder="Sorting" formControlName="order">
+        <mat-option value="" disabled selected>Sorting</mat-option>
+        <mat-option value="asc">Sort by name (A-Z)</mat-option>
+        <mat-option value="desc">Sort by name (Z-A)</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-        <select class="item list_order" placeholder="Account status*" formControlName="status">
-          <option value="">Account status</option>
-          <option value="true">Active</option>
-          <option value="false">Inactive</option>
-        </select>
-      </form>
-    </div>
+    <mat-form-field class="full-width-input">
+      <mat-select placeholder="Gender" formControlName="gender">
+        <mat-option value="">Gender</mat-option>
+        <mat-option value="M">Male</mat-option>
+        <mat-option value="F">Female</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width-input">
+      <mat-select placeholder="Account status" formControlName="status">
+        <mat-option value="">Account status</mat-option>
+        <mat-option value="true">Active</mat-option>
+        <mat-option value="false">Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
 
 
-      <mat-table [dataSource]="pageContent.content" #table matSort class="mat-cell">
+<div class="table-container">
+  <mat-table id="table" [dataSource]="pageContent.content" #table matSort class="mat-cell">
 
-        <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef
-          >ID</mat-header-cell>
-          <mat-cell class="content-text" *matCellDef="let item" >{{item.id}}</mat-cell>
-        </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-cell class="content-text" *matCellDef="let item" >{{item.id}}</mat-cell>
+    </ng-container>
 
-        <ng-container matColumnDef="image">
-          <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
-          <mat-cell class="content-text" *matCellDef="let item">{{item.imgUrl}}</mat-cell>
-        </ng-container>
+    <ng-container matColumnDef="image">
+      <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
+      <mat-cell *matCellDef="let item"><img [src]="item.imgUrl"/></mat-cell>
+    </ng-container>
 
-        <ng-container matColumnDef="firstName">
-          <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-          <mat-cell class="content-text" *matCellDef="let item">{{item.firstName}}</mat-cell>
-        </ng-container>
+    <ng-container matColumnDef="firstName">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell class="content-text" *matCellDef="let item">{{item.firstName}}</mat-cell>
+    </ng-container>
 
-        <ng-container matColumnDef="lastName">
-          <mat-header-cell *matHeaderCellDef>Surname</mat-header-cell>
-          <mat-cell class="content-text" *matCellDef="let item">{{item.lastName}}</mat-cell>
-        </ng-container>
+    <ng-container matColumnDef="lastName">
+      <mat-header-cell *matHeaderCellDef>Surname</mat-header-cell>
+      <mat-cell class="content-text" *matCellDef="let item">{{item.lastName}}</mat-cell>
+    </ng-container>
 
-        <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef>
-            <button mat-icon-button color="primary" (click)="newModerator()">
-              <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-            </button>
-          </mat-header-cell>
-<!--     params     i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at-->
-          <mat-cell *matCellDef="let row; let i=index;" class="s">
-            <button mat-icon-button color="accent" (click)="editModerator(i, row.id)">
-              <mat-icon aria-label="Edit">edit</mat-icon>
-            </button>
-<!--       params     i, row.id, row.title, row.state, row.url-->
-            <button mat-icon-button color="accent" (click)="changeStatus(i, row.id, row.status)">
-              <mat-icon *ngIf="row.status == true" aria-label="Change status">check_box</mat-icon>
-              <mat-icon *ngIf="row.status == false" aria-label="Change status">check_box_outline_blank</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>
+        <button mat-icon-button color="primary" (click)="newModerator()">
+          <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+        </button>
+      </mat-header-cell>
 
-        <mat-header-row class="columns" *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-        <mat-row class="columns" *matRowDef="let item; columns: columnsToDisplay"></mat-row>
-      </mat-table>
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button mat-icon-button color="accent" (click)="editModerator(i, row.id)">
+          <mat-icon aria-label="Edit">edit</mat-icon>
+        </button>
 
-    <mat-paginator
-      [length]="pageContent.totalElements"
-      [pageIndex]="currentPage"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="[12, 20, 40]"
-      (page)="paginationHandler($event)">
-    </mat-paginator>
+        <button mat-icon-button color="accent" (click)="changeStatus(i, row.id, row.status)">
+          <mat-icon *ngIf="row.status == true" aria-label="Change status">check_box</mat-icon>
+          <mat-icon *ngIf="row.status == false" aria-label="Change status">check_box_outline_blank</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
 
-  </mat-card-content>
-</mat-card>
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let item; columns: columnsToDisplay"></mat-row>
+  </mat-table>
+</div>
+
+<mat-paginator
+  [length]="pageContent.totalElements"
+  [pageIndex]="currentPage"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[12, 20, 40]"
+  (page)="paginationHandler($event)">
+</mat-paginator>
 

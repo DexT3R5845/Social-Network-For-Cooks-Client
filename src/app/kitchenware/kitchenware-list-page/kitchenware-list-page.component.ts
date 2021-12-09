@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
 import {ReplaySubject} from "rxjs";
 import {AlertService} from "../../_services";
@@ -13,6 +13,7 @@ import {Profile} from "../../_models/profile";
 import {EditModerComponent} from "../../admin/edit-moder/edit-moder.component";
 import {EditKitchenwareComponent} from "../edit-kitchenware/edit-kitchenware.component";
 import {CreateKitchenwareComponent} from "../create-kitchenware/create-kitchenware.component";
+import {KitchenwareCategory} from "../../_models/kitchenware-category";
 
 
 @Component({
@@ -22,10 +23,10 @@ import {CreateKitchenwareComponent} from "../create-kitchenware/create-kitchenwa
 })
 export class KitchenwareListPageComponent {
   pageContent: Page<Kitchenware>;
-  categories: string[] = [];
+  categories: KitchenwareCategory[] = [];
   searchForm: FormGroup = this.createFormGroup();
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  columnsToDisplay = ['image', 'name', 'category', 'id', 'actions'];
+  columnsToDisplay = ['image', 'name', 'category', 'actions'];
   pageSize: number = 12;
   currentPage: number;
   alertMessage: string;
@@ -33,9 +34,20 @@ export class KitchenwareListPageComponent {
   constructor(
     private service: KitchenwareService,
     private alertService: AlertService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public formBuilder: FormBuilder
   ) {
   }
+
+  private createFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      name: [''],
+      categories: [''],
+      order: ['asc'],
+      active: ['']
+    });
+  }
+
 
   getBySearch(searchForm: FormGroup): void {
     this.alertService.clear();
@@ -73,8 +85,9 @@ export class KitchenwareListPageComponent {
       .pipe(takeUntil(this.destroy))
       .subscribe(
         {next: response => {
-            console.log(response + " got categories");
-            this.categories = response;
+          response.forEach( x => {
+            this.categories.push(new KitchenwareCategory(x));
+          })
           },
           error: () => {
             this.alertService.error("There was an error on the server, please try again later.");
@@ -95,14 +108,6 @@ export class KitchenwareListPageComponent {
 
   }
 
-  private createFormGroup(): FormGroup {
-    return new FormGroup({
-      "name": new FormControl(""),
-      "categories": new FormControl("aaa"),
-      "order": new FormControl("asc"),
-      "active": new FormControl("")
-    });
-  }
 
   changeStatus(index: number, id: string, active: boolean): void {
     this.alertService.clear();

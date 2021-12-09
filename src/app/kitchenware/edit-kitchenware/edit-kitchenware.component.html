@@ -2,7 +2,22 @@
   <h3 class="title" mat-dialog-title>Kitchenware information</h3>
 
   <form class="mat-dialog-content" [formGroup]="form">
-    <h4>ID: {{data.id}}</h4>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Kitchenware identifier"  formControlName="id" [(ngModel)]="this.kitchenware.id" [readonly]="true">
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Image url"  formControlName="image" [(ngModel)]="this.kitchenware.imgUrl">
+        <mat-error>
+          Entered link has incorrect format. Set only .jpeg|.jpg|.png images.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
 
     <div class="form">
       <mat-form-field>

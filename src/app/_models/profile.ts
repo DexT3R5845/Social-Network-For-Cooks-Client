@@ -1,6 +1,4 @@
-export class Profile{
-    id: string;
-    email: string;
+export interface Profile{
     firstName: string;
     lastName: string;
     birthDate: string;

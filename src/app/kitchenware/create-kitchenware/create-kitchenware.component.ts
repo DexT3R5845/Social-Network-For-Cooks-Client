@@ -26,6 +26,7 @@ export class CreateKitchenwareComponent implements OnDestroy {
     private alertService: AlertService
   ) {
     this.form = this.formBuilder.group({
+      image: [null, [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
       name: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){1,35}$')]],
       category: ['', [Validators.required]],
     });

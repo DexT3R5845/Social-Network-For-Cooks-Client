@@ -2,8 +2,18 @@
   <h3 class="title" mat-dialog-title>Moderator personal information</h3>
 
   <form class="mat-dialog-content" [formGroup]="form">
-    <h4>ID: {{data.id}}</h4>
-    <h4>Email: {{profile.email}}</h4>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Identifier"  formControlName="id" [(ngModel)]="this.data.id" [readonly]="true">
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Email"  formControlName="email" [(ngModel)]="profile.email" [readonly]="true">
+      </mat-form-field>
+    </div>
 
     <div class="form">
       <mat-form-field>
@@ -42,6 +52,15 @@
           <mat-option value="F">Female</mat-option>
         </mat-select>
         <mat-error>You must make a selection</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Image url"  formControlName="imgUrl" [(ngModel)]="profile.imgUrl">
+        <mat-error>
+          Entered link has incorrect format. Set only .jpeg|.jpg|.png images.
+        </mat-error>
       </mat-form-field>
     </div>
 

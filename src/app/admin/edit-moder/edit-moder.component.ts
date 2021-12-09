@@ -2,9 +2,9 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {AdminService} from "../../_services/admin.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Profile} from "../../_models/profile";
 import {ReplaySubject, takeUntil} from "rxjs";
 import {AlertService} from "../../_services";
+import {AccountInList} from "../../_models/account-in-list";
 
 @Component({
   selector: 'app-edit-moder',
@@ -15,22 +15,24 @@ import {AlertService} from "../../_services";
 export class EditModerComponent implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   form: FormGroup;
-  profile: Profile;
+  profile: AccountInList;
   alertMessage: string;
 
   constructor(
     public dialogRef: MatDialogRef<EditModerComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Profile,
+    @Inject(MAT_DIALOG_DATA) public data: AccountInList,
     public service: AdminService,
     private formBuilder: FormBuilder,
     private alertService: AlertService
   ) {
     this.form = this.formBuilder.group({
       id: [this.data.id],
+      imgUrl: ['', [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
       firstName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
       lastName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
       birthDate: ['', Validators.required],
-      gender: ['', Validators.required]
+      gender: ['', Validators.required],
+      email: [null],
     });
   }
 
@@ -61,7 +63,7 @@ export class EditModerComponent implements OnInit, OnDestroy {
     this.service.getById(this.data.id)
       .pipe(takeUntil(this.destroy))
       .subscribe({
-        next: (data: Profile) => {
+        next: (data: AccountInList) => {
         this.profile = data;
       },
         error: error => {

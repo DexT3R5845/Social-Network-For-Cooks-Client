@@ -9,7 +9,6 @@ import {Page} from "../../_models/page";
 import {takeUntil} from "rxjs/operators";
 import {CreateModerComponent} from "../create-moder/create-moder.component";
 import {MatDialog} from "@angular/material/dialog";
-import {Profile} from "../../_models/profile";
 import {EditModerComponent} from "../edit-moder/edit-moder.component";
 
 
@@ -83,12 +82,12 @@ export class ModerListPageComponent {
 
   newModerator() {
     this.alertService.clear();
-    this.dialog.open(CreateModerComponent, {data: { profile: Profile }});
+    this.dialog.open(CreateModerComponent, {data: { profile: AccountInList }});
   }
 
   editModerator(index: number, id: string){
     this.alertService.clear();
-    this.dialog.open(EditModerComponent, {data: {profile: Profile, id: id}})
+    this.dialog.open(EditModerComponent, {data: {profile: AccountInList, id: id}})
   }
 
 
