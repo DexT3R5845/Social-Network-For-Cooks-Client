@@ -70,6 +70,15 @@ resetPassword(token: string, password: string, confirmPassword: string) {
   return this.http.put(`${baseUrl}/password/reset`, { token, password, confirmPassword });
 }
 
+validateConfirmToken(token: string) {
+  let reqParams = new HttpParams().set('token', token);
+  return this.http.get(`${baseUrl}/password/creation`, { params: reqParams });
+}
+
+confirmModerator(token: string, password: string, confirmPassword: string) {
+  return this.http.put(`${baseUrl}/password/creation`, { token, password, confirmPassword });
+}
+
 public get accountValue() : Account | null{
   return this.accountSubject.value;
 }

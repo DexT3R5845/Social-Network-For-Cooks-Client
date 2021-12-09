@@ -2,8 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReCaptcha2Component } from 'ngx-captcha';
-import { CookieService } from 'ngx-cookie-service';
-import { finalize, first, ReplaySubject, takeUntil } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 import { CookieStorageService } from 'src/app/_helpers/cookies.storage';
 import { AlertService } from 'src/app/_services';
 import { AuthService } from 'src/app/_services/auth.service';
@@ -71,7 +70,7 @@ onSubmit() {
                       default:
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;
-                  }                  
+                  }
                 this.alertService.error(this.alertMessage);}
             });
     if (this.isCaptcha)

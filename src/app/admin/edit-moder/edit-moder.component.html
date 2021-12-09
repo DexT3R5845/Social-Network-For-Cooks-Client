@@ -1,0 +1,53 @@
+<div class="container">
+  <h3 class="title" mat-dialog-title>Moderator personal information</h3>
+
+  <form class="mat-dialog-content" [formGroup]="form">
+    <h4>ID: {{data.id}}</h4>
+    <h4>Email: {{profile.email}}</h4>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput  placeholder="First Name" [(ngModel)]="profile.firstName" formControlName="firstName" required >
+        <mat-error>
+          Please enter your first name correctly
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Last Name"  [(ngModel)]="profile.lastName"  formControlName="lastName" required >
+        <mat-error>
+          Please enter your last name correctly
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="profile.birthDate" placeholder="Birthdate" formControlName="birthDate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>
+          Please provide a valid birthdate
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender" [(ngModel)]="profile.gender">
+          <mat-option value="M">Male</mat-option>
+          <mat-option value="F">Female</mat-option>
+        </mat-select>
+        <mat-error>You must make a selection</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+      <button class="control-button" mat-button [mat-dialog-close] [disabled]="!form.valid" (click)="editModerator()">Submit edits</button>
+      <button class="control-button" mat-button (click)="onNoClick()">Cancel</button>
+    </div>
+  </form>
+</div>

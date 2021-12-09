@@ -1,0 +1,60 @@
+<div class="container">
+  <h3 class="title" mat-dialog-title>Moderator creation</h3>
+
+  <form class="mat-dialog-content" [formGroup]="form">
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput  placeholder="Email" formControlName="email" required >
+        <mat-error>
+          Please provide a valid email
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput  placeholder="First Name" formControlName="firstName" required >
+        <mat-error>
+          Please enter your first name correctly
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput placeholder="Last Name" formControlName="lastName" required >
+        <mat-error>
+          Please enter your last name correctly
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Birthdate" formControlName="birthDate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>
+          Please provide a valid birthdate
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field>
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option value="M">Male</mat-option>
+          <mat-option value="F">Female</mat-option>
+        </mat-select>
+        <mat-error>You must make a selection</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+      <button class="control-button" mat-button [mat-dialog-close] [disabled]="!form.valid" (click)="confirmAdd()">Create</button>
+      <button class="control-button" mat-button (click)="onNoClick()">Cancel</button>
+    </div>
+  </form>
+</div>
