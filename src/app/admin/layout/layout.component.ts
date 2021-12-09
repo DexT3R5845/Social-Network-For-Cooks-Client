@@ -1,4 +1,3 @@
-/*
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -14,4 +13,3 @@ export class LayoutComponent implements OnInit {
   }
 
 }
-*/

@@ -1,4 +1,3 @@
-/*
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {AdminService} from "../../_services/admin.service";
@@ -68,4 +67,3 @@ export class CreateModerComponent implements OnDestroy {
     this.destroy.complete();
   }
 }
-*/
