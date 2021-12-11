@@ -6,13 +6,15 @@ import { LayoutComponent } from './layout/layout.component';
 import { ListComponent } from './list/list.component';
 import { SharedModule } from '../shared/shared.module';
 import { EditComponent } from './edit/edit.component';
+import { AddComponent } from './add/add.component';
 
 
 @NgModule({
   declarations: [
     LayoutComponent,
     ListComponent,
-    EditComponent
+    EditComponent,
+    AddComponent
   ],
   imports: [
     CommonModule,

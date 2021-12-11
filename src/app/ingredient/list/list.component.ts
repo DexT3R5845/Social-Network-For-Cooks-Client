@@ -54,7 +54,6 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   OnSubmitFilter(){
-    this.alertService.clear();
     this.paginator.pageIndex = 0;
     this.loadData();
   }
@@ -76,7 +75,6 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 loadData(){
-  this.alertService.clear();
   const ingredientFilter: IngredientFilter = {
     sortASC: this.sort.direction == 'asc', sortBy: this.sort.active, ingredientCategory: this.ingredientCategories, searchText: this.searchText,
      numPage: this.paginator.pageIndex, sizePage: this.paginator.pageSize, status: this.filterStatus
@@ -117,10 +115,12 @@ loadData(){
 
     const dialogRef = this.dialog.open(EditComponent, { data: { ingredient: dataDialog, listCategories: this.listCategory } });
     dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
+      if(data){
         ingredient.name = data.name;
         ingredient.active = data.active;
         ingredient.ingredientCategory = data. ingredientCategory;
         ingredient.imgUrl = data.imgUrl;
+      }
     })
   }
 }

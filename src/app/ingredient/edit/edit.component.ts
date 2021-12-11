@@ -62,7 +62,7 @@ export class EditComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy))
         .subscribe({
           next: () => {
-            this.alertService.success("Ingredient successfully updated.", true);
+            this.alertService.success("Ingredient successfully updated.", true, true);
             this.diaglogRef.close(ingredient);
           },
           error: error =>{
@@ -74,7 +74,7 @@ export class EditComponent implements OnInit, OnDestroy {
               });
               break;
             }
-            this.alertService.error(errorMessage, false, "error-dialog");
+            this.alertService.error(errorMessage, false, false, "error-dialog");
           }
         })
       }

@@ -26,14 +26,14 @@ export class AlertService {
         return this.subject.asObservable().pipe(filter(x => x && x.id === id));
     }
 
-    success(message: string, keepAfterRouteChange = false, componentID = this.defaultId) {
+    success(message: string, keepAfterRouteChange = false, autoClose = false, componentID = this.defaultId) {
         this.keepAfterRouteChange = keepAfterRouteChange;
-        this.subject.next({ type: 'success', text: message, id: componentID });
+        this.subject.next({ type: 'success', text: message, id: componentID, autoClose: autoClose });
     }
 
-    error(message: string, keepAfterRouteChange = false, componentID = this.defaultId) {
+    error(message: string, keepAfterRouteChange = false, autoClose = false, componentID = this.defaultId) {
         this.keepAfterRouteChange = keepAfterRouteChange;
-        this.subject.next({ type: 'error', text: message, id: componentID });
+        this.subject.next({ type: 'error', text: message, id: componentID, autoClose: autoClose });
     }
 
     clear() {
