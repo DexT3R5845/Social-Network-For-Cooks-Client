@@ -15,7 +15,7 @@ import { AlertService, IngredientService } from 'src/app/_services';
 export class EditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   ingredient: Ingredient;
-  listCategories: ingredientCategory[];
+  listCategories: ingredientCategory[] = [];
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
 
   constructor(
@@ -30,7 +30,7 @@ export class EditComponent implements OnInit, OnDestroy {
     this.form = formBuilder.group({
       id: ['', Validators.required],
       name: ['', Validators.required],
-      imgUrl: [''],
+      imgUrl: ['', Validators.maxLength(300)],
       ingredientCategory: ['', Validators.required],
       status: ['', Validators.required]
     })

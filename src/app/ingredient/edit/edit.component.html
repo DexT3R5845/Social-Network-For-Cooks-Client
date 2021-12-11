@@ -19,6 +19,9 @@
 
     <mat-form-field class="full-width-input">
         <input matInput placeholder="Image URL" formControlName="imgUrl" [(ngModel)]="ingredient.imgUrl">
+        <mat-error>
+            Max length for image url is 300 symbols.
+          </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width-input">

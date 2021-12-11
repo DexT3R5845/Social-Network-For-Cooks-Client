@@ -29,4 +29,8 @@ export class IngredientService{
     editIngredient(ingredient: Ingredient){
         return this.http.put(`${baseUrl}/${ingredient.id}`, ingredient)
     }
+
+    addIngredient(ingredient: Ingredient){
+        return this.http.post(`${baseUrl}/create`, ingredient)
+    }
 }

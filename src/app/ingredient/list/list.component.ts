@@ -8,6 +8,7 @@ import { Ingredient } from 'src/app/_models';
 import { ingredientCategory } from 'src/app/_models/ingredient.category';
 import { IngredientFilter } from 'src/app/_models/_filters/ingredient.filter';
 import { AlertService, IngredientService } from 'src/app/_services';
+import { AddComponent } from '../add/add.component';
 import { EditComponent } from '../edit/edit.component';
 
 @Component({
@@ -113,7 +114,7 @@ loadData(){
       listCategories: this.listCategory
     };
 
-    const dialogRef = this.dialog.open(EditComponent, { data: { ingredient: dataDialog, listCategories: this.listCategory } });
+    const dialogRef = this.dialog.open(EditComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
       if(data){
         ingredient.name = data.name;
@@ -122,6 +123,15 @@ loadData(){
         ingredient.imgUrl = data.imgUrl;
       }
     })
+  }
+
+  addIngredient(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = this.listCategory;
+
+    this.dialog.open(AddComponent, dialogConfig);
   }
 }
 
