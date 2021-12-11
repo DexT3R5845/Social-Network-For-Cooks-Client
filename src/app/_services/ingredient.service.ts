@@ -25,4 +25,8 @@ export class IngredientService{
     getAllIngredientCategory(){
         return this.http.get<ingredientCategory[]>(`${baseUrl}/category`);
     }
+
+    editIngredient(ingredient: Ingredient){
+        return this.http.put(`${baseUrl}/${ingredient.id}`, ingredient)
+    }
 }

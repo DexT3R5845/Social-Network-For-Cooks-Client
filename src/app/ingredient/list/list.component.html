@@ -1,3 +1,4 @@
+    <alert></alert>
     <div>
       <form [formGroup]="formFilter" (ngSubmit)="OnSubmitFilter()">
         <mat-form-field class="full-width-input">
@@ -50,7 +51,7 @@
         </mat-header-cell>
   
         <mat-cell *matCellDef="let row; let i=index;">
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="editIngredient(row)">
             <mat-icon aria-label="Edit">edit</mat-icon>
           </button>
   

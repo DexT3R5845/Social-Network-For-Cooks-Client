@@ -1,12 +1,14 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ReplaySubject, takeUntil, finalize, merge } from 'rxjs';
 import { Ingredient } from 'src/app/_models';
 import { ingredientCategory } from 'src/app/_models/ingredient.category';
 import { IngredientFilter } from 'src/app/_models/_filters/ingredient.filter';
-import { IngredientService } from 'src/app/_services';
+import { AlertService, IngredientService } from 'src/app/_services';
+import { EditComponent } from '../edit/edit.component';
 
 @Component({
   selector: 'app-list',
@@ -26,7 +28,9 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private ingredientService : IngredientService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private dialog: MatDialog,
+              private alertService: AlertService) {
     this.formFilter = this.formBuilder.group({
       searchText: [],
       status: [],
@@ -50,6 +54,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   OnSubmitFilter(){
+    this.alertService.clear();
     this.paginator.pageIndex = 0;
     this.loadData();
   }
@@ -71,6 +76,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 loadData(){
+  this.alertService.clear();
   const ingredientFilter: IngredientFilter = {
     sortASC: this.sort.direction == 'asc', sortBy: this.sort.active, ingredientCategory: this.ingredientCategories, searchText: this.searchText,
      numPage: this.paginator.pageIndex, sizePage: this.paginator.pageSize, status: this.filterStatus
@@ -97,6 +103,25 @@ loadData(){
       next: data => this.listCategory = data,
       error: () => this.listCategory = []
     });
+  }
+
+  editIngredient(ingredient: Ingredient){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    let dataDialog = Object.assign({}, ingredient);
+    dialogConfig.data = {
+      ingredient: dataDialog,
+      listCategories: this.listCategory
+    };
+
+    const dialogRef = this.dialog.open(EditComponent, { data: { ingredient: dataDialog, listCategories: this.listCategory } });
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
+        ingredient.name = data.name;
+        ingredient.active = data.active;
+        ingredient.ingredientCategory = data. ingredientCategory;
+        ingredient.imgUrl = data.imgUrl;
+    })
   }
 }
 
