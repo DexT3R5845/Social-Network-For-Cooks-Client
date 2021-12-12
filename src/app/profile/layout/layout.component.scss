@@ -17,12 +17,3 @@ mat-form-field.ng-invalid.ng-touched {
   animation-duration: 0.3s;
   margin-bottom: 13px;
 }
-
-@keyframes margError {
-  from {
-    margin-bottom: 0;
-  }
-  to {
-    margin-bottom: 13px;
-  }
-}

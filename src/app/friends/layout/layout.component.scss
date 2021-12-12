@@ -17,15 +17,6 @@ mat-form-field.ng-invalid.ng-touched {
   margin-bottom: 13px;
 }
 
-@keyframes margError {
-  from {
-    margin-bottom: 0;
-  }
-  to {
-    margin-bottom: 13px;
-  }
-}
-
 mat-header-cell, mat-header-row, .mat-header-cell-def {
   font-size: 20px;
   font-weight: bold;
