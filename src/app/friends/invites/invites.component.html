@@ -1,26 +1,18 @@
-<div>
+<div class="search-bar">
   <form [formGroup]="searchForm">
     <mat-form-field color="primary">
-      <input matInput placeholder="Search for you friend" formControlName="search" required>
+      <input matInput placeholder="Search" required formControlName="search">
       <mat-icon matSuffix>search</mat-icon>
       <mat-error>
         {{searchParamErrorMessage}}
       </mat-error>
     </mat-form-field>
 
-    <!--<mat-form-field class="full-width-input">
+    <mat-form-field class="full-width-input">
       <mat-select placeholder="Sorting" formControlName="order">
         <mat-option value="" disabled selected>Sorting</mat-option>
         <mat-option value="asc">Sort by name (A-Z)</mat-option>
         <mat-option value="desc">Sort by name (Z-A)</mat-option>
-      </mat-select>
-    </mat-form-field>-->
-
-    <mat-form-field class="full-width-input">
-      <mat-select placeholder="Gender" formControlName="gender">
-        <mat-option value="">Gender</mat-option>
-        <mat-option value="M">Male</mat-option>
-        <mat-option value="F">Female</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -29,12 +21,14 @@
             mat-flat-button
             color="warn"
             [disabled]="searchForm.invalid"
-            (click)="getFriendsBySearch(searchForm)">Apply Filter
+            (click)="getInvites(searchForm)">Search
     </button>
+
   </form>
 </div>
+<!--(click)="searchForAccount(searchForm)"-->
 
-<table mat-table [dataSource]="pageContent.content" class="table-friends">
+<table mat-table class="table-invites" [dataSource]="pageContent.content">
 
   <ng-container matColumnDef="image">
     <mat-header-cell *matHeaderCellDef> Image</mat-header-cell>
@@ -53,10 +47,17 @@
     <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="delete">
+  <ng-container matColumnDef="accept">
     <mat-header-cell *matHeaderCellDef></mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-      <button mat-raised-button color="primary" (click)="removeFriend(i,element.id)">Remove</button>
+      <button mat-raised-button color="primary" (click)="acceptInvite(i,element.id)">Accept</button>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="decline">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let element; let i = index">
+      <button mat-raised-button color="primary" (click)="declineInvite(i,element.id)">Decline</button>
     </mat-cell>
   </ng-container>
 

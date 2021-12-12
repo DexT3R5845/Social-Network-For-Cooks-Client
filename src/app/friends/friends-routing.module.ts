@@ -3,13 +3,16 @@ import {RouterModule, Routes} from '@angular/router';
 import {LayoutComponent} from "./layout/layout.component";
 import {ViewFriendsComponent} from "./view-friends/view-friends.component";
 import {SearchAccountComponent} from "./search-account/search-account.component";
+import {InvitesComponent} from "./invites/invites.component";
 
 const routes: Routes = [
   {
     path: '', component: LayoutComponent,
     children: [
+      {path: 'search', component: SearchAccountComponent},
       {path: 'view-friends', component: ViewFriendsComponent},
-      {path: 'search', component: SearchAccountComponent}
+      {path: 'invites',component: InvitesComponent}
+
     ]
   }];
 

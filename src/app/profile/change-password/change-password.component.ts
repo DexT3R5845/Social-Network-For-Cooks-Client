@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PasswordValidatorShared} from "../../account/sharedClass/passwordValidatorShared";
 import {ReplaySubject, takeUntil} from "rxjs";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })
-export class ChangePasswordComponent extends PasswordValidatorShared implements OnDestroy {
+export class ChangePasswordComponent extends PasswordValidatorShared implements OnDestroy, OnInit {
 
   constructor(
     private fb: FormBuilder,
@@ -21,7 +21,16 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
     private profileService: ProfileService
   ) {
     super();
-    this.form = fb.group({
+  }
+
+  destroy: ReplaySubject<any> = new ReplaySubject<any>();
+  alertMessage: string;
+  hideOld = true;
+  hideNew = true;
+  hideConfirm = true;
+
+  ngOnInit(): void {
+    this.form = this.fb.group({
         password: new FormControl('', [Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]),
         newPassword: new FormControl('', [Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,32}$')]),
         confirmPassword: new FormControl('')
@@ -29,15 +38,6 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
       {
         validator: MustMatch('newPassword', 'confirmPassword')
       });
-  }
-
-  destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  alertMessage: string;
-  hide = true;
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 
   get newPasswordErrorMessage(): string {
@@ -58,7 +58,7 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
         error: error => {
           switch (error.status) {
             case 400:
-              this.alertMessage = "Wrong old password";
+              this.alertMessage = "Something went wrong";
               break;
             case 409:
               this.alertMessage = error.error.message;
@@ -74,5 +74,10 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
 
   back() {
     this.router.navigateByUrl('/profile');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 }

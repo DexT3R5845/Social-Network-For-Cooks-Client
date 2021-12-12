@@ -18,8 +18,8 @@ const routes: Routes = [
   {path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard], data: {roles: [Role.Admin, Role.User]}},
   {path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard]},
   {path: 'friends', loadChildren: friendsModule, canActivate: [AuthGuard]},
-  {path: 'kitchenware', loadChildren: kitchenwareModule, canActivate: [AuthGuard], data: {roles: [Role.Moderator ]}},
-  {path: 'ingredients', loadChildren: ingredientModule, canActivate: [AuthGuard], data: {roles: [Role.User]}},//moderator
+  {path: 'kitchenware', loadChildren: kitchenwareModule, canActivate: [AuthGuard], data: {roles: [Role.Moderator]}},
+  {path: 'ingredients', loadChildren: ingredientModule, canActivate: [AuthGuard], data: {roles: [Role.Moderator]}},
   {path: '**', redirectTo: '/account/signin', pathMatch: 'full'}
 ];
 

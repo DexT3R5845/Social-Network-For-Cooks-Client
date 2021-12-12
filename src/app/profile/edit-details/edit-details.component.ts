@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProfileService} from "../../_services/profile.service";
 import {Router} from "@angular/router";
 import {ReplaySubject, takeUntil} from "rxjs";
-import {Profile} from "../../_models/profile";
+import {Profile} from "../../_models";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../_services";
 import {MatDialog} from '@angular/material/dialog';
@@ -25,7 +25,6 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   }
 
   hide = false;
-  loading = true;
   profileData: Profile;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
@@ -40,51 +39,28 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   url: string;
   oldImageUrl: string;
   newImageUrl: string;
-  acceptedFilesFormats: string[] = ['png', 'jpg', 'jpeg', 'tiff', 'bpg'];
+  acceptedFilesFormats: string[] = ['png', 'jpg', 'jpeg', 'bpg'];
 
   openDialog() {
     this.alertService.clear();
-    console.log('open dialog');
     const dialogRef = this.dialog.open(DialogViewComponent, {
       width: '300px',
       data: {imgUrl: this.newImageUrl},
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.newImageUrl = result;
       if (this.newImageUrl !== undefined && this.newImageUrl !== '') {
-        if (this.acceptedFilesFormats.includes(result.split('.').pop().toLocaleLowerCase())) {
+        if (this.acceptedFilesFormats.includes(result.split('.').pop().toLowerCase())) {
           this.form.value.imgUrl = this.newImageUrl;
           this.url = this.newImageUrl;
           this.hide = true;
-          console.log(this.newImageUrl);
           return;
         }
         this.alertService.error('Uncorrected file format');
       }
     });
   }
-
-  /*  onSelectFile(event: any) {
-      this.alertService.clear();
-      if (event.target.files && event.target.files[0]) {
-        if((event.target.files[0].type === "image/png" || event.target.files[0].type === "image/jpeg"
-        || event.target.files[0].type === "image/jpg") && event.target.files[0].size < 2000000){
-          this.hide = true;
-          const reader = new FileReader();
-          reader.readAsDataURL(event.target.files[0]);
-          let imgUrl = URL.createObjectURL(event.target.files[0]);
-          reader.onload = (event: any) => {
-            this.newImageUrl = imgUrl;
-            this.form.value.imgUrl = this.newImageUrl;
-            this.url = this.newImageUrl;
-          }
-          return;
-        }
-        this.alertService.error('Uncorrected file format');
-      }
-    }*/
 
   delete() {
     this.alertService.clear();
@@ -97,18 +73,11 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     this.profileService.getProfileData()
       .pipe(takeUntil(this.destroy))
       .subscribe((data: Profile) => {
-        this.profileData = {
-          firstName: data.firstName,
-          lastName: data.lastName,
-          birthDate: data.birthDate,
-          gender: data.gender,
-          imgUrl: data.imgUrl
-        };
-        this.loading = false;
+        this.profileData = data;
         this.form.setValue({
           firstName: this.profileData.firstName,
           lastName: this.profileData.lastName,
-           date: moment(this.profileData.birthDate, "DD/MM/YYYY"),
+          date: moment(this.profileData.birthDate, "DD/MM/YYYY"),
           gender: this.profileData.gender,
           imgUrl: this.profileData.imgUrl
         });

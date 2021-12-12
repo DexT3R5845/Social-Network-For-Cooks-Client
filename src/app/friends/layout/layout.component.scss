@@ -2,7 +2,7 @@
 
 mat-card {
   font-family: Raleway;
-  max-width: 80%;
+  width: 90%;
   margin: 2em auto;
 }
 
@@ -26,29 +26,8 @@ mat-form-field.ng-invalid.ng-touched {
   }
 }
 
-.mat-title {
-  font-size: 55.2264px;
+mat-header-cell, mat-header-row, .mat-header-cell-def {
+  font-size: 20px;
+  font-weight: bold;
 }
 
-.error {
-  padding: 16px;
-  width: 300px;
-  color: white;
-  background-color: red;
-}
-
-nav a {
-  text-decoration: none;
-}
-
-nav a:focus {
-  border-bottom: 3px solid #f44336;
-}
-
-nav a {
-  text-decoration: none;
-}
-
-nav a:focus {
-  border-bottom: 3px solid #f44336;
-}

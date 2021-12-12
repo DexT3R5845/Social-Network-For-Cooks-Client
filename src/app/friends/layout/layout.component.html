@@ -1,9 +1,16 @@
 <mat-card>
+  <alert></alert>
   <mat-card-content>
-    <nav mat-tab-nav-bar>
-      <a mat-tab-link [routerLink]="['/friends/view-friends']">Your friends</a>
-      <a mat-tab-link [routerLink]="['/friends/search']" >People search</a>
-    </nav>
-    <router-outlet></router-outlet>
+    <mat-tab-group>
+      <mat-tab label="My friends">
+        <app-view-friends></app-view-friends>
+      </mat-tab>
+      <mat-tab label="People search">
+        <app-search-account></app-search-account>
+      </mat-tab>
+      <mat-tab label="My invites">
+        <app-invites></app-invites>
+      </mat-tab>
+    </mat-tab-group>
   </mat-card-content>
 </mat-card>

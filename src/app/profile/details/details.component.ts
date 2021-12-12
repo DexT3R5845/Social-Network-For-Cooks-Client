@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ReplaySubject, takeUntil } from 'rxjs';
-import { Profile } from 'src/app/_models/profile';
-import { ProfileService } from 'src/app/_services/profile.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ReplaySubject, takeUntil} from 'rxjs';
+import {Profile} from 'src/app/_models/profile';
+import {ProfileService} from 'src/app/_services/profile.service';
 import {Router} from "@angular/router";
 
 @Component({
@@ -13,27 +13,26 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   profileData: Profile;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  loading = true;
-  url:string;
+  url: string;
 
-  constructor(private profileService: ProfileService, private router: Router){}
+  constructor(private profileService: ProfileService, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.profileService.getProfileData()
       .pipe(takeUntil(this.destroy))
       .subscribe((data: Profile) => {
         this.profileData = data;
-        this.loading=false;
         this.profileData.gender = this.profileData.gender === "F" ? "Female" : "Male";
         this.url = this.profileData.imgUrl;
       });
   }
 
-  edit(){
+  edit() {
     this.router.navigateByUrl('/profile/edit-details');
   }
 
-  changePassword(){
+  changePassword() {
     this.router.navigateByUrl('/profile/change-password');
   }
 

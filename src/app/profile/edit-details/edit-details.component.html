@@ -1,5 +1,5 @@
 <form class="edit_profile" [formGroup]="form">
-  <!-- <div *ngIf="loading">loading...</div> -->
+
   <div class="img-profile-changer">
     <label class="hoverable" for="fileInput">
       <img class="img-profile" [src]="url ? url : '../assets/images/defaultAv.png'" alt="">
@@ -10,16 +10,6 @@
     <input id="fileInput" (click)="openDialog()">
     <button mat-raised-button color="primary" *ngIf="hide" (click)="delete()" >Cancel</button>
   </div>
-  <!--<div class="img-profile-changer">
-    <label class="hoverable" for="fileInput">
-      <img class="img-profile" [src]="url ? url : '../assets/images/defaultAv.png'" alt="">
-      <span class="hover-text">Choose file</span>
-      <span class="background"></span>
-    </label>
-
-    <input id="fileInput" type="file" (change)="onSelectFile($event)" accept="image/*" >
-    <button mat-raised-button color="primary" *ngIf="hide" (click)="delete()" >Cancel</button>
-  </div>-->
 
   <mat-form-field appearance="outline">
     <mat-label>First name:</mat-label>
