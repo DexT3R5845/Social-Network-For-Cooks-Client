@@ -60,22 +60,6 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadData();
   }
 
-  get filterControl(){
-    return this.formFilter.controls;
-  }
-
-  get searchText(){
-    return this.filterControl['searchText'].value;
-  }
-
-  get filterStatus(){
-    return this.filterControl['status'].value;
-  }
-
-  get ingredientCategories(){
-    return this.formFilter.controls['ingredientCategories'].value
-  }
-
 loadData(){
   const ingredientFilter: IngredientFilter = {
     sortASC: this.sort.direction == 'asc', sortBy: this.sort.active, ingredientCategory: this.ingredientCategories, searchText: this.searchText,
@@ -147,6 +131,22 @@ loadData(){
         ingredient.active = data.active;
       }
     })
+  }
+
+  get filterControl(){
+    return this.formFilter.controls;
+  }
+
+  get searchText(){
+    return this.filterControl['searchText'].value;
+  }
+
+  get filterStatus(){
+    return this.filterControl['status'].value;
+  }
+
+  get ingredientCategories(){
+    return this.formFilter.controls['ingredientCategories'].value
   }
 }
 

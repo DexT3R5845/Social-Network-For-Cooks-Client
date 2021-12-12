@@ -66,6 +66,9 @@ destroy: ReplaySubject<any> = new ReplaySubject<any>();
                 errorMessage += error.error.data[key];
               });
               break;
+              default:
+                errorMessage = "There was a server error."
+                break;
             }
             this.alertService.error(errorMessage, false, false, "error-dialog");
           }
