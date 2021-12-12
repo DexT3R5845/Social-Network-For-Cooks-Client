@@ -75,11 +75,11 @@ validateConfirmToken(token: string) {
   return this.http.get(`${baseUrl}/password/creation`, { params: reqParams });
 }
 
-confirmModerator(token: string, password: string, confirmPassword: string) {
+  confirmModerator(token: string, password: string, confirmPassword: string) {
   return this.http.put(`${baseUrl}/password/creation`, { token, password, confirmPassword });
 }
 
-public get accountValue() : Account | null{
+public get accountValue() : Account | null {
   return this.accountSubject.value;
 }
 
