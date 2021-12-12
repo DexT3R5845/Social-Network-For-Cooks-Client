@@ -55,7 +55,7 @@
             <mat-icon aria-label="Edit">edit</mat-icon>
           </button>
   
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="deleteIngredient(row)">
             <mat-icon *ngIf="row.active" aria-label="check_box">check_box</mat-icon>
             <mat-icon *ngIf="!row.active" aria-label="check_box">check_box_outline_blank</mat-icon>
           </button>

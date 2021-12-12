@@ -28,7 +28,7 @@ export class EditComponent implements OnInit, OnDestroy {
     this.ingredient = data.ingredient;
     this.listCategories = data.listCategories;
     this.form = formBuilder.group({
-      id: ['', Validators.required],
+      id: [{value: '', disabled: true}, Validators.required],
       name: ['', Validators.required],
       imgUrl: ['', Validators.maxLength(300)],
       ingredientCategory: ['', Validators.required],

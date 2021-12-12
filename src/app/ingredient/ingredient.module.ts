@@ -7,6 +7,7 @@ import { ListComponent } from './list/list.component';
 import { SharedModule } from '../shared/shared.module';
 import { EditComponent } from './edit/edit.component';
 import { AddComponent } from './add/add.component';
+import { DeleteComponent } from './delete/delete.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { AddComponent } from './add/add.component';
     LayoutComponent,
     ListComponent,
     EditComponent,
-    AddComponent
+    AddComponent,
+    DeleteComponent
   ],
   imports: [
     CommonModule,

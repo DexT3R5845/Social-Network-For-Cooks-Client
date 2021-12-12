@@ -4,7 +4,7 @@
 <mat-dialog-content [formGroup]="form">
     <alert id="error-dialog"></alert>
     <mat-form-field class="full-width-input">
-        <input matInput placeholder="ID" formControlName="id" [(ngModel)]="ingredient.id" readonly>
+        <input matInput placeholder="ID" formControlName="id" [(ngModel)]="ingredient.id" >
         <mat-error>
             Please provide a ID.
           </mat-error>

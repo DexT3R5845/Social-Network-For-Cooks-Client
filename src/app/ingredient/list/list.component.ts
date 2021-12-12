@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ReplaySubject, takeUntil, finalize, merge } from 'rxjs';
@@ -9,6 +9,7 @@ import { ingredientCategory } from 'src/app/_models/ingredient.category';
 import { IngredientFilter } from 'src/app/_models/_filters/ingredient.filter';
 import { AlertService, IngredientService } from 'src/app/_services';
 import { AddComponent } from '../add/add.component';
+import { DeleteComponent } from '../delete/delete.component';
 import { EditComponent } from '../edit/edit.component';
 
 @Component({
@@ -132,6 +133,20 @@ loadData(){
     dialogConfig.data = this.listCategory;
 
     this.dialog.open(AddComponent, dialogConfig);
+  }
+
+  deleteIngredient(ingredient: Ingredient){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = Object.assign({}, ingredient);
+  
+    const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
+      if(data){
+        ingredient.active = data.active;
+      }
+    })
   }
 }
 
