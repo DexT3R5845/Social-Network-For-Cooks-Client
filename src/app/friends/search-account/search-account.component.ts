@@ -59,7 +59,7 @@ export class SearchAccountComponent implements OnInit {
           this.currentPage = 0;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later");
+          this.alertService.error("Unexpected error, try later",true,true);
         }
       });
   }
@@ -69,7 +69,7 @@ export class SearchAccountComponent implements OnInit {
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success("The invite has been sent");
+          this.alertService.success("The invite has been sent",true,true);
           this.pageContent.content.splice(index, 1);
           this.table.renderRows();
         },
@@ -85,7 +85,7 @@ export class SearchAccountComponent implements OnInit {
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage);
+          this.alertService.error(this.alertMessage,true,true);
         }
       });
   }
@@ -96,13 +96,12 @@ export class SearchAccountComponent implements OnInit {
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
-          console.log(response);
           this.pageContent = response;
           this.currentPage = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later");
+          this.alertService.error("Unexpected error, try later",true,true);
         }
       });
   }

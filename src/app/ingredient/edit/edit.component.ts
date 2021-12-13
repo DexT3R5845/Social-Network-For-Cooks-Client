@@ -1,11 +1,10 @@
-import { DataSource } from '@angular/cdk/collections';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ReplaySubject, takeUntil } from 'rxjs';
-import { Ingredient } from 'src/app/_models';
-import { ingredientCategory } from 'src/app/_models/ingredient.category';
-import { AlertService, IngredientService } from 'src/app/_services';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {ReplaySubject, takeUntil} from 'rxjs';
+import {Ingredient} from 'src/app/_models';
+import {ingredientCategory} from 'src/app/_models/ingredient.category';
+import {AlertService, IngredientService} from 'src/app/_services';
 
 @Component({
   selector: 'app-edit',
@@ -21,7 +20,7 @@ export class EditComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(MAT_DIALOG_DATA) data: any,
     private formBuilder: FormBuilder,
-    private diaglogRef: MatDialogRef<EditComponent>,
+    private dialogRef: MatDialogRef<EditComponent>,
     private ingredientService: IngredientService,
     private alertService: AlertService
   ) {
@@ -45,7 +44,7 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   close(){
-    this.diaglogRef.close();
+    this.dialogRef.close();
   }
 
   save(){
@@ -63,7 +62,7 @@ export class EditComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.alertService.success("Ingredient successfully updated.", true, true);
-            this.diaglogRef.close(ingredient);
+            this.dialogRef.close(ingredient);
           },
           error: error =>{
             let errorMessage = "";

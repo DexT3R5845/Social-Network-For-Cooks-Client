@@ -57,7 +57,7 @@ export class InvitesComponent implements OnInit {
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success("The invite has been accepted");
+          this.alertService.success("The invite has been accepted",true,true);
           this.pageContent.content.splice(index,1);
           this.table.renderRows();
         },
@@ -73,7 +73,7 @@ export class InvitesComponent implements OnInit {
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage);
+          this.alertService.error(this.alertMessage,true,true);
         }
       });
   }
@@ -83,7 +83,7 @@ export class InvitesComponent implements OnInit {
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next:()=>{
-          this.alertService.success("The invite has been declined");
+          this.alertService.success("The invite has been declined",true,true);
           this.pageContent.content.splice(index,1);
           this.table.renderRows();
         },
@@ -99,7 +99,7 @@ export class InvitesComponent implements OnInit {
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage);
+          this.alertService.error(this.alertMessage,true,true);
         }
       });
   }
@@ -115,7 +115,7 @@ export class InvitesComponent implements OnInit {
           this.pageSize = pageEvent.pageSize;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later");
+          this.alertService.error("Unexpected error, try later",true,true);
         }
       });
   }
