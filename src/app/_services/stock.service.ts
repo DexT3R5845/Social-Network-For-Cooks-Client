@@ -36,4 +36,8 @@ export class StockService{
     editIngredientInStock(ingredientId: string, amount: number){
         return this.http.patch(`${baseUrl}/${ingredientId}?amount=${amount}`, {});
     }
+
+    deleteIngredientInStock(ingredientId: string){
+        return this.http.delete(`${baseUrl}/${ingredientId}`);
+    }
 }

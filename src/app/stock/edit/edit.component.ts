@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReplaySubject, takeUntil } from 'rxjs';
@@ -10,7 +10,7 @@ import { AlertService, StockService } from 'src/app/_services';
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   stockItem: Stock;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();

@@ -4,9 +4,10 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { finalize, merge, ReplaySubject, takeUntil } from 'rxjs';
-import { Ingredient, ingredientCategory, Stock } from 'src/app/_models';
+import { ingredientCategory, Stock } from 'src/app/_models';
 import { StockFilter } from 'src/app/_models/_filters';
 import { AlertService, IngredientService, StockService } from 'src/app/_services';
+import { DeleteComponent } from '../delete/delete.component';
 import { EditComponent } from '../edit/edit.component';
 
 @Component({
@@ -111,18 +112,17 @@ loadData(){
     // this.dialog.open(AddComponent, dialogConfig);
   }
 
-  deleteIngredient(ingredient: Ingredient){
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
-    // dialogConfig.data = Object.assign({}, ingredient);
+  deleteIngredient(stockItem: Stock){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.data = Object.assign({}, stockItem);
   
-    // const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
-    // dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
-    //   if(data){
-    //     ingredient.active = data.active;
-    //   }
-    // })
+    const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Stock) => {
+      if(data) {
+        this.dataSource = this.dataSource.filter(u => u.id !== data.id);
+      }
+    })
   }
 
   get filterControl(){
