@@ -1,12 +1,16 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ReplaySubject, takeUntil, finalize, merge } from 'rxjs';
 import { Ingredient } from 'src/app/_models';
 import { ingredientCategory } from 'src/app/_models/ingredient.category';
 import { IngredientFilter } from 'src/app/_models/_filters/ingredient.filter';
-import { IngredientService } from 'src/app/_services';
+import { AlertService, IngredientService } from 'src/app/_services';
+import { AddComponent } from '../add/add.component';
+import { DeleteComponent } from '../delete/delete.component';
+import { EditComponent } from '../edit/edit.component';
 
 @Component({
   selector: 'app-list',
@@ -26,7 +30,9 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private ingredientService : IngredientService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private dialog: MatDialog,
+              private alertService: AlertService) {
     this.formFilter = this.formBuilder.group({
       searchText: [],
       status: [],
@@ -52,22 +58,6 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   OnSubmitFilter(){
     this.paginator.pageIndex = 0;
     this.loadData();
-  }
-
-  get filterControl(){
-    return this.formFilter.controls;
-  }
-
-  get searchText(){
-    return this.filterControl['searchText'].value;
-  }
-
-  get filterStatus(){
-    return this.filterControl['status'].value;
-  }
-
-  get ingredientCategories(){
-    return this.formFilter.controls['ingredientCategories'].value
   }
 
 loadData(){
@@ -97,6 +87,66 @@ loadData(){
       next: data => this.listCategory = data,
       error: () => this.listCategory = []
     });
+  }
+
+  editIngredient(ingredient: Ingredient){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    let dataDialog = Object.assign({}, ingredient);
+    dialogConfig.data = {
+      ingredient: dataDialog,
+      listCategories: this.listCategory
+    };
+
+    const dialogRef = this.dialog.open(EditComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
+      if(data){
+        ingredient.name = data.name;
+        ingredient.active = data.active;
+        ingredient.ingredientCategory = data. ingredientCategory;
+        ingredient.imgUrl = data.imgUrl;
+      }
+    })
+  }
+
+  addIngredient(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = this.listCategory;
+
+    this.dialog.open(AddComponent, dialogConfig);
+  }
+
+  deleteIngredient(ingredient: Ingredient){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = Object.assign({}, ingredient);
+  
+    const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
+      if(data){
+        ingredient.active = data.active;
+      }
+    })
+  }
+
+  get filterControl(){
+    return this.formFilter.controls;
+  }
+
+  get searchText(){
+    return this.filterControl['searchText'].value;
+  }
+
+  get filterStatus(){
+    return this.filterControl['status'].value;
+  }
+
+  get ingredientCategories(){
+    return this.formFilter.controls['ingredientCategories'].value
   }
 }
 

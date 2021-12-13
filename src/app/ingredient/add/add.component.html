@@ -1,0 +1,45 @@
+<div class="container">
+    <h2 mat-dialog-title>Add Ingredient</h2>
+    
+    <mat-dialog-content [formGroup]="form">
+        <alert id="error-dialog"></alert>    
+        <mat-form-field class="full-width-input">
+            <input matInput placeholder="Name" formControlName="name">
+            <mat-error>
+                Please provide a name.
+              </mat-error>
+        </mat-form-field>
+    
+        <mat-form-field class="full-width-input">
+            <input matInput placeholder="Image URL" formControlName="imgUrl">
+            <mat-error>
+                Max length for image url is 300 symbols.
+              </mat-error>
+        </mat-form-field>
+    
+        <mat-form-field class="full-width-input">
+            <mat-select placeholder="Select category" formControlName="ingredientCategory">
+                <mat-option *ngFor="let category of listCategories" [value]="category.name">{{category.name}}</mat-option>
+              </mat-select>
+              <mat-error>
+                Please provide a category for ingredient.
+              </mat-error>
+        </mat-form-field>
+    
+        <mat-form-field class="full-width-input">
+            <mat-select placeholder="Status" formControlName="status">
+                <mat-option [value]="true">Active</mat-option>
+                <mat-option [value]="false">Inactive</mat-option>
+              </mat-select>
+              <mat-error>
+                Please provide a status for ingredient.
+              </mat-error>
+        </mat-form-field>
+     
+    </mat-dialog-content>
+    
+    <mat-dialog-actions>
+        <button class="mat-raised-button" (click)="close()">Close</button>
+        <button class="mat-raised-button mat-primary" (click)="add()">Add</button>
+    </mat-dialog-actions>
+    </div>
