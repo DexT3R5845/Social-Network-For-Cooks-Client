@@ -9,6 +9,10 @@
         <button mat-button routerLink="/ingredients">Ingredients</button>
       </div>
 
+      <div *ngIf="account && account.role == Role.User" fxFlex fxShow fxHide.lt-md>
+        <button mat-button routerLink="/stock">My Stock</button>
+      </div>
+
   <div *ngIf="!account" fxLayout="row" fxShow="false" fxShow.gt-sm>
     <button mat-button routerLink="/account/signin">
       <mat-icon>power_settings_new</mat-icon>
