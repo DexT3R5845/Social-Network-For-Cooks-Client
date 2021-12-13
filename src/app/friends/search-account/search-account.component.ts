@@ -1,12 +1,13 @@
-import {Component, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Page} from "../../_models/page";
 import {AccountInList} from "../../_models/account-in-list";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {FriendService} from "../../_services/friend.service";
 import {ReplaySubject, takeUntil} from "rxjs";
-import {MatTable, MatTableDataSource} from "@angular/material/table";
+import {MatTable} from "@angular/material/table";
 import {AlertService} from "../../_services";
 import {PageEvent} from "@angular/material/paginator";
+import {SearchParams} from "../../_models/search-params";
 
 @Component({
   selector: 'app-search-account',
@@ -27,6 +28,7 @@ export class SearchAccountComponent implements OnInit {
     order: new FormControl("asc"),
     gender: new FormControl("")
   });
+  accountSearch: SearchParams;
 
   constructor(private service: FriendService,private alertService: AlertService) {
   }
@@ -41,9 +43,15 @@ export class SearchAccountComponent implements OnInit {
         'The name must contain only letters. Min length 3 characters' : '';
   }
 
-  searchForAccount(searchForm: FormGroup) {
+  searchForAccount() {
     this.alertService.clear();
-    this.service.getAccountBySearch(searchForm, this.pageSize)
+    this.accountSearch = {
+      search: this.searchForm.value.search,
+      order: this.searchForm.value.order,
+      gender: this.searchForm.value.gender,
+      status: ""
+    }
+    this.service.getAccountBySearch(this.accountSearch, this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
@@ -83,7 +91,6 @@ export class SearchAccountComponent implements OnInit {
   }
 
   paginationHandler(pageEvent: PageEvent): void {
-    console.log(pageEvent);
     this.alertService.clear();
     this.service.getAccountsByPageNum(pageEvent.pageIndex, pageEvent.pageSize)
       .pipe(takeUntil(this.destroy))

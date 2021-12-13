@@ -5,8 +5,9 @@ import {AccountInList} from "../../_models/account-in-list";
 import {Page} from "../../_models/page";
 import {ReplaySubject, takeUntil} from "rxjs";
 import {AlertService} from "../../_services";
-import {MatTable, MatTableDataSource} from "@angular/material/table";
+import {MatTable} from "@angular/material/table";
 import {PageEvent} from "@angular/material/paginator";
+import {SearchParams} from "../../_models/search-params";
 
 @Component({
   selector: 'app-view-friends',
@@ -27,16 +28,23 @@ export class ViewFriendsComponent implements OnInit {
     order: new FormControl("asc"),
     gender: new FormControl("")
   });
+  friendSearch: SearchParams;
 
   constructor(private service: FriendService, private alertService: AlertService) {
   }
 
   ngOnInit(): void {
-    this.getFriendsBySearch(this.searchForm);
+    this.friendSearch = {
+      search: this.searchForm.value.search,
+      order: this.searchForm.value.order,
+      gender: this.searchForm.value.gender,
+      status: ""
+    }
+    this.getFriendsBySearch();
   }
 
-  getFriendsBySearch(searchForm: FormGroup) {
-    this.service.getFriendsBySearch(searchForm, this.pageSize)
+  getFriendsBySearch() {
+    this.service.getFriendsBySearch(this.friendSearch, this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {

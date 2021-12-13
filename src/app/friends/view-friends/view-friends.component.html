@@ -8,13 +8,13 @@
       </mat-error>
     </mat-form-field>
 
-    <!--<mat-form-field class="full-width-input">
+    <mat-form-field class="full-width-input">
       <mat-select placeholder="Sorting" formControlName="order">
         <mat-option value="" disabled selected>Sorting</mat-option>
         <mat-option value="asc">Sort by name (A-Z)</mat-option>
         <mat-option value="desc">Sort by name (Z-A)</mat-option>
       </mat-select>
-    </mat-form-field>-->
+    </mat-form-field>
 
     <mat-form-field class="full-width-input">
       <mat-select placeholder="Gender" formControlName="gender">
@@ -29,7 +29,7 @@
             mat-flat-button
             color="warn"
             [disabled]="searchForm.invalid"
-            (click)="getFriendsBySearch(searchForm)">Apply Filter
+            (click)="getFriendsBySearch()">Apply Filter
     </button>
   </form>
 </div>

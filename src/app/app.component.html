@@ -6,7 +6,7 @@
   </span>
 
 
-  <div *ngIf="account && account.role == Role.User" fxFlex fxShow fxHide.lt-md><!--Moderator-->
+  <div *ngIf="account && account.role == Role.Moderator" fxFlex fxShow fxHide.lt-md>
     <button mat-button routerLink="/ingredients">Ingredients</button>
   </div>
 

@@ -21,12 +21,11 @@
             mat-flat-button
             color="warn"
             [disabled]="searchForm.invalid"
-            (click)="getInvites(searchForm)">Search
+            (click)="getInvites()">Search
     </button>
 
   </form>
 </div>
-<!--(click)="searchForAccount(searchForm)"-->
 
 <table mat-table class="table-invites" [dataSource]="pageContent.content">
 

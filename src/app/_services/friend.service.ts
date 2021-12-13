@@ -5,7 +5,6 @@ import {SearchParams} from "../_models/search-params";
 import {Observable} from "rxjs";
 import {AccountInList} from "../_models/account-in-list";
 import {Page} from "../_models/page";
-import {FormGroup} from "@angular/forms";
 
 const baseUrl = `${environment.serverUrl}/friends`;
 
@@ -46,9 +45,9 @@ export class FriendService {
     );
   }
 
-  getFriendsBySearch(search: FormGroup, pageSize: number): Observable<Page<AccountInList>> {
-    this.searchParams = search.value;
-    return this.getAllFriends(0, pageSize, this.searchParams);
+  getFriendsBySearch(search: SearchParams, pageSize: number): Observable<Page<AccountInList>> {
+    this.searchParams = search;
+    return this.getAllFriends(0, pageSize, search);
   }
 
   getFriendsByPageNum(currentPage: number, pageSize: number) {
@@ -59,25 +58,25 @@ export class FriendService {
     return this.getAccount(currentPage, pageSize, this.searchParams);
   }
 
-  getAccountBySearch(search: FormGroup, pageSize: number) {
-    this.searchParams = search.value;
+  getAccountBySearch(search: SearchParams, pageSize: number) {
+    this.searchParams = search;
     return this.getAccount(0, pageSize, this.searchParams);
   }
 
-  getInvitesBySearch(search: FormGroup, pageSize: number){
-    this.searchParams = search.value;
-    return this.getInvites(0,pageSize,this.searchParams);
+  getInvitesBySearch(search: SearchParams, pageSize: number) {
+    this.searchParams = search;
+    return this.getInvites(0, pageSize, this.searchParams);
   }
 
   createInvite(id: number) {
-    return this.http.post(`${baseUrl}/new`, {}, {
+    return this.http.post(baseUrl, {}, {
       params: new HttpParams()
         .set('friendId', id)
     });
   }
 
-  getInvitesByPageNum(currentPage: number, pageSize: number){
-    return this.getInvites(currentPage,pageSize,this.searchParams);
+  getInvitesByPageNum(currentPage: number, pageSize: number) {
+    return this.getInvites(currentPage, pageSize, this.searchParams);
   }
 
   getInvites(currentPage: number, pageSize: number, searchParams: SearchParams): Observable<Page<AccountInList>> {
@@ -92,20 +91,14 @@ export class FriendService {
   }
 
   removeFried(id: number) {
-    return this.http.delete(baseUrl, {
-      params: new HttpParams().set('friendId', id)
-    });
+    return this.http.delete(`${baseUrl}/` + id);
   }
 
-  acceptInvite(id:number){
-    return this.http.put(`${baseUrl}/invites`,{},{
-      params:new HttpParams().set('friendId',id)
-    });
+  acceptInvite(id: number) {
+    return this.http.patch(`${baseUrl}/invites/` + id, {});
   }
 
-  declineInvite(id:number){
-    return this.http.delete(`${baseUrl}/invites`,{
-      params:new HttpParams().set('friendId',id)
-    });
+  declineInvite(id: number) {
+    return this.http.delete(`${baseUrl}/invites/` + id);
   }
 }

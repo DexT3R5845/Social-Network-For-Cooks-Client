@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTable, MatTableDataSource} from "@angular/material/table";
+import {MatTable} from "@angular/material/table";
 import {AccountInList} from "../../_models/account-in-list";
 import {Page} from "../../_models/page";
 import {ReplaySubject, takeUntil} from "rxjs";
@@ -7,6 +7,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
 import {FriendService} from "../../_services/friend.service";
 import {AlertService} from "../../_services";
+import {SearchParams} from "../../_models/search-params";
 
 @Component({
   selector: 'app-invites',
@@ -27,12 +28,19 @@ export class InvitesComponent implements OnInit {
     order: new FormControl("asc"),
     gender: new FormControl("")
   });
+  inviteSearch: SearchParams;
 
   constructor(private service: FriendService, private alertService: AlertService) {
   }
 
-  getInvites(searchForm: FormGroup) {
-    this.service.getInvitesBySearch(searchForm, this.pageSize)
+  getInvites() {
+    this.inviteSearch = {
+      search: this.searchForm.value.search,
+      order: this.searchForm.value.order,
+      gender: this.searchForm.value.gender,
+      status: ""
+    }
+    this.service.getInvitesBySearch(this.inviteSearch , this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
@@ -120,7 +128,7 @@ export class InvitesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getInvites(this.searchForm);
+    this.getInvites();
   }
 
   ngOnDestroy(): void {
