@@ -1,0 +1,33 @@
+@import '../layout/layout.component.scss';
+
+.user_profile_control {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-top: 15px;
+}
+
+.user_profile_control_edit {
+  width: 25%;
+}
+
+.img-profile {
+  display: block;
+  margin: 10px auto 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.profile-info-field {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  font-size: 18px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: gray;
+  font-weight: 500;
+}
+
+

@@ -1,0 +1,11 @@
+<div class="dialog-window">
+  <p>Enter the link to the internet picture</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Link:</mat-label>
+    <input matInput [(ngModel)]="imgUrl">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" [mat-dialog-close]="imgUrl" >Ok</button>
+</div>
+
+
