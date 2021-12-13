@@ -17,7 +17,7 @@ import {KitchenwareCategory} from "../../_models/kitchenware-category";
 
 
 @Component({
-  selector: 'app-moder-list-page',
+  selector: 'app-kitchenware-list-page',
   templateUrl: './kitchenware-list-page.component.html',
   styleUrls: ['./kitchenware-list-page.component.scss']
 })

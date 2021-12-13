@@ -10,17 +10,18 @@ const profileModule = () => import('./profile/profile.module').then(x => x.Profi
 const kitchenwareModule = () => import('./kitchenware/kitchenware.module').then(x => x.KitchenwareModule);
 const ingredientModule = () => import('./ingredient/ingredient.module').then(x => x.IngredientModule);
 const friendsModule = () => import('./friends/friends.module').then(x => x.FriendsModule);
-
+const dishModule = () => import('./dish/dish.module').then(x => x.DishModule);
 
 const routes: Routes = [
-  {path: '', redirectTo: '/account/signin', pathMatch: 'full'},
-  {path: 'account', loadChildren: accountModule, canActivate: [AuthFormsGuard]},
-  {path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard], data: {roles: [Role.Admin, Role.User]}},
-  {path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard]},
+  { path: '', redirectTo: '/account/signin', pathMatch: 'full' },
+  { path: 'account', loadChildren: accountModule, canActivate: [AuthFormsGuard] },
+  { path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.User] } },
+  { path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard] },
   {path: 'friends', loadChildren: friendsModule, canActivate: [AuthGuard]},
-  {path: 'kitchenware', loadChildren: kitchenwareModule, canActivate: [AuthGuard], data: {roles: [Role.Moderator]}},
-  {path: 'ingredients', loadChildren: ingredientModule, canActivate: [AuthGuard], data: {roles: [Role.Moderator]}},
-  {path: '**', redirectTo: '/account/signin', pathMatch: 'full'}
+  { path: 'kitchenware', loadChildren: kitchenwareModule, canActivate: [AuthGuard], data: { roles: [Role.Moderator]} },
+  { path: 'dishes', loadChildren: dishModule, canActivate: [AuthGuard], data: { roles: [Role.Moderator]} },
+  { path: 'ingredients', loadChildren: ingredientModule, canActivate: [AuthGuard], data: {roles: [Role.Moderator]}},
+  { path: '**', redirectTo: '/account/signin', pathMatch: 'full' }
 ];
 
 @NgModule({
