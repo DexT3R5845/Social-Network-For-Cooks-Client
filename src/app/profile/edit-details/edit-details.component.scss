@@ -1,0 +1,68 @@
+@import '../layout/layout.component.scss';
+
+.img-profile {
+  display: block;
+  margin: 10px auto 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.user_profile_control_edit {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-top: 15px;
+}
+
+mat-form-field.ng-invalid.ng-touched {
+  margin-bottom: 18px;
+}
+
+mat-label{
+  font-size: 19px;
+}
+
+.hoverable{
+  margin: 10px auto 20px;
+  position: relative;
+  display: block;
+  cursor: pointer;
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+}
+
+.hoverable .hover-text{
+  position: absolute;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 2;
+}
+
+.hoverable .background{
+  position: absolute;
+  display: none;
+  top: 0;
+  left:  0;
+  bottom: 0;
+  right: 0;
+  background-color:rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.hoverable:hover .hover-text{
+  display: block;
+}
+
+.hoverable:hover .background{
+  display: block;
+}
+
+#fileInput{
+  display: none;
+}

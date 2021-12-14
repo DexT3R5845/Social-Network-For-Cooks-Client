@@ -9,7 +9,7 @@ import { PasswordValidatorShared } from '../sharedClass/passwordValidatorShared'
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
+  styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent extends PasswordValidatorShared implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
@@ -76,7 +76,7 @@ onSubmit() {
                       default:
                         this.alertMessage = "There was an error on the server, please try again later."
                         break;
-                  }  
+                  }
                   this.alertService.error(this.alertMessage);
             }});
   }

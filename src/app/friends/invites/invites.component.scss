@@ -1,0 +1,62 @@
+@import "../layout/layout.component.scss";
+
+mat-cell {
+  font-size: 20px;
+  margin: 0 10px;
+}
+
+mat-header-cell {
+  margin: 0 10px;
+}
+
+.table-invites {
+  min-height: 200px;
+  max-height: 80%;
+  width: 100%;
+
+}
+
+mat-form-field {
+  padding-top: 10px;
+  margin-left: 15px;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  padding: 5px;
+  max-width: 100px;
+  max-height: 150px;
+}
+
+button.btn-filter {
+  height: 20%;
+  margin: auto 0 auto 15px;
+}
+
+form {
+  display: flex;
+  flex-flow: wrap;
+}
+
+@mixin mat-table-columns($columns) {
+  .mat-column- {
+    @each $colName, $props in $columns {
+
+      $width: map-get($props, 'width');
+
+      &#{$colName} {
+        flex: 0 0 $width;
+        min-width: $width;
+      }
+    }
+  }
+}
+
+@include mat-table-columns((
+  image: (width: 20%),
+  firstName: (width: 25%),
+  lastName: (width: 25%),
+));
+

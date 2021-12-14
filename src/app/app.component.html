@@ -1,12 +1,14 @@
-<link rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
 <mat-toolbar color="primary" class="expanded-toolbar">
   <span>
     <button mat-button routerLink="/">{{title}}</button>
-    </span>
-    <span class="menu-spacer"></span>
+    <button *ngIf="account && account.role == Role.User" mat-button routerLink="/friends">Friends</button>
+  </span>
 
       <div *ngIf="account && account.role == Role.Moderator" fxFlex fxShow fxHide.lt-md>
         <button mat-button routerLink="/ingredients">Ingredients</button>
+        <button mat-button routerLink="/kitchenware">Kitchenware</button>
+        <button mat-button routerLink="/dishes">Dishes</button>
       </div>
 
       <div *ngIf="account && account.role == Role.User" fxFlex fxShow fxHide.lt-md>

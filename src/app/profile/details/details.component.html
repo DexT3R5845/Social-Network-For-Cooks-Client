@@ -1,7 +1,34 @@
-<div *ngIf="loading">loading...</div>
-<div *ngIf="profileData">
-<p>First Name: {{profileData.firstName}}</p>
-<p>Last Name: {{profileData.lastName}}</p>
-<p>BirthDate: {{profileData.birthDate}}</p>
-<p>Gender: {{profileData.gender}}</p>
+<div class="profile">
+  <div *ngIf="profileData">
+    <div >
+      <img class="img-profile"  [src]="url ? url : '../assets/images/defaultAv.png'" alt="">
+    </div>
+
+    <div class="profile-info-field">
+      <label>First name:</label>
+      {{profileData.firstName}}
+    </div>
+
+    <div class="profile-info-field">
+      <label>Last name:</label>
+      {{profileData.lastName}}
+    </div>
+
+    <div class="profile-info-field">
+      <label>Birth date:</label>
+      {{profileData.birthDate}}
+    </div>
+
+    <div class="profile-info-field">
+      <label>Gender:</label>
+      <span>{{profileData.gender}}</span>
+    </div>
+
+    <div class="user_profile_control">
+      <button class="user_profile_control_edit" type="button" mat-raised-button color="primary" (click)="edit()">Edit</button>
+      <button type="button" mat-raised-button color="primary" (click)="changePassword()">Change password</button>
+    </div>
+
+  </div>
 </div>
+
