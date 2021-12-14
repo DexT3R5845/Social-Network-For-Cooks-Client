@@ -1,10 +1,9 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { getAllLifecycleHooks } from "@angular/compiler/src/lifecycle_reflector";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { Ingredient, IngredientListResponse } from "../_models";
+import { Ingredient } from "../_models";
 import { ingredientCategory } from "../_models/ingredient.category";
+import { ListResponse } from "../_models/list.response";
 import { IngredientFilter } from "../_models/_filters/ingredient.filter";
 
 const baseUrl = `${environment.serverUrl}/ingredient`;
@@ -19,7 +18,7 @@ export class IngredientService{
     ){}
 
     getAll(ingredientFilter: IngredientFilter){
-        return this.http.post<IngredientListResponse>(`${baseUrl}`, ingredientFilter);
+        return this.http.post<ListResponse<Ingredient>>(`${baseUrl}`, ingredientFilter);
     }
 
     getAllIngredientCategory(){
