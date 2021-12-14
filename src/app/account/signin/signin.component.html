@@ -1,0 +1,27 @@
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h2>Log In</h2>
+        <mat-form-field class="full-width-input">
+          <input matInput placeholder="Email" formControlName="email" required>
+          <mat-error>
+            Please provide a valid email address
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width-input" >
+            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" onkeypress="return event.charCode != 32" formControlName="password" required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            <mat-error>
+                Enter your password, please
+            </mat-error>
+        </mat-form-field>
+            <div *ngIf="isCaptcha" class="captcha text-center"> 
+            <ngx-recaptcha2 #captchaElem formControlName="recaptcha" [siteKey]="siteKey" formControlName="recaptcha"></ngx-recaptcha2>
+            <p *ngIf="control['recaptcha'].hasError('required')">Prove you're not a robot;)</p>
+          </div>
+
+        <button type="submit" mat-raised-button color="primary">Login</button>
+      </form>
+      <div class="text-center">
+        <a routerLink="../forgot-password" class="btn btn-link pr-0">Forgot Password?</a>
+    </div>

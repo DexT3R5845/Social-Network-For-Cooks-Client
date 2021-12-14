@@ -12,14 +12,22 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.0.0",
+    "@angular/cdk": "^13.0.2",
     "@angular/common": "~13.0.0",
     "@angular/compiler": "~13.0.0",
     "@angular/core": "~13.0.0",
+    "@angular/flex-layout": "^12.0.0-beta.35",
     "@angular/forms": "~13.0.0",
+    "@angular/material": "~13.0.2",
+    "@angular/material-moment-adapter": "^13.0.3",
     "@angular/platform-browser": "~13.0.0",
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
+    "@auth0/angular-jwt": "^5.0.2",
     "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "ngx-captcha": "^10.0.0",
+    "ngx-cookie-service": "^13.0.0",
     "path": "^0.12.7",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
@@ -39,5 +47,8 @@
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.4.3"
   },
-  "engines": { "node": "16.13.0", "npm": "7.24.2" }
+  "engines": {
+    "node": "16.13.0",
+    "npm": "8.1.3"
+  }
 }

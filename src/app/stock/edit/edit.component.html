@@ -1,0 +1,27 @@
+<div class="container">
+    <h2 mat-dialog-title>Edit Item In Stock</h2>
+    
+    <mat-dialog-content [formGroup]="form">
+        <alert id="error-dialog"></alert>
+    
+        <mat-form-field class="full-width-input">
+            <input matInput placeholder="Name" formControlName="name" [(ngModel)]=stockItem.name>
+            <mat-error>
+                Please provide a name.
+              </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field class="full-width-input">
+            <input matInput placeholder="Amount" type="number" min="1" max="10000" formControlName="amount" [(ngModel)]=stockItem.amount>
+            <mat-error>
+                {{amountErrorMessage}}
+            </mat-error>
+        </mat-form-field>
+     
+    </mat-dialog-content>
+    
+    <mat-dialog-actions>
+        <button class="mat-raised-button" (click)="close()">Close</button>
+        <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
+    </mat-dialog-actions>
+    </div>

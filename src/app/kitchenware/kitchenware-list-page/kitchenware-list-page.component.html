@@ -1,0 +1,82 @@
+<div>
+  <form [formGroup]="searchForm" (ngSubmit)="getBySearch(searchForm)">
+    <button mat-raised-button class="btn-filter"  type="submit">Search</button>
+
+    <mat-form-field class="full-width-input">
+      <input matInput placeholder="Search by name" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field class="full-width-input">
+      <mat-select placeholder="Select category" formControlName="categories" multiple>
+        <mat-option *ngFor="let category of categories" [value]="category.categoryName">{{category.categoryName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width-input">
+      <mat-select placeholder="Sorting" formControlName="order">
+        <mat-option value="" disabled selected>Sorting</mat-option>
+        <mat-option value="asc">Sort by name (A-Z)</mat-option>
+        <mat-option value="desc">Sort by name (Z-A)</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width-input">
+      <mat-select placeholder="Status" formControlName="active">
+        <mat-option value="">Kitchenware status</mat-option>
+        <mat-option value="true">Active</mat-option>
+        <mat-option value="false">Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+
+
+<div class="table-container">
+  <mat-table id="table" [dataSource]="pageContent.content" #table matSort class="mat-cell">
+
+    <ng-container matColumnDef="image">
+      <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
+      <mat-cell *matCellDef="let item"><img [src]="item.imgUrl"/></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
+      <mat-cell *matCellDef="let item">{{item.category}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell class="content-text" *matCellDef="let item">{{item.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>
+        <button mat-icon-button color="primary" (click)="newKitchenware()">
+          <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+        </button>
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button mat-icon-button color="accent" (click)="editKitchenware(i, row.id)">
+          <mat-icon aria-label="Edit">edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="accent" (click)="changeStatus(i, row.id, row.active)">
+          <mat-icon *ngIf="row.active == true" aria-label="Change status">check_box</mat-icon>
+          <mat-icon *ngIf="row.active == false" aria-label="Change status">check_box_outline_blank</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let item; columns: columnsToDisplay"></mat-row>
+  </mat-table>
+</div>
+
+<mat-paginator
+  [length]="pageContent.totalElements"
+  [pageIndex]="currentPage"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[12, 20, 40]"
+  (page)="paginationHandler($event)">
+</mat-paginator>

@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300&display=swap');
+
+mat-card {
+  font-family: Raleway;
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+}
+
+mat-form-field {
+  display: block;
+  font-size: 20px;
+}
+
+mat-form-field.ng-invalid.ng-touched {
+  animation: margError;
+  animation-duration: 0.3s;
+  margin-bottom: 13px;
+}
+
+@keyframes margError {
+  from {margin-bottom: 0;}
+  to {margin-bottom: 13px;}
+}
+
+.mat-title{
+  font-size: 55.2264px;
+}
+
+.error {
+  padding: 16px;
+  width: 300px;
+  color: white;
+  background-color: red;
+}

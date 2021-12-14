@@ -1,0 +1,62 @@
+<div class="search-bar">
+  <form [formGroup]="searchForm">
+    <mat-form-field color="primary">
+      <input matInput placeholder="Search" required formControlName="search">
+      <mat-error>
+        {{searchParamErrorMessage}}
+      </mat-error>
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <button type="submit"
+            class="btn-filter"
+            mat-flat-button
+            color="warn"
+            [disabled]="searchForm.invalid"
+            (click)="searchForAccount()">Search
+    </button>
+
+  </form>
+</div>
+
+<table mat-table class="table-accounts" [dataSource]="pageContent.content">
+
+  <ng-container matColumnDef="image">
+    <mat-header-cell *matHeaderCellDef> Image</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <img [src]="element.imgUrl ? element.imgUrl : '../assets/images/defaultAv.png'"/>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="firstName">
+    <mat-header-cell *matHeaderCellDef> FistName</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastName">
+    <mat-header-cell *matHeaderCellDef> LastName</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="invite">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let element; let i = index">
+      <button mat-raised-button color="primary" (click)="sendInvite(i,element.id)">Send
+        invite
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</table>
+
+<mat-paginator
+  [length]="pageContent.totalElements"
+  [pageIndex]="currentPage"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[12, 20, 40]"
+  (page)="paginationHandler($event)">
+</mat-paginator>
+
+

@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  serverUrl: 'http://localhost:8080/api',
+  tokenName: 'bakensweetsToken',
+  siteKey: '6Lf8XUodAAAAAN_wbdoV37oas0iRYiRSBmSdCKJG',
+  pageSize: 12
 };
 
 /*

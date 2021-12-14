@@ -1,26 +1,34 @@
-
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { UserComponent } from './user/user.component';
 import { AppRoutingModule } from './app.routing.module';
-import {UserService} from './user/user.service';
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
+import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JwtInterceptor } from './_helpers';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    JwtModule,
+    BrowserAnimationsModule,
+    SharedModule,
   ],
-  providers: [UserService],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    JwtHelperService,
+  ],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }
