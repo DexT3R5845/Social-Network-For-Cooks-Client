@@ -7,6 +7,7 @@ import { finalize, merge, ReplaySubject, takeUntil } from 'rxjs';
 import { ingredientCategory, Stock } from 'src/app/_models';
 import { StockFilter } from 'src/app/_models/_filters';
 import { AlertService, IngredientService, StockService } from 'src/app/_services';
+import { AddComponent } from '../add/add.component';
 import { DeleteComponent } from '../delete/delete.component';
 import { EditComponent } from '../edit/edit.component';
 
@@ -104,12 +105,13 @@ loadData(){
   }
 
   addIngredient(){
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
-    // dialogConfig.data = this.listCategory;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = this.listCategory;
 
-    // this.dialog.open(AddComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe(() => this.OnSubmitFilter())
   }
 
   deleteIngredient(stockItem: Stock){
@@ -131,10 +133,6 @@ loadData(){
 
   get searchText(){
     return this.filterControl['searchText'].value;
-  }
-
-  get filterStatus(){
-    return this.filterControl['status'].value;
   }
 
   get ingredientCategories(){

@@ -40,4 +40,26 @@ export class StockService{
     deleteIngredientInStock(ingredientId: string){
         return this.http.delete(`${baseUrl}/${ingredientId}`);
     }
+
+    getAvaibleIngredientForStock(ingredientFilter: IngredientFilter){
+        let params = new HttpParams();
+        if(ingredientFilter.ingredientCategory){
+            for(let category of ingredientFilter.ingredientCategory){
+                params = params.append('ingredientCategory', category);
+            }
+        }
+        params = params.append('order', ingredientFilter.sortASC);
+        params = params.append('pageNum', ingredientFilter.numPage);
+        if(ingredientFilter.searchText != null)
+            params = params.append('search', ingredientFilter.searchText);
+        params = params.append('size', ingredientFilter.sizePage);
+        params = params.append('sortBy', ingredientFilter.sortBy)
+
+        return this.http.get<ListResponse<Stock>>(`${baseUrl}/new`, { params: params });
+    }
+
+    addIngredientInStock(ingredientId: string){
+        let params = new HttpParams().set('ingredientId', ingredientId);
+        return this.http.post(`${baseUrl}`, params)
+    }
 }
