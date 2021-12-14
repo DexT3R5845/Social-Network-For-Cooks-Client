@@ -25,7 +25,7 @@ export class AdminService {
 
   private getAccounts(currentPage: number, searchedParams: SearchParams, pageSize: number): Observable<Page<AccountInList>> {
     return this.http.get<Page<AccountInList>>(
-      `${baseUrl}/all`,
+      `${baseUrl}`,
       {
         params: new HttpParams()
           .set('size', pageSize)

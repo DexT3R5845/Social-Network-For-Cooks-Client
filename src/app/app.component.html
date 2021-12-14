@@ -11,6 +11,10 @@
         <button mat-button routerLink="/dishes">Dishes</button>
       </div>
 
+      <div *ngIf="account && account.role == Role.Admin" fxFlex fxShow fxHide.lt-md>
+        <button mat-button routerLink="/admin">Management</button>
+      </div>
+
       <div *ngIf="account && account.role == Role.User" fxFlex fxShow fxHide.lt-md>
         <button mat-button routerLink="/stock">My Stock</button>
       </div>
