@@ -45,17 +45,17 @@
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>
-          <button mat-icon-button color="primary">
+          <button mat-icon-button color="primary" (click)="addIngredient()">
             <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
           </button>
         </mat-header-cell>
 
         <mat-cell *matCellDef="let row; let i=index;">
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="editIngredient(row)">
             <mat-icon aria-label="Edit">edit</mat-icon>
           </button>
 
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="deleteIngredient(row)">
             <mat-icon *ngIf="row.active" aria-label="check_box">check_box</mat-icon>
             <mat-icon *ngIf="!row.active" aria-label="check_box">check_box_outline_blank</mat-icon>
           </button>
