@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/CoctailApp-front
+    working_directory: ~/Social-Network-For_Cooks-Client
     docker:
       - image: circleci/node:14-browsers
     steps:
