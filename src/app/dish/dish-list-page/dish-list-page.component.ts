@@ -1,15 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
-import {ReplaySubject} from "rxjs";
+import {Observable, ReplaySubject} from "rxjs";
 import {AlertService, DishService, IngredientService} from "../../_services";
 import {Page} from "../../_models/page";
-import {takeUntil} from "rxjs/operators";
+import {map, startWith, takeUntil} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
 import { Dish } from 'src/app/_models/dish';
-import { DishCategory } from 'src/app/_models/dish-category';
 import { IngredientFilter } from 'src/app/_models/_filters/ingredient.filter';
 import { DishIngredientFilter } from 'src/app/_models/dish-ingredient-filter';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { SearchDishParams } from 'src/app/_models/search-dish-params';
 
 
 @Component({
@@ -19,14 +22,20 @@ import { DishIngredientFilter } from 'src/app/_models/dish-ingredient-filter';
 })
 export class DishListPageComponent {
   pageContent: Page<Dish>;
-  categories: DishCategory[] = [];
+  categories: string[] = [];
   ingredients: DishIngredientFilter[] = [];
+  selectedIngredients: DishIngredientFilter[] = [];
+  selectedIngredientsIds: string[] = [];
+  filteredIngredients: Observable<DishIngredientFilter[]>;
   searchForm: FormGroup = this.createFormGroup();
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   columnsToDisplay = ['image', 'name', 'category', 'type', 'description', 'actions'];
   pageSize: number = 12;
   currentPage: number;
   alertMessage: string;
+  ingredientControl = new FormControl();
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  @ViewChild('ingredientInput') ingredientInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private dishService: DishService,
@@ -35,6 +44,21 @@ export class DishListPageComponent {
     public dialog: MatDialog,
     public formBuilder: FormBuilder
   ) {
+    this.filteredIngredients = this.ingredientControl.valueChanges.pipe(
+      startWith(null),
+      map((ingredient: string) => (ingredient ? this._filter(ingredient) : this.ingredients.slice())),
+    );
+  }
+  
+
+  ngOnInit(): void {
+    this.getIngredients("");
+    this.getCategories();
+    this.getBySearch(this.searchForm);
+    this.filteredIngredients = this.ingredientControl.valueChanges.pipe(
+      startWith(null),
+      map((ingredient: string) => (ingredient ? this._filter(ingredient) : this.ingredients.slice())),
+    );
   }
 
   private createFormGroup(): FormGroup {
@@ -48,9 +72,17 @@ export class DishListPageComponent {
     });
   }
 
+  private _filter(value: string): DishIngredientFilter[] {
+    this.getIngredients(String(value));
+
+    return this.ingredients;
+  }
+
 
   getBySearch(searchForm: FormGroup): void {
     this.alertService.clear();
+    const filter: SearchDishParams = searchForm.value;
+    filter.ingredients = this.selectedIngredientsIds.toString();
     this.dishService.getDishBySearch(searchForm.value, this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
@@ -84,7 +116,7 @@ export class DishListPageComponent {
       .subscribe(
         {next: response => {
           response.forEach( x => {
-            this.categories.push(new DishCategory(x));
+            this.categories.push(x);
           })
           },
           error: () => {
@@ -102,8 +134,8 @@ export class DishListPageComponent {
       .subscribe(
         {next: response => {
           for (let ingredient of response.content) {
-            if(ingredient.id !== undefined) {
-              this.ingredients.push(new DishIngredientFilter(ingredient.name, ingredient.id));
+            if(ingredient.id !== undefined && !(this.selectedIngredients.filter(i => i.id === ingredient.id).length > 0)) {
+              this.ingredients.push({ name: ingredient.name, id: ingredient.id});
             }
           }
           },
@@ -118,15 +150,40 @@ export class DishListPageComponent {
     this.destroy.complete();
   }
 
-  ngOnInit(): void {
-    this.getIngredients("");
-    this.getCategories();
-    this.getBySearch(this.searchForm);
-
-  }
-
   onIngredientFilterChange() {
       this.getIngredients(this.searchForm.value.ingredientSearchInput);
+  }
+
+  // add(event: MatChipInputEvent): void {
+  //   const value = event.value;
+
+  //   // Add our fruit
+  //   if (value) {
+  //     this.ingredients.push(value);
+  //   }
+
+  //   // Clear the input value
+  //   event.chipInput!.clear();
+
+  //   this.ingredientControl.setValue(null);
+  // }
+
+  remove(ingredient: DishIngredientFilter): void {
+    const ingredientIndex = this.selectedIngredients.indexOf(ingredient);
+    const indexIdIndex = this.selectedIngredientsIds.indexOf(ingredient.id);
+    if (ingredientIndex >= 0) {
+      this.selectedIngredients.splice(ingredientIndex, 1);
+    }
+    if (indexIdIndex >= 0) {
+      this.selectedIngredientsIds.splice(indexIdIndex, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedIngredients.push(event.option.value);
+    this.selectedIngredientsIds.push(event.option.value.id);
+    this.ingredientInput.nativeElement.value = '';
+    this.ingredientControl.setValue(null);
   }
 
 }

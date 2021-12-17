@@ -8,14 +8,7 @@
 
     <mat-form-field class="full-width-input">
       <mat-select placeholder="Select categories" formControlName="categories" multiple>
-        <mat-option *ngFor="let category of categories" [value]="category.name">{{category.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field class="full-width-input">
-      <mat-select placeholder="Select ingredeints" formControlName="ingredients" multiple>
-        <input (input)="onIngredientFilterChange()" formControlName="ingredientSearchInput" class="ingredientSearchInput">
-        <mat-option *ngFor="let ingredient of ingredients" [value]="ingredient.id">{{ingredient.name}}</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -25,6 +18,32 @@
         <mat-option value="asc">Sort by name (A-Z)</mat-option>
         <mat-option value="desc">Sort by name (Z-A)</mat-option>
       </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="full-width-input" appearance="fill">
+      <mat-label>Select ingredients</mat-label>
+      <mat-chip-list #chipList aria-label="Ingredient selection">
+        <mat-chip
+          *ngFor="let ingredient of selectedIngredients"
+          (removed)="remove(ingredient)">
+          {{ingredient.name}}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        <input
+          placeholder="Add ingredient..."
+          #ingredientInput
+          [formControl]="ingredientControl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let ingredient of filteredIngredients | async" [value]="ingredient">
+          {{ingredient.name}}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
   </form>
 </div>
