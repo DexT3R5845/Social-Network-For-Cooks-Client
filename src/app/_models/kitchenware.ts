@@ -4,4 +4,5 @@ export class Kitchenware {
   imgUrl: string;
   category: string;
   active: boolean;
+  amount?: number;
 }

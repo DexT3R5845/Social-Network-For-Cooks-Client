@@ -19,8 +19,10 @@
         <mat-option value="desc">Sort by name (Z-A)</mat-option>
       </mat-select>
     </mat-form-field>
+      <mat-checkbox color="primary" (change)="manageFilterByStock($event)">Filter by stock</mat-checkbox>
+    
     <br>
-    <mat-form-field class="full-width-input" appearance="fill">
+    <mat-form-field class="full-width-input chip-list-selector" appearance="fill">
       <mat-label>Select ingredients</mat-label>
       <mat-chip-list #chipList aria-label="Ingredient selection">
         <mat-chip
@@ -53,8 +55,8 @@
   <mat-table id="table" [dataSource]="pageContent.content" #table matSort class="mat-cell">
 
     <ng-container matColumnDef="image">
-      <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
-      <mat-cell *matCellDef="let item"><img [src]="item.imgUrl"/></mat-cell>
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let item"><img [src]="item.imgUrl" routerLink="{{item.id}}"/></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="category">
@@ -64,7 +66,7 @@
 
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-      <mat-cell class="content-text" *matCellDef="let item">{{item.dishName}}</mat-cell>
+      <mat-cell class="content-text" *matCellDef="let item" routerLink="{{item.id}}">{{item.dishName}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="type">
@@ -79,22 +81,17 @@
 
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>
-        <!-- <button mat-icon-button color="primary" (click)="newKitchenware()"> -->
           <button mat-icon-button color="primary">
           <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
         </button>
       </mat-header-cell>
 
       <mat-cell *matCellDef="let row; let i=index;">
-        <!-- <button mat-icon-button color="accent" (click)="editKitchenware(i, row.id)"> -->
           <button mat-icon-button color="accent">
           <mat-icon aria-label="Edit">edit</mat-icon>
         </button>
-
-        <!-- <button mat-icon-button color="accent" (click)="changeStatus(i, row.id, row.active)"> -->
           <button mat-icon-button color="accent">
-          <mat-icon *ngIf="row.active == true" aria-label="Change status">check_box</mat-icon>
-          <mat-icon *ngIf="row.active == false" aria-label="Change status">check_box_outline_blank</mat-icon>
+            <mat-icon aria-label="Delete" (click)="confirmDelete(row.id)">delete</mat-icon>
         </button>
       </mat-cell>
     </ng-container>

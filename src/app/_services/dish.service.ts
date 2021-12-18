@@ -34,16 +34,31 @@ export class DishService {
           .set('categories', dishSearchParams.categories)});
   }
 
-  getDishBySearch(dishSearchParams: SearchDishParams, pageSize: number): Observable<Page<Dish>> {
+  private getStockDishList(currentPage: number, pageSize: number): Observable<Page<Dish>> {
+    return this.http.get<Page<Dish>>(`${baseUrl}/getDishesByStock?`, {
+        params: new HttpParams()
+          .set('pageSize', pageSize)
+          .set('pageNum', currentPage)});
+  }
+
+  getDishesBySearch(dishSearchParams: SearchDishParams, pageSize: number): Observable<Page<Dish>> {
     this.dishSearchParams = dishSearchParams;
     return this.getSearchDishList(0, this.dishSearchParams, pageSize);
   }
 
-  getDishByPageNum(currentPage: number, pageSize: number): Observable<Page<Dish>> {
+  getDishesByPageNum(currentPage: number, pageSize: number): Observable<Page<Dish>> {
     return this.getSearchDishList(currentPage, this.dishSearchParams, pageSize);
   }
 
-  getById(id: string): Observable<Dish> {
-    return this.http.get<Dish>(`${baseUrl}/` + id);
+  getStockDishes(pageSize: number): Observable<Page<Dish>> {
+    return this.getSearchDishList(0, this.dishSearchParams, pageSize);
+  }
+
+  getDishById(id: string): Observable<Dish> {
+    return this.http.get<Dish>(`${baseUrl}/${id}`);
+  }
+
+  deleteDish(id: string) {
+    return this.http.delete(`${baseUrl}/${id}`);
   }
 }

@@ -14,7 +14,7 @@ mat-cell{
   overflow: auto;
 }
 
-mat-form-field{
+mat-form-field, mat-checkbox{
   margin-left: 15px;
 }
 
@@ -33,6 +33,8 @@ button.btn-filter{
 
 table{
   width: 100%;
+  
+  overflow: auto;
 }
 
 @mixin mat-table-columns($columns)
@@ -54,18 +56,23 @@ table{
 
 @include mat-table-columns((
   image: (width: 20%),
-  name: (width: 20%),
-  category: (width: 10%),
+  name: (width: 12%),
+  category: (width: 18%),
   type: (width: 10%),
   description: (width: 25%),
   actions: (width: 15%),
 ));
 
 
-.mat-form-field {
+.mat-form-field, .mat-checkbox {
   font-size: 20px;
   margin-top: 5px;
 
   margin-bottom: -1%;
 }
+
+.chip-list-selector {
+  width: 36%;
+}
+
 

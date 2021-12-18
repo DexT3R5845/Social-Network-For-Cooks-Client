@@ -13,6 +13,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { SearchDishParams } from 'src/app/_models/search-dish-params';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 
 
 @Component({
@@ -35,6 +37,7 @@ export class DishListPageComponent {
   alertMessage: string;
   ingredientControl = new FormControl();
   separatorKeysCodes: number[] = [ENTER, COMMA];
+  isFilteredByStock: boolean;
   @ViewChild('ingredientInput') ingredientInput: ElementRef<HTMLInputElement>;
 
   constructor(
@@ -44,10 +47,6 @@ export class DishListPageComponent {
     public dialog: MatDialog,
     public formBuilder: FormBuilder
   ) {
-    this.filteredIngredients = this.ingredientControl.valueChanges.pipe(
-      startWith(null),
-      map((ingredient: string) => (ingredient ? this._filter(ingredient) : this.ingredients.slice())),
-    );
   }
   
 
@@ -59,6 +58,7 @@ export class DishListPageComponent {
       startWith(null),
       map((ingredient: string) => (ingredient ? this._filter(ingredient) : this.ingredients.slice())),
     );
+    this.isFilteredByStock = false;
   }
 
   private createFormGroup(): FormGroup {
@@ -83,7 +83,7 @@ export class DishListPageComponent {
     this.alertService.clear();
     const filter: SearchDishParams = searchForm.value;
     filter.ingredients = this.selectedIngredientsIds.toString();
-    this.dishService.getDishBySearch(searchForm.value, this.pageSize)
+    this.dishService.getDishesBySearch(searchForm.value, this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
@@ -96,14 +96,18 @@ export class DishListPageComponent {
   }
 
   paginationHandler(pageEvent: PageEvent): void {
+    this.getDishPage(pageEvent.pageIndex, pageEvent.pageSize);
+  }
+
+  private getDishPage(pageIndex: number, pageSize: number): void {
     this.alertService.clear();
-    this.dishService.getDishByPageNum(pageEvent.pageIndex, pageEvent.pageSize)
+    this.dishService.getDishesByPageNum(pageIndex, pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
           this.pageContent = response;
-          this.currentPage = pageEvent.pageIndex;
-          this.pageSize = pageEvent.pageSize;
+          this.currentPage = pageIndex;
+          this.pageSize = pageSize;
         },
         error: () => {
           this.alertService.error("unexpected error, try later");}
@@ -154,20 +158,6 @@ export class DishListPageComponent {
       this.getIngredients(this.searchForm.value.ingredientSearchInput);
   }
 
-  // add(event: MatChipInputEvent): void {
-  //   const value = event.value;
-
-  //   // Add our fruit
-  //   if (value) {
-  //     this.ingredients.push(value);
-  //   }
-
-  //   // Clear the input value
-  //   event.chipInput!.clear();
-
-  //   this.ingredientControl.setValue(null);
-  // }
-
   remove(ingredient: DishIngredientFilter): void {
     const ingredientIndex = this.selectedIngredients.indexOf(ingredient);
     const indexIdIndex = this.selectedIngredientsIds.indexOf(ingredient.id);
@@ -184,6 +174,41 @@ export class DishListPageComponent {
     this.selectedIngredientsIds.push(event.option.value.id);
     this.ingredientInput.nativeElement.value = '';
     this.ingredientControl.setValue(null);
+  }
+
+  confirmDelete(id: string): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent);
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.dishService.deleteDish(id)
+      .pipe(takeUntil(this.destroy))
+      .subscribe({
+        next: () => {
+          this.alertService.success("Dish deleted",true,true);
+          this.getDishPage(this.currentPage, this.pageSize);
+        },
+        error: error => {
+          switch (error.status) {
+            case 400:
+              this.alertMessage = "Something went wrong";
+              break;
+            case 404:
+              this.alertMessage = error.error.message;
+              break;
+            default:
+              this.alertMessage = "There was an error on the server, please try again later."
+              break;
+          }
+          this.alertService.error(this.alertMessage,true,true);
+        }
+      });
+      }
+    });
+  }
+
+  manageFilterByStock(event: MatCheckboxChange) : void {
+    this.isFilteredByStock = event.source.checked;
+    console.log(this.isFilteredByStock);
   }
 
 }

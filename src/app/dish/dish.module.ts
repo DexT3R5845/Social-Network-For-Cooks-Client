@@ -9,23 +9,27 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {FormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
+import { DishInfoComponent } from './dish-info/dish-info.component';
+
 
 
 
 @NgModule({
   declarations: [
     LayoutComponent,
-    DishListPageComponent
+    DishListPageComponent,
+    DeleteConfirmationComponent,
+    DishInfoComponent,
   ],
   imports: [
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
     MatCheckboxModule,
-    CommonModule,
     SharedModule,
     DishRoutingModule,
     MatDialogModule
-  ]
+  ],
 })
 export class DishModule { }
