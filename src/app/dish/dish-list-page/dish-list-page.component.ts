@@ -66,9 +66,7 @@ export class DishListPageComponent {
       name: [''],
       categories: [''],
       ingredients: [''],
-      order: ['asc'],
-      ingredientSearchInput: [''],
-      active: ['']
+      order: ['asc']
     });
   }
 
@@ -76,6 +74,10 @@ export class DishListPageComponent {
     this.getIngredients(String(value));
 
     return this.ingredients;
+  }
+
+  searchDishes(searchForm: FormGroup) : void {
+    this.isFilteredByStock ? this.getStockDishPage(0, this.pageSize) : this.getBySearch(searchForm);
   }
 
 
@@ -96,12 +98,27 @@ export class DishListPageComponent {
   }
 
   paginationHandler(pageEvent: PageEvent): void {
-    this.getDishPage(pageEvent.pageIndex, pageEvent.pageSize);
+    this.isFilteredByStock ? this.getStockDishPage(pageEvent.pageIndex, pageEvent.pageSize) : this.getDishPage(pageEvent.pageIndex, pageEvent.pageSize);
   }
 
   private getDishPage(pageIndex: number, pageSize: number): void {
     this.alertService.clear();
     this.dishService.getDishesByPageNum(pageIndex, pageSize)
+      .pipe(takeUntil(this.destroy))
+      .subscribe({
+        next: response => {
+          this.pageContent = response;
+          this.currentPage = pageIndex;
+          this.pageSize = pageSize;
+        },
+        error: () => {
+          this.alertService.error("unexpected error, try later");}
+      });
+  }
+
+  private getStockDishPage(pageIndex: number, pageSize: number): void {
+    this.alertService.clear();
+    this.dishService.getStockDishes(pageIndex, pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
@@ -208,7 +225,63 @@ export class DishListPageComponent {
 
   manageFilterByStock(event: MatCheckboxChange) : void {
     this.isFilteredByStock = event.source.checked;
-    console.log(this.isFilteredByStock);
+    if (this.isFilteredByStock)
+    {
+      this.searchForm.controls['name'].reset({ value: '', disabled: true });
+      this.searchForm.controls['categories'].reset({ value: '', disabled: true });
+      this.searchForm.controls['ingredients'].reset({ value: '', disabled: true });
+      this.searchForm.controls['order'].reset({ value: 'asc', disabled: true });
+    }
+    else {
+      this.searchForm.controls['name'].reset({ value: '', disabled: false });
+      this.searchForm.controls['categories'].reset({ value: '', disabled: false });
+      this.searchForm.controls['ingredients'].reset({ value: '', disabled: false });
+      this.searchForm.controls['order'].reset({ value: 'asc', disabled: false });
+    }
+  }
+
+  manageDishLike(id: string, isLiked: boolean) : void {
+    console.log(this.pageContent)
+    this.dishService.manageDishLike(id, !isLiked)
+      .pipe(takeUntil(this.destroy))
+      .subscribe({
+        error: error => {
+          switch (error.status) {
+            case 400:
+              this.alertMessage = "Something went wrong";
+              break;
+            case 404:
+              this.alertMessage = error.error.message;
+              break;
+            default:
+              this.alertMessage = "There was an error on the server, please try again later."
+              break;
+          }
+          this.alertService.error(this.alertMessage,true,true);
+        }
+      });
+  }
+
+  manageFavoriteDish(id: string, isFavorite: boolean) : void {
+    console.log(this.pageContent)
+    this.dishService.manageFavoriteDish(id, !isFavorite)
+      .pipe(takeUntil(this.destroy))
+      .subscribe({
+        error: error => {
+          switch (error.status) {
+            case 400:
+              this.alertMessage = "Something went wrong";
+              break;
+            case 404:
+              this.alertMessage = error.error.message;
+              break;
+            default:
+              this.alertMessage = "There was an error on the server, please try again later."
+              break;
+          }
+          this.alertService.error(this.alertMessage,true,true);
+        }
+      });
   }
 
 }

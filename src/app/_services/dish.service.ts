@@ -35,7 +35,7 @@ export class DishService {
   }
 
   private getStockDishList(currentPage: number, pageSize: number): Observable<Page<Dish>> {
-    return this.http.get<Page<Dish>>(`${baseUrl}/getDishesByStock?`, {
+    return this.http.get<Page<Dish>>(`${baseUrl}/stock?`, {
         params: new HttpParams()
           .set('pageSize', pageSize)
           .set('pageNum', currentPage)});
@@ -50,8 +50,8 @@ export class DishService {
     return this.getSearchDishList(currentPage, this.dishSearchParams, pageSize);
   }
 
-  getStockDishes(pageSize: number): Observable<Page<Dish>> {
-    return this.getSearchDishList(0, this.dishSearchParams, pageSize);
+  getStockDishes(currentPage: number, pageSize: number): Observable<Page<Dish>> {
+    return this.getStockDishList(currentPage, pageSize);
   }
 
   getDishById(id: string): Observable<Dish> {
@@ -60,5 +60,19 @@ export class DishService {
 
   deleteDish(id: string) {
     return this.http.delete(`${baseUrl}/${id}`);
+  }
+
+  manageDishLike(id: string, isLiked: boolean) {
+    return this.http.put(`${baseUrl}/like?`, {}, {
+      params: new HttpParams()
+      .set('id', id)
+      .set('isLike', isLiked)});
+  }
+
+  manageFavoriteDish(id: string, isFavorite: boolean) {
+    return this.http.put(`${baseUrl}/favorite?`, {}, {
+      params: new HttpParams()
+      .set('id', id)
+      .set('isFavorite', isFavorite)});
   }
 }

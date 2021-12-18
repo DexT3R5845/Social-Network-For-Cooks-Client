@@ -1,7 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ReplaySubject, takeUntil} from 'rxjs';
-import {Profile} from 'src/app/_models/profile';
-import {ProfileService} from 'src/app/_services/profile.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import { Dish } from '../../_models';
 import { AlertService, DishService } from '../../_services';
@@ -9,7 +7,7 @@ import { AlertService, DishService } from '../../_services';
 @Component({
   selector: 'app-dish-info',
   templateUrl: './dish-info.component.html',
-  styleUrls: ['./dish-info.component.scss']
+  styleUrls: ['./dish-info.component.scss'],
 })
 export class DishInfoComponent implements OnInit {
 
