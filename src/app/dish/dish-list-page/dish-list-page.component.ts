@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
 import {Observable, ReplaySubject} from "rxjs";
-import {AlertService, DishService, IngredientService} from "../../_services";
+import {AlertService, AuthService, DishService, IngredientService} from "../../_services";
 import {Page} from "../../_models/page";
 import {map, startWith, takeUntil} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
@@ -31,7 +31,7 @@ export class DishListPageComponent {
   filteredIngredients: Observable<DishIngredientFilter[]>;
   searchForm: FormGroup = this.createFormGroup();
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  columnsToDisplay = ['image', 'name', 'category', 'type', 'description', 'actions'];
+  columnsToDisplay = ['image', 'name', 'category', 'type', 'description'];
   pageSize: number = 12;
   currentPage: number;
   alertMessage: string;
@@ -39,14 +39,16 @@ export class DishListPageComponent {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   isFilteredByStock: boolean;
   isFilteredByFavorite: boolean;
+  userRole?: string;
   @ViewChild('ingredientInput') ingredientInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private dishService: DishService,
     private ingredientService: IngredientService,
     private alertService: AlertService,
-    public dialog: MatDialog,
-    public formBuilder: FormBuilder
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) {
   }
   
@@ -60,6 +62,10 @@ export class DishListPageComponent {
       map((ingredient: string) => (ingredient ? this._filter(ingredient) : this.ingredients.slice())),
     );
     this.isFilteredByStock = false;
+    this.userRole = this.authService.accountValue?.role;
+    if (this.userRole !== 'ROLE_ADMIN') {
+      this.columnsToDisplay.push('actions');
+    }
   }
 
   private createFormGroup(): FormGroup {

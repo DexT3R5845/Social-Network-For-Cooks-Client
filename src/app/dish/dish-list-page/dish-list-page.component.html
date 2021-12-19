@@ -19,8 +19,8 @@
         <mat-option value="desc">Sort by name (Z-A)</mat-option>
       </mat-select>
     </mat-form-field>
-      <mat-checkbox color="primary" (change)="manageFilterByStock($event)" [disabled] = "isFilteredByFavorite">Filter by my stock</mat-checkbox>
-      <mat-checkbox color="primary" (change)="manageFilterByFavorite($event)" [disabled] = "isFilteredByStock">Show my favorites</mat-checkbox>
+      <mat-checkbox color="primary" (change)="manageFilterByStock($event)" [disabled] = "isFilteredByFavorite" *ngIf = "userRole === 'ROLE_USER'">Filter by my stock</mat-checkbox>
+      <mat-checkbox color="primary" (change)="manageFilterByFavorite($event)" [disabled] = "isFilteredByStock" *ngIf = "userRole === 'ROLE_USER'">Show my favorites</mat-checkbox>
     
     <br>
     <mat-form-field class="full-width-input chip-list-selector" appearance="fill">
@@ -53,7 +53,7 @@
 
 
 <div class="table-container" *ngIf="pageContent">
-  <mat-table id="table" [dataSource]="pageContent.content" #table matSort class="mat-cell">
+  <mat-table id="table" [dataSource]="pageContent.content" #table matSort class="mat-cell">  
 
     <ng-container matColumnDef="image">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -80,26 +80,25 @@
       <mat-cell class="content-text" *matCellDef="let item">{{item.description}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="actions">
+    <ng-container matColumnDef="actions"  *ngIf = "userRole !== 'ROLE_ADMIN'">
       <mat-header-cell *matHeaderCellDef>
-          <button mat-icon-button color="primary">
+          <button mat-icon-button color="primary" *ngIf = "userRole === 'ROLE_MODERATOR'">
           <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
         </button>
       </mat-header-cell>
-
-      <mat-cell *matCellDef="let item">
-          <button mat-icon-button color="accent">
+      <mat-cell *matCellDef="let item" >
+          <button mat-icon-button color="accent" *ngIf = "userRole === 'ROLE_MODERATOR'">
           <mat-icon aria-label="Edit">edit</mat-icon>
         </button>
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" *ngIf = "userRole === 'ROLE_MODERATOR'">
             <mat-icon aria-label="Delete" (click)="confirmDelete(item.id)">delete</mat-icon>
         </button>
-        <button mat-icon-button color="accent" (click)="manageDishLike(item)">
+        <button mat-icon-button color="accent" (click)="manageDishLike(item)" *ngIf = "userRole === 'ROLE_USER'">
           <mat-icon *ngIf="item.isLiked" aria-label="check_box">favorite</mat-icon>
           <mat-icon *ngIf="!item.isLiked" aria-label="check_box">favorite_border</mat-icon>
         </button>
-        <span class = "likes">{{item.totalLikes}}</span>
-        <button mat-icon-button color="accent" (click)="manageFavoriteDish(item)">
+        <span class = "likes" *ngIf = "userRole === 'ROLE_USER'">{{item.totalLikes}}</span>
+        <button mat-icon-button color="accent" (click)="manageFavoriteDish(item)" *ngIf = "userRole === 'ROLE_USER'">
           <mat-icon *ngIf="item.isFavorite" aria-label="check_box">star</mat-icon>
           <mat-icon *ngIf="!item.isFavorite" aria-label="check_box">star_border</mat-icon>
         </button>

@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'kitchenware', loadChildren: kitchenwareModule, canActivate: [AuthGuard], data: { roles: [Role.Moderator]} },
   { path: 'ingredients', loadChildren: ingredientModule, canActivate: [AuthGuard], data: { roles: [Role.Moderator] } },
   { path: 'stock', loadChildren: stockModule, canActivate: [AuthGuard], data: { roles: [Role.User] } },
-  { path: 'dishes', loadChildren: dishModule, canActivate: [AuthGuard], data: { roles: [Role.Moderator] } },
+  { path: 'dishes', loadChildren: dishModule, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.User, Role.Moderator] } },
   { path: '**', redirectTo: '/account/signin', pathMatch: 'full' }
 ];
 
