@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       {path: 'search', component: SearchAccountComponent},
       {path: 'view-friends', component: ViewFriendsComponent},
-      {path: 'invites',component: InvitesComponent}
+      {path: 'invites', component: InvitesComponent}
 
     ]
   }];

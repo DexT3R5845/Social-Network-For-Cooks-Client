@@ -29,18 +29,18 @@ constructor(
   private cookie: CookieStorageService,
   private alertService: AlertService,
 ){
-  this.form = this.formBuilder.group({
-    email: ['', Validators.email],
-    password: ['', Validators.required],
-    recaptcha: []
-  });
 }
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
 
-ngOnInit(){}
+ngOnInit(){
+  this.form = this.formBuilder.group({
+    email: ['', Validators.email],
+    password: ['', Validators.required],
+    recaptcha: []
+  });}
 
 get control(){return this.form.controls}
 

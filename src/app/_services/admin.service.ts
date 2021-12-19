@@ -51,7 +51,7 @@ export class AdminService {
     return this.http.post(`${baseUrl}`, formGroup.value);
   }
 
-  editModerator(formGroup: FormGroup): Observable<any> {
+  editModerator(formGroup: FormGroup): Observable<Object> {
     return this.http.put(`${baseUrl}`, formGroup.value);
   }
 

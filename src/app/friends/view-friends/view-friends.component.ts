@@ -43,7 +43,7 @@ export class ViewFriendsComponent implements OnInit {
     this.getFriendsBySearch();
   }
 
-  getFriendsBySearch() {
+  getFriendsBySearch(): void {
     this.service.getFriendsBySearch(this.friendSearch, this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
@@ -52,7 +52,7 @@ export class ViewFriendsComponent implements OnInit {
           this.currentPage = 0;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later",true,true);
+          this.alertService.error("Unexpected error, try later", true, true);
         }
       })
   }
@@ -68,17 +68,17 @@ export class ViewFriendsComponent implements OnInit {
           this.pageSize = pageEvent.pageSize;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later",true,true);
+          this.alertService.error("Unexpected error, try later", true, true);
         }
       });
   }
 
-  removeFriend(index: number, id: number) {
+  removeFriend(index: number, id: number): void {
     this.service.removeFried(id)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success("Friend deleted",true,true);
+          this.alertService.success("Friend deleted", true, true);
           this.pageContent.content.splice(index, 1);
           this.table.renderRows();
         },
@@ -94,9 +94,15 @@ export class ViewFriendsComponent implements OnInit {
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage,true,true);
+          this.alertService.error(this.alertMessage, true, true);
         }
       });
+  }
+
+  onKeydown(event: KeyboardEvent): void {
+    if (event.code === "Space") {
+      event.preventDefault();
+    }
   }
 
   get searchParamErrorMessage(): string {

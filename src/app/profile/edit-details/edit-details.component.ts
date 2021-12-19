@@ -24,7 +24,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  hide = false;
+  hide: boolean = false;
   profileData: Profile;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
@@ -41,7 +41,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   newImageUrl: string;
   acceptedFilesFormats: string[] = ['png', 'jpg', 'jpeg', 'bpg'];
 
-  openDialog() {
+  openDialog(): void {
     this.alertService.clear();
     const dialogRef = this.dialog.open(DialogViewComponent, {
       width: '300px',
@@ -57,12 +57,12 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
           this.hide = true;
           return;
         }
-        this.alertService.error('Uncorrected file format');
+        this.alertService.error('Uncorrected file format',true,true);
       }
     });
   }
 
-  delete() {
+  delete(): void {
     this.alertService.clear();
     this.hide = false
     this.url = this.oldImageUrl;
@@ -86,7 +86,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  submit() {
+  submit(): void {
     this.hide = false
     this.alertService.clear();
     let profile: Profile = {
@@ -100,7 +100,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success('Data changed',);
+          this.alertService.success('Data changed',true,true);
         },
         error: error => {
           switch (error.status) {
@@ -114,7 +114,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage);
+          this.alertService.error(this.alertMessage,true,true);
         }
       });
   }
@@ -138,7 +138,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
         'The lastname must contain only letters. Min length 3 characters' : '';
   }
 
-  back() {
+  back(): void {
     this.router.navigateByUrl('/profile');
   }
 }
