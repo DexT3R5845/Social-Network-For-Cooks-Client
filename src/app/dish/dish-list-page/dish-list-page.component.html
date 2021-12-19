@@ -1,7 +1,8 @@
-<div>
-  <form [formGroup]="searchForm" (ngSubmit)="searchDishes(searchForm)">
-    <button mat-raised-button class="btn-filter" type="submit">Search</button>
-
+<alert></alert>
+  <form [formGroup]="searchForm" (ngSubmit)="searchDishes()" class="dish-search-form">
+    <div class="filters">
+    <div class="main-filters">
+    <button type="submit" class="btn-filter" mat-flat-button color="warn">Apply Filter</button>
     <mat-form-field class="full-width-input">
       <input matInput placeholder="Search by name" formControlName="name" [disabled]="isFilteredByStock">
     </mat-form-field>
@@ -11,24 +12,17 @@
         <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
       </mat-select>
     </mat-form-field>
-
-    <mat-form-field class="full-width-input">
-      <mat-select placeholder="Sorting" formControlName="order">
-        <mat-option value="" disabled selected>Sorting</mat-option>
-        <mat-option value="asc">Sort by name (A-Z)</mat-option>
-        <mat-option value="desc">Sort by name (Z-A)</mat-option>
-      </mat-select>
-    </mat-form-field>
-      <mat-checkbox color="primary" (change)="manageFilterByStock($event)" [disabled] = "isFilteredByFavorite" *ngIf = "userRole === 'ROLE_USER'">Filter by my stock</mat-checkbox>
+    <mat-checkbox color="primary" (change)="manageFilterByStock($event)" [disabled] = "isFilteredByFavorite" *ngIf = "userRole === 'ROLE_USER'">Filter by my stock</mat-checkbox>
       <mat-checkbox color="primary" (change)="manageFilterByFavorite($event)" [disabled] = "isFilteredByStock" *ngIf = "userRole === 'ROLE_USER'">Show my favorites</mat-checkbox>
     
-    <br>
-    <mat-form-field class="full-width-input chip-list-selector" appearance="fill">
+    </div>
+    <div class="ingredient-filter">
+    <mat-form-field class="full-width-input chip-list">
       <mat-label>Select ingredients</mat-label>
-      <mat-chip-list #chipList aria-label="Ingredient selection" formControlName="ingredients">
+      <mat-chip-list #chipList aria-label="Ingredient selection">
         <mat-chip
           *ngFor="let ingredient of selectedIngredients"
-          (removed)="remove(ingredient)">
+          (removed)="removeIngredientFromList(ingredient)">
           {{ingredient.name}}
           <button matChipRemove>
             <mat-icon>cancel</mat-icon>
@@ -42,18 +36,20 @@
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
       </mat-chip-list>
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onIngredientSelected($event)">
         <mat-option *ngFor="let ingredient of filteredIngredients | async" [value]="ingredient">
           {{ingredient.name}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+  </div></div>
+      
   </form>
-</div>
 
 
-<div class="table-container" *ngIf="pageContent">
-  <mat-table id="table" [dataSource]="pageContent.content" #table matSort class="mat-cell">  
+<div class="table-container" *ngIf="pageContent" [ngClass] = "this.isWithActions">
+  <mat-table id="table" [dataSource]="pageContent.content" #table 
+  matSort matSortDisableClear [matSortDirection] = "sortOrder" [matSortDisabled]='isFilteredByStock || isFilteredByFavorite' (matSortChange)="sortData($event.direction)" class="mat-cell">  
 
     <ng-container matColumnDef="image">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -66,7 +62,7 @@
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Name</mat-header-cell>
       <mat-cell class="content-text dish-img" *matCellDef="let item" routerLink="{{item.id}}">{{item.dishName}}</mat-cell>
     </ng-container>
 

@@ -9,15 +9,14 @@
 }
 
 
-mat-card {
-  max-width: 50%;
+.mat-card {
   position: relative;
   min-height: 200px;
-  max-height: 80%;
+  max-height: 85%;
   overflow-y: auto;
 }
 
-mat-card-content {
+.mat-card-content {
   height: 100%;
 }
 
@@ -57,7 +56,6 @@ td.mat-cell:last-of-type {
 .ingredient-list, .kitchenware-list {
   padding: 5px;
   overflow-y: auto;
-  max-height: 200px;
 }
 
 

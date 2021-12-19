@@ -13,6 +13,7 @@ export class DishInfoComponent implements OnInit {
 
   dishInfo: Dish;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
+  alertMessage: string;
 
   constructor(private dishService: DishService, private route: ActivatedRoute, private alertService: AlertService) {
   }
@@ -31,10 +32,25 @@ export class DishInfoComponent implements OnInit {
         {next: response => {
           this.dishInfo = response;
           },
-          error: () => {
-            this.alertService.error("There was an error on the server, please try again later.");
+          error: error => {
+            this.displayError(error);
           }}
       )
+  }
+  
+  displayError(error: any) : void {
+    switch (error.status) {
+      case 400:
+        this.alertMessage = "Something went wrong";
+        break;
+      case 404:
+        this.alertMessage = error.error.message;
+        break;
+      default:
+        this.alertMessage = "There was an error on the server, please try again later."
+        break;
+    }
+    this.alertService.error(this.alertMessage,true,true);
   }
 
   ngOnDestroy(): void {
