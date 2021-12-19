@@ -34,13 +34,6 @@ export class DishService {
           .set('categories', dishSearchParams.categories)});
   }
 
-  private getStockDishList(currentPage: number, pageSize: number): Observable<Page<Dish>> {
-    return this.http.get<Page<Dish>>(`${baseUrl}/stock?`, {
-        params: new HttpParams()
-          .set('pageSize', pageSize)
-          .set('pageNum', currentPage)});
-  }
-
   getDishesBySearch(dishSearchParams: SearchDishParams, pageSize: number): Observable<Page<Dish>> {
     this.dishSearchParams = dishSearchParams;
     return this.getSearchDishList(0, this.dishSearchParams, pageSize);
@@ -51,7 +44,17 @@ export class DishService {
   }
 
   getStockDishes(currentPage: number, pageSize: number): Observable<Page<Dish>> {
-    return this.getStockDishList(currentPage, pageSize);
+    return this.http.get<Page<Dish>>(`${baseUrl}/stock?`, {
+      params: new HttpParams()
+        .set('pageSize', pageSize)
+        .set('pageNum', currentPage)});
+  }
+
+  getFavoriteDishes(currentPage: number, pageSize: number): Observable<Page<Dish>> {
+    return this.http.get<Page<Dish>>(`${baseUrl}/favorite?`, {
+      params: new HttpParams()
+        .set('pageSize', pageSize)
+        .set('pageNum', currentPage)});
   }
 
   getDishById(id: string): Observable<Dish> {

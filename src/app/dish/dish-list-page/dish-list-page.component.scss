@@ -54,6 +54,7 @@ table{
   }
 }
 
+
 @include mat-table-columns((
   image: (width: 20%),
   name: (width: 12%),
@@ -83,3 +84,4 @@ table{
 .likes {
   color: #fe3e81;
 }
+

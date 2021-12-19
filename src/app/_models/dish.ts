@@ -11,6 +11,7 @@ export interface Dish {
     ingredients: Ingredient[];
     kitchenwares: Kitchenware[];
     receipt: string;
-    liked: boolean;
-    favorite: boolean;
+    isLiked: boolean;
+    isFavorite: boolean;
+    totalLikes: number;
 }

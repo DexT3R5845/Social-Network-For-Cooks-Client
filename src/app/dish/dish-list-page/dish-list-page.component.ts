@@ -38,6 +38,7 @@ export class DishListPageComponent {
   ingredientControl = new FormControl();
   separatorKeysCodes: number[] = [ENTER, COMMA];
   isFilteredByStock: boolean;
+  isFilteredByFavorite: boolean;
   @ViewChild('ingredientInput') ingredientInput: ElementRef<HTMLInputElement>;
 
   constructor(
@@ -77,7 +78,15 @@ export class DishListPageComponent {
   }
 
   searchDishes(searchForm: FormGroup) : void {
-    this.isFilteredByStock ? this.getStockDishPage(0, this.pageSize) : this.getBySearch(searchForm);
+    if (this.isFilteredByStock) {
+      this.getStockDishPage(0, this.pageSize);
+     }
+     else if (this.isFilteredByFavorite) {
+      this.getFavoriteDishPage(0, this.pageSize);
+     } 
+     else {
+       this.getBySearch(searchForm);
+     }
   }
 
 
@@ -98,7 +107,15 @@ export class DishListPageComponent {
   }
 
   paginationHandler(pageEvent: PageEvent): void {
-    this.isFilteredByStock ? this.getStockDishPage(pageEvent.pageIndex, pageEvent.pageSize) : this.getDishPage(pageEvent.pageIndex, pageEvent.pageSize);
+    if (this.isFilteredByStock) {
+      this.getStockDishPage(pageEvent.pageIndex, pageEvent.pageSize);
+    }
+    else if (this.isFilteredByFavorite) {
+      this.getFavoriteDishPage(pageEvent.pageIndex, pageEvent.pageSize);
+    }
+    else {
+      this.getDishPage(pageEvent.pageIndex, pageEvent.pageSize);
+    }
   }
 
   private getDishPage(pageIndex: number, pageSize: number): void {
@@ -119,6 +136,21 @@ export class DishListPageComponent {
   private getStockDishPage(pageIndex: number, pageSize: number): void {
     this.alertService.clear();
     this.dishService.getStockDishes(pageIndex, pageSize)
+      .pipe(takeUntil(this.destroy))
+      .subscribe({
+        next: response => {
+          this.pageContent = response;
+          this.currentPage = pageIndex;
+          this.pageSize = pageSize;
+        },
+        error: () => {
+          this.alertService.error("unexpected error, try later");}
+      });
+  }
+
+  private getFavoriteDishPage(pageIndex: number, pageSize: number): void {
+    this.alertService.clear();
+    this.dishService.getFavoriteDishes(pageIndex, pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
@@ -225,7 +257,16 @@ export class DishListPageComponent {
 
   manageFilterByStock(event: MatCheckboxChange) : void {
     this.isFilteredByStock = event.source.checked;
-    if (this.isFilteredByStock)
+    this.changeSearchFormState();
+  }
+
+  manageFilterByFavorite(event: MatCheckboxChange) : void {
+    this.isFilteredByFavorite = event.source.checked;
+    this.changeSearchFormState();
+  }
+
+  private changeSearchFormState() : void {
+    if (this.isFilteredByStock || this.isFilteredByFavorite)
     {
       this.searchForm.controls['name'].reset({ value: '', disabled: true });
       this.searchForm.controls['categories'].reset({ value: '', disabled: true });
@@ -240,11 +281,15 @@ export class DishListPageComponent {
     }
   }
 
-  manageDishLike(id: string, isLiked: boolean) : void {
+  manageDishLike(dish: Dish) : void {
     console.log(this.pageContent)
-    this.dishService.manageDishLike(id, !isLiked)
+    this.dishService.manageDishLike(dish.id, !dish.isLiked)
       .pipe(takeUntil(this.destroy))
       .subscribe({
+        next: () => {
+          dish.isLiked = !dish.isLiked;
+          dish.isLiked ? dish.totalLikes++ : dish.totalLikes--;
+        },
         error: error => {
           switch (error.status) {
             case 400:
@@ -262,11 +307,14 @@ export class DishListPageComponent {
       });
   }
 
-  manageFavoriteDish(id: string, isFavorite: boolean) : void {
+  manageFavoriteDish(dish: Dish) : void {
     console.log(this.pageContent)
-    this.dishService.manageFavoriteDish(id, !isFavorite)
+    this.dishService.manageFavoriteDish(dish.id, !dish.isFavorite)
       .pipe(takeUntil(this.destroy))
       .subscribe({
+        next: () => {
+          dish.isFavorite = !dish.isFavorite;
+        },
         error: error => {
           switch (error.status) {
             case 400:

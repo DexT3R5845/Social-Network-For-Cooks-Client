@@ -19,7 +19,8 @@
         <mat-option value="desc">Sort by name (Z-A)</mat-option>
       </mat-select>
     </mat-form-field>
-      <mat-checkbox color="primary" (change)="manageFilterByStock($event)">Filter by stock</mat-checkbox>
+      <mat-checkbox color="primary" (change)="manageFilterByStock($event)" [disabled] = "isFilteredByFavorite">Filter by my stock</mat-checkbox>
+      <mat-checkbox color="primary" (change)="manageFilterByFavorite($event)" [disabled] = "isFilteredByStock">Show my favorites</mat-checkbox>
     
     <br>
     <mat-form-field class="full-width-input chip-list-selector" appearance="fill">
@@ -93,14 +94,14 @@
           <button mat-icon-button color="accent">
             <mat-icon aria-label="Delete" (click)="confirmDelete(item.id)">delete</mat-icon>
         </button>
-        <button mat-icon-button color="accent" (click)="manageDishLike(item.id, item.liked)">
-          <mat-icon *ngIf="item.liked" aria-label="check_box">favorite</mat-icon>
-          <mat-icon *ngIf="!item.liked" aria-label="check_box">favorite_border</mat-icon>
+        <button mat-icon-button color="accent" (click)="manageDishLike(item)">
+          <mat-icon *ngIf="item.isLiked" aria-label="check_box">favorite</mat-icon>
+          <mat-icon *ngIf="!item.isLiked" aria-label="check_box">favorite_border</mat-icon>
         </button>
         <span class = "likes">{{item.totalLikes}}</span>
-        <button mat-icon-button color="accent" (click)="manageFavoriteDish(item.id, item.favorite)">
-          <mat-icon *ngIf="item.favorite" aria-label="check_box">star</mat-icon>
-          <mat-icon *ngIf="!item.favorite" aria-label="check_box">star_border</mat-icon>
+        <button mat-icon-button color="accent" (click)="manageFavoriteDish(item)">
+          <mat-icon *ngIf="item.isFavorite" aria-label="check_box">star</mat-icon>
+          <mat-icon *ngIf="!item.isFavorite" aria-label="check_box">star_border</mat-icon>
         </button>
       </mat-cell>
     </ng-container>
