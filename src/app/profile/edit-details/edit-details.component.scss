@@ -66,3 +66,10 @@ mat-label{
 #fileInput{
   display: none;
 }
+
+.edit_profile{
+  position: relative;
+  min-height: 200px;
+  max-height: 100%;
+  overflow: auto;
+}
