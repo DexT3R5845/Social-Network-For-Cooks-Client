@@ -56,8 +56,9 @@ form {
 
 @include mat-table-columns((
   image: (width: 20%),
-  firstName: (width: 25%),
-  lastName: (width: 25%),
+  firstName: (width: 20%),
+  lastName: (width: 20%),
+  delete: (width: 30%)
 ));
 
 

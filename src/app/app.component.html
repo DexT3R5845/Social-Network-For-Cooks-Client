@@ -4,20 +4,20 @@
     <button mat-button routerLink="/">{{title}}</button>
   </span>
 
-      <div *ngIf="account && account.role == Role.Moderator" fxFlex fxShow fxHide.lt-md>
-        <button mat-button routerLink="/ingredients">Ingredients</button>
-        <button mat-button routerLink="/kitchenware">Kitchenware</button>
-        <button mat-button routerLink="/dishes">Dishes</button>
-      </div>
+  <div *ngIf="account && account.role == Role.Moderator" fxFlex fxShow fxHide.lt-md>
+    <button mat-button routerLink="/ingredients">Ingredients</button>
+    <button mat-button routerLink="/kitchenware">Kitchenware</button>
+    <button mat-button routerLink="/dishes">Dishes</button>
+  </div>
 
-      <div *ngIf="account && account.role == Role.Admin" fxFlex fxShow fxHide.lt-md>
-        <button mat-button routerLink="/admin">Management</button>
-      </div>
+  <div *ngIf="account && account.role == Role.Admin" fxFlex fxShow fxHide.lt-md>
+    <button mat-button routerLink="/admin">Management</button>
+  </div>
 
-      <div *ngIf="account && account.role == Role.User" fxFlex fxShow fxHide.lt-md>
-        <button mat-button routerLink="/friends">Friends</button>
-        <button mat-button routerLink="/stock">My Stock</button>
-      </div>
+  <div *ngIf="account && account.role == Role.User" fxFlex fxShow fxHide.lt-md>
+    <button mat-button routerLink="/friends">Friends</button>
+    <button mat-button routerLink="/stock">My Stock</button>
+  </div>
 
   <div *ngIf="!account" fxLayout="row" fxShow="false" fxShow.gt-sm>
     <button mat-button routerLink="/account/signin">
@@ -39,7 +39,7 @@
       <mat-icon>logout_outlined</mat-icon>
       Logout
     </button>
-</div>
+  </div>
 
   <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
     <mat-icon>menu</mat-icon>
@@ -49,15 +49,37 @@
 <mat-menu x-position="before" #menu="matMenu">
 
   <div *ngIf="!account">
-  <button mat-menu-item routerLink="/account/signup">
-    <mat-icon>account_circle</mat-icon>
-    Register
-  </button>
-  <button mat-menu-item routerLink="/account/signin">
-    <mat-icon>power_settings_new</mat-icon>
-    Login
-  </button>
-</div>
+    <button mat-menu-item routerLink="/account/signup">
+      <mat-icon>account_circle</mat-icon>
+      Register
+    </button>
+    <button mat-menu-item routerLink="/account/signin">
+      <mat-icon>power_settings_new</mat-icon>
+      Login
+    </button>
+  </div>
+
+  <div *ngIf="account">
+    <button *ngIf="account.role == Role.Moderator" mat-menu-item routerLink="/ingredients">
+      Ingredients
+    </button>
+    <button mat-menu-item routerLink="/profile">
+      <mat-icon>assignment_ind</mat-icon>
+      My Profile
+    </button>
+    <button mat-menu-item routerLink="/friends">
+      <mat-icon>list</mat-icon>
+      Friends
+    </button>
+    <button mat-menu-item routerLink="/stock">
+      <mat-icon>list</mat-icon>
+      My Stock
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout_outlined</mat-icon>
+      Logout
+    </button>
+  </div>
 
 </mat-menu>
 <router-outlet></router-outlet>
