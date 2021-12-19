@@ -61,18 +61,18 @@ export class DishService {
     return this.http.get<Dish>(`${baseUrl}/${id}`);
   }
 
-  deleteDish(id: string) {
+  deleteDish(id: string) : Observable<Object> {
     return this.http.delete(`${baseUrl}/${id}`);
   }
 
-  manageDishLike(id: string, isLiked: boolean) {
+  manageDishLike(id: string, isLiked: boolean) : Observable<Object> {
     return this.http.put(`${baseUrl}/like?`, {}, {
       params: new HttpParams()
       .set('id', id)
       .set('isLike', isLiked)});
   }
 
-  manageFavoriteDish(id: string, isFavorite: boolean) {
+  manageFavoriteDish(id: string, isFavorite: boolean) : Observable<Object> {
     return this.http.put(`${baseUrl}/favorite?`, {}, {
       params: new HttpParams()
       .set('id', id)
