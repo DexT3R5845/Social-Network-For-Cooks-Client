@@ -1,0 +1,63 @@
+@import '../layout/layout.component.scss';
+
+
+.dish-img {
+  display: block;
+  margin: 10px auto 20px;
+  max-height: 400px;
+  max-width: 90%
+}
+
+
+.mat-card {
+  position: relative;
+  min-height: 200px;
+  max-height: 85%;
+  overflow-y: auto;
+}
+
+.mat-card-content {
+  height: 100%;
+}
+
+.mat-table {
+  display: block;
+  font-family: Tahoma, Verdana;
+  border: none;
+}
+
+.mat-row{
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  align-items: center;
+  height: auto;
+}
+
+.mat-cell {
+  flex: 1;
+  font-size: 20px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+  border: none;
+  margin: 0px;
+}
+
+td.mat-cell:first-of-type {
+  padding-left: 5px;
+}
+
+td.mat-cell:last-of-type {
+  padding-right: 5px;
+}
+
+.ingredient-list, .kitchenware-list {
+  padding: 5px;
+  overflow-y: auto;
+}
+
+
+
+

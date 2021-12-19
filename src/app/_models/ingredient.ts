@@ -4,4 +4,5 @@ export interface Ingredient{
     imgUrl: string;
     ingredientCategory: string;
     active: boolean;
+    amount?: number;
 }
