@@ -33,3 +33,20 @@ mat-form-field.ng-invalid.ng-touched {
   color: white;
   background-color: red;
 }
+
+@mixin mat-table-columns($columns)
+{
+  .mat-column-
+  {
+      @each $colName, $props in $columns {
+
+          $width: map-get($props, 'width');
+          
+          &#{$colName} 
+          {
+              flex: 0 0 $width;
+              min-width: $width;
+          }  
+      }
+  }
+}

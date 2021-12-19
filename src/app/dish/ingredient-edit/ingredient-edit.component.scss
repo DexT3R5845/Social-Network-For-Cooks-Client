@@ -1,0 +1,102 @@
+mat-header-cell, mat-header-row, .mat-header-cell-def {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+mat-cell{
+  font-size: 20px;
+}
+
+.table-container{
+  position: relative;
+  min-height: 200px;
+  max-height: 80%;
+  overflow: auto;
+}
+
+mat-form-field{
+  margin-left: 15px;
+}
+
+img{
+  width: 100%;
+  height: 100%;
+  max-width: 100px;
+  max-height: 150px;
+}
+
+button.btn-filter{
+  margin-left: 15px;
+}
+
+table{
+  width: 100%;
+}
+
+@mixin mat-table-columns($columns)
+{
+  .mat-column-
+  {
+      @each $colName, $props in $columns {
+
+          $width: map-get($props, 'width');
+          
+          &#{$colName} 
+          {
+              flex: 0 0 $width;
+              min-width: $width;
+          }  
+      }
+  }
+}
+
+@include mat-table-columns(( 
+      image: (width: 25%),
+      name: (width: 27%),
+      category: (width: 23%),
+      actions: (width: 25%),
+  ));
+
+.mat-form-field {
+  font-size: 20px;
+  margin-top: 5px;
+
+  margin-bottom: -1%;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button{
+    float: right;
+    top:-24px;
+    right:-24px;
+  }
+  
+  .close-icon {
+    transition: 1s ease-in-out;
+  }
+  
+  .close-icon:hover {
+    transform: rotate(180deg);
+  }
+  
+  ::ng-deep .icon-outside .close-button{
+    float: right;
+    top:-52px;
+    right:-52px;
+  }
+  
+  ::ng-deep .icon-outside .mat-dialog-container {
+   overflow: unset
+  }

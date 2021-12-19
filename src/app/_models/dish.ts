@@ -6,7 +6,7 @@ export interface Dish {
     dishCategory: string;
     dishName: string;
     dishType: string;
-    id: string;
+    id?: string;
     imgUrl: string;
     ingredients: Ingredient[];
     kitchenwares: Kitchenware[];

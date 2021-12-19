@@ -1,5 +1,5 @@
-export class Kitchenware {
-  id: string;
+export interface NewKitchenware{
+    id: string;
   name: string;
   imgUrl: string;
   category: string;
