@@ -46,4 +46,8 @@ export class DishService {
   getById(id: string): Observable<Dish> {
     return this.http.get<Dish>(`${baseUrl}/` + id);
   }
+
+  createDish(dish: Dish): Observable<Object> {
+    return this.http.post(`${baseUrl}`, dish);
+  }
 }

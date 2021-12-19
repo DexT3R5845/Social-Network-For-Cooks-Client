@@ -24,7 +24,7 @@ export class AlertService {
     }
 
     OnAlert(id = this.defaultId): Observable<AlertMessage|null> {
-        return this.subject.asObservable().pipe(filter(x => x != null && x.id === id));
+        return this.subject.asObservable().pipe(filter(x => x !=null ? x.id === id : true));
     }
 
     success(message: string, keepAfterRouteChange = false, autoClose = false, componentID = this.defaultId) {

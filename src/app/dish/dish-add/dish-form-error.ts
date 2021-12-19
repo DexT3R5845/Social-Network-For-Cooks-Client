@@ -3,9 +3,9 @@ import { FormGroup } from "@angular/forms";
 export class DishFormError{
 form: FormGroup;
 
-get control(){
+  get control() {
     return this.form.controls;
-}
+  }
 
     get descriptionErrorMessage(): string {
         return this.control['description'].hasError('required') ?
@@ -47,6 +47,30 @@ get control(){
           'Enter receipt for dish, please' :
           this.control['receipt'].hasError('maxlength') ?
             'Max Length is 3000' : '';
+      }
+
+      get receipt(): string{
+        return this.control['receipt'].value;
+      }
+
+      get imgUrl(): string{
+        return this.control['imgUrl'].value;
+      }
+
+      get dishType(): string{
+        return this.control['dishType'].value;
+      }
+
+      get dishName(): string{
+        return this.control['dishName'].value;
+      }
+
+      get dishCategory(): string{
+        return this.control['dishCategory'].value;
+      }
+
+      get description(): string{
+        return this.control['description'].value;
       }
 
 }

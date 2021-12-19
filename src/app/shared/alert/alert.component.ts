@@ -18,7 +18,6 @@ export class AlertComponent implements OnInit, OnDestroy {
       this.subscription = this.alertService.OnAlert(this.id)
           .subscribe(message => {
               this.alertMessage = message;
-
               if(this.alertMessage && this.alertMessage.autoClose)
                 setTimeout(() => {
                     this.alertMessage = null;
