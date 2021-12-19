@@ -29,7 +29,7 @@
 
   <mat-form-field appearance="outline">
     <mat-label>Birthday date:</mat-label>
-    <input matInput [matDatepicker]="picker" time="false" date="true" formControlName="date" required>
+    <input matInput [matDatepicker]="picker" time="false" date="true" formControlName="date">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
     <mat-error>Please provide a valid birthdate</mat-error>

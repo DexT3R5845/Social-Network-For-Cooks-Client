@@ -58,9 +58,10 @@ form{
 }
 
 @include mat-table-columns((
-  image: (width: 20%),
-  firstName: (width: 25%),
-  lastName: (width: 25%),
+  image: (width: 18%),
+  firstName: (width: 18%),
+  lastName: (width: 20%),
+  invite: (width: 32%)
 ));
 
 

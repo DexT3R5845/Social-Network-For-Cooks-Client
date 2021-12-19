@@ -25,9 +25,9 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
 
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  hideOld = true;
-  hideNew = true;
-  hideConfirm = true;
+  hideOld: boolean = true;
+  hideNew: boolean = true;
+  hideConfirm: boolean = true;
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -47,13 +47,13 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
         'The password contains at least 8 symbol, one uppercase letter, a lowercase letter, and a number' : '';
   }
 
-  changePassword() {
+  changePassword(): void {
     this.alertService.clear();
     this.profileService.changePassword(this.form.value.password, this.form.value.newPassword)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success('Password changed');
+          this.alertService.success('Password changed',true,true);
         },
         error: error => {
           switch (error.status) {
@@ -67,13 +67,19 @@ export class ChangePasswordComponent extends PasswordValidatorShared implements 
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage);
+          this.alertService.error(this.alertMessage,true,true);
         }
       });
   }
 
-  back() {
+  back(): void {
     this.router.navigateByUrl('/profile');
+  }
+
+  onKeydown(event: KeyboardEvent): void {
+    if (event.code === "Space") {
+      event.preventDefault();
+    }
   }
 
   ngOnDestroy(): void {

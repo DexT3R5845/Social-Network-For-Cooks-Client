@@ -30,33 +30,31 @@
 <table mat-table class="table-invites" [dataSource]="pageContent.content">
 
   <ng-container matColumnDef="image">
-    <mat-header-cell *matHeaderCellDef> Image</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
     <mat-cell *matCellDef="let element">
       <img [src]="element.imgUrl ? element.imgUrl : '../assets/images/defaultAv.png'"/>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="firstName">
-    <mat-header-cell *matHeaderCellDef> FistName</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> First name</mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="lastName">
-    <mat-header-cell *matHeaderCellDef> LastName</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Last name</mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="accept">
+  <ng-container matColumnDef="action">
     <mat-header-cell *matHeaderCellDef></mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-      <button mat-raised-button color="primary" (click)="acceptInvite(i,element.id)">Accept</button>
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="decline">
-    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-    <mat-cell *matCellDef="let element; let i = index">
-      <button mat-raised-button color="primary" (click)="declineInvite(i,element.id)">Decline</button>
+      <button mat-raised-button color="primary" class="btn-action" (click)="acceptInvite(i,element.id)">
+        <mat-icon>done</mat-icon>
+      </button>
+      <button mat-raised-button color="primary"  class="btn-action" (click)="declineInvite(i,element.id)">
+        <mat-icon>clear</mat-icon>
+      </button>
     </mat-cell>
   </ng-container>
 
