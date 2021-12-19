@@ -7,7 +7,7 @@ import {ReplaySubject, takeUntil} from "rxjs";
 import {AlertService} from "../../_services";
 import {MatTable} from "@angular/material/table";
 import {PageEvent} from "@angular/material/paginator";
-import {SearchParams} from "../../_models/search-params";
+import {SearchAccountParams} from "../../_models/search-account-params";
 
 @Component({
   selector: 'app-view-friends',
@@ -28,7 +28,7 @@ export class ViewFriendsComponent implements OnInit {
     order: new FormControl("asc"),
     gender: new FormControl("")
   });
-  friendSearch: SearchParams;
+  friendSearch: SearchAccountParams;
 
   constructor(private service: FriendService, private alertService: AlertService) {
   }

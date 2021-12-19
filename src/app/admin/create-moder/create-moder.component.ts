@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {AdminService} from "../../_services/admin.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -18,7 +18,6 @@ export class CreateModerComponent implements OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<CreateModerComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AccountInList,
     public service: AdminService,
     private formBuilder: FormBuilder,
     private alertService: AlertService
@@ -33,32 +32,34 @@ export class CreateModerComponent implements OnDestroy {
     });
   }
 
-  onNoClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 
   public confirmAdd(): void {
     if (this.form.valid) {
-      this.service.addModerator(this.form)
+      const account: AccountInList = this.form.value;
+      this.service.addModerator(account)
         .pipe(takeUntil(this.destroy))
         .subscribe({
           next: () => {
-            this.alertService.success('Creation successful');
+            this.alertService.success("Password-creation letter has been sent.", true, true);
+            this.dialogRef.close();
           },
           error: error => {
             switch(error.status){
               case 403:
-                this.alertMessage = error.error.message;
+                this.alertService.error(error.error.message, false, false, "error-dialog");
                 break;
               case 409:
-                this.alertMessage = error.error.message;
+                this.alertService.error(error.error.message, false, false, "error-dialog");
                 break;
               default:
-                this.alertMessage = "There was an error on the server, please try again later."
+                this.alertService.error("There was an error on the server, please try again later.", false, false, "error-dialog");
                 break;
             }
-            this.alertService.error(this.alertMessage);
-          }});
+          }
+        });
     }
   }
 

@@ -36,21 +36,24 @@ export class EditModerComponent implements OnInit, OnDestroy {
     });
   }
 
-  onNoClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 
   public editModerator(): void {
     if (this.form.valid) {
-      this.service.editModerator(this.form)
+      const account: AccountInList = this.form.value;
+      this.service.editModerator(account)
         .pipe(takeUntil(this.destroy))
         .subscribe({
           next: () => {
-            this.alertService.success('Edit successful');
+            this.alertService.success("Account successfully updated.", true, true);
+            this.dialogRef.close(account);
           },
-          error: () => {
-            this.alertService.error("There was an error on the server, please try again later.");
-          }});
+          error: error => {
+            this.alertService.error(error.error.message, false, false, "error-dialog");
+          }
+        });
     }
   }
 
@@ -67,15 +70,7 @@ export class EditModerComponent implements OnInit, OnDestroy {
         this.profile = data;
       },
         error: error => {
-          switch(error.status){
-            case 404:
-              this.alertMessage = error.error.message;
-              break;
-            default:
-              this.alertMessage = "There was an error on the server, please try again later."
-              break;
-          }
-          this.alertService.error(this.alertMessage);
-      }});
+          this.alertService.error(error.error.message, false, false, "error-dialog");
+        }});
   }
 }

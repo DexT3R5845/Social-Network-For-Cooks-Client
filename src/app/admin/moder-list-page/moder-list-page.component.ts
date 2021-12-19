@@ -5,11 +5,11 @@ import {ReplaySubject} from "rxjs";
 import {AccountInList} from "../../_models/account-in-list";
 import {AdminService} from "../../_services/admin.service";
 import {AlertService} from "../../_services";
-import {Page} from "../../_models/page";
 import {takeUntil} from "rxjs/operators";
 import {CreateModerComponent} from "../create-moder/create-moder.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {EditModerComponent} from "../edit-moder/edit-moder.component";
+import {SearchAccountParams} from "../../_models/search-account-params";
 
 
 @Component({
@@ -18,7 +18,8 @@ import {EditModerComponent} from "../edit-moder/edit-moder.component";
   styleUrls: ['./moder-list-page.component.scss']
 })
 export class ModerListPageComponent {
-  pageContent: Page<AccountInList>;
+  pageContent: AccountInList[] = [];
+  totalElements: number;
   searchForm: FormGroup = this.createFormGroup();
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   columnsToDisplay = ['image', 'firstName', 'lastName', 'id', 'actions'];
@@ -35,15 +36,19 @@ export class ModerListPageComponent {
 
   getBySearch(searchForm: FormGroup): void {
     this.alertService.clear();
-    this.service.getAccountsBySearch(searchForm, this.pageSize)
+    const searchParams : SearchAccountParams = searchForm.value;
+    this.service.getAccountsBySearch(searchParams, this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
-          this.pageContent = response;
+          this.pageContent = response.content;
+          this.totalElements = response.totalElements;
           this.currentPage = 0;
           },
         error: () => {
-          this.alertService.error("unexpected error, try later");}
+          this.alertService.error("There was an error on the server, please try again later.", false, true);
+          this.pageContent = [];
+        }
       });
   }
 
@@ -53,12 +58,15 @@ export class ModerListPageComponent {
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
-          this.pageContent = response;
+          this.pageContent = response.content;
+          this.totalElements = response.totalElements;
           this.currentPage = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
           },
-        error: () => {
-          this.alertService.error("unexpected error, try later");}
+        error: error => {
+          this.alertService.error(error.error.message, false, true);
+          this.pageContent = [];
+        }
       });
   }
 
@@ -81,31 +89,44 @@ export class ModerListPageComponent {
   }
 
   newModerator() {
-    this.alertService.clear();
-    this.dialog.open(CreateModerComponent, {data: { profile: AccountInList }});
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    this.dialog.open(CreateModerComponent, dialogConfig);
   }
 
-  editModerator(index: number, id: string){
-    this.alertService.clear();
-    this.dialog.open(EditModerComponent, {data: {profile: AccountInList, id: id}})
+  editModerator(account : AccountInList, id : string){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    let dataDialog = Object.assign({}, account);
+    dialogConfig.data = {
+      account: dataDialog,
+      id : id
+    };
+
+    const dialogRef = this.dialog.open(EditModerComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: AccountInList) => {
+      if(data){
+        account.firstName = data.firstName;
+        account.lastName = data.lastName;
+        account.birthDate = data. birthDate;
+        account.gender = data.gender;
+        account.imgUrl = data.imgUrl;
+      }
+    })
   }
 
 
   changeStatus(index: number, id: string, status: boolean) {
-    this.alertService.clear();
     this.service.changeStatus(id)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.pageContent.content[index].status = !status;
+          this.pageContent[index].status = !status;
         },
         error: error => {
-          if (error.status == 404) {
-            this.alertMessage = "no such id in database";
-          } else {
-            this.alertMessage = "unexpected error, try later";
-          }
-          this.alertService.error(this.alertMessage);
+          this.alertService.error(error.error.message, false, true);
         }
       }
       )
