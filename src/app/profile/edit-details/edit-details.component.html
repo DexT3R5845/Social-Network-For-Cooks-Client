@@ -1,52 +1,52 @@
-<form class="edit_profile" [formGroup]="form">
+<div class="edit_profile">
+  <form [formGroup]="form">
+    <div class="img-profile-changer">
+      <label class="hoverable" for="fileInput">
+        <img class="img-profile" [src]="url ? url : '../assets/images/defaultAv.png'" alt="">
+        <span class="hover-text">Choose file</span>
+        <span class="background"></span>
+      </label>
 
-  <div class="img-profile-changer">
-    <label class="hoverable" for="fileInput">
-      <img class="img-profile" [src]="url ? url : '../assets/images/defaultAv.png'" alt="">
-      <span class="hover-text">Choose file</span>
-      <span class="background"></span>
-    </label>
+      <input id="fileInput" (click)="openDialog()">
+      <button mat-raised-button color="primary" *ngIf="hide" (click)="delete()">Cancel</button>
+    </div>
 
-    <input id="fileInput" (click)="openDialog()">
-    <button mat-raised-button color="primary" *ngIf="hide" (click)="delete()" >Cancel</button>
-  </div>
+    <mat-form-field appearance="outline">
+      <mat-label>First name:</mat-label>
+      <input matInput formControlName="firstName" required>
+      <mat-error>
+        {{firstNameErrorMessage}}
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>First name:</mat-label>
-    <input matInput formControlName="firstName" required>
-    <mat-error>
-      {{firstNameErrorMessage}}
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Last name:</mat-label>
+      <input matInput formControlName="lastName" required>
+      <mat-error>
+        {{lastNameErrorMessage}}
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Last name:</mat-label>
-    <input matInput formControlName="lastName" required>
-    <mat-error>
-      {{lastNameErrorMessage}}
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Birthday date:</mat-label>
+      <input matInput [matDatepicker]="picker" time="false" date="true" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error>Please provide a valid birthdate</mat-error>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Birthday date:</mat-label>
-    <input matInput [matDatepicker]="picker" time="false" date="true" formControlName="date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error>Please provide a valid birthdate</mat-error>
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Gender:</mat-label>
+      <mat-select formControlName="gender" required>
+        <mat-option value="M">Male</mat-option>
+        <mat-option value="F">Female</mat-option>
+      </mat-select>
+      <mat-error>You must make a selection</mat-error>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label >Gender:</mat-label>
-    <mat-select formControlName="gender" required>
-      <mat-option value="M">Male</mat-option>
-      <mat-option value="F">Female</mat-option>
-    </mat-select>
-    <mat-error>You must make a selection</mat-error>
-  </mat-form-field>
-
-  <div class="user_profile_control_edit">
-    <button type="button" [disabled]="form.invalid" (click)="submit()" mat-raised-button color="primary">Save</button>
-    <button type="button"   (click)="back()" mat-raised-button color="primary">Back</button>
-  </div>
-</form>
-
+    <div class="user_profile_control_edit">
+      <button type="button" [disabled]="form.invalid" (click)="submit()" mat-raised-button color="primary">Save</button>
+      <button type="button" (click)="back()" mat-raised-button color="primary">Back</button>
+    </div>
+  </form>
+</div>

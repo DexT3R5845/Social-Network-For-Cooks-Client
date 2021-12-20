@@ -3,7 +3,7 @@ import {FriendService} from "../../_services/friend.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AccountInList} from "../../_models/account-in-list";
 import {Page} from "../../_models/page";
-import {ReplaySubject, takeUntil} from "rxjs";
+import {finalize, ReplaySubject, takeUntil} from "rxjs";
 import {AlertService} from "../../_services";
 import {MatTable} from "@angular/material/table";
 import {PageEvent} from "@angular/material/paginator";
@@ -29,6 +29,7 @@ export class ViewFriendsComponent implements OnInit {
     gender: new FormControl("")
   });
   friendSearch: SearchParams;
+  isLoadingResults = true;
 
   constructor(private service: FriendService, private alertService: AlertService) {
   }
@@ -45,7 +46,7 @@ export class ViewFriendsComponent implements OnInit {
 
   getFriendsBySearch(): void {
     this.service.getFriendsBySearch(this.friendSearch, this.pageSize)
-      .pipe(takeUntil(this.destroy))
+      .pipe(takeUntil(this.destroy), finalize(() => this.isLoadingResults = false))
       .subscribe({
         next: response => {
           this.pageContent = response;

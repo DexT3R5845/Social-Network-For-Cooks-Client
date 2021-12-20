@@ -10,10 +10,7 @@ mat-header-cell {
 }
 
 .table-friends {
-  min-height: 200px;
-  max-height: 80%;
   width: 100%;
-
 }
 
 mat-form-field {
@@ -57,9 +54,22 @@ form {
 @include mat-table-columns((
   image: (width: 20%),
   firstName: (width: 20%),
-  lastName: (width: 20%),
-  delete: (width: 30%)
+  lastName: (width: 29%),
+  delete: (width: 25%)
 ));
+
+.loading-shade {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 
 

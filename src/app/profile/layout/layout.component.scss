@@ -7,6 +7,12 @@ mat-card {
   text-align: center;
 }
 
+div{
+  position: relative;
+  max-height: 90%;
+  overflow: auto;
+}
+
 mat-form-field {
   display: block;
   font-size: 20px;

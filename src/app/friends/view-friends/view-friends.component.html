@@ -1,7 +1,8 @@
 <div>
   <form [formGroup]="searchForm">
     <mat-form-field color="primary">
-      <input matInput placeholder="Search for you friend" (keydown)="onKeydown($event)" formControlName="search"  required>
+      <input matInput placeholder="Search for you friend" (keydown)="onKeydown($event)" formControlName="search"
+             required>
       <mat-icon matSuffix>search</mat-icon>
       <mat-error>
         {{searchParamErrorMessage}}
@@ -57,15 +58,21 @@
     <mat-header-cell *matHeaderCellDef></mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
 
-      <button mat-raised-button color="primary"  (click)="removeFriend(i,element.id)">
-        <mat-icon>delete_outline</mat-icon>
+      <button mat-raised-button color="primary" (click)="removeFriend(i,element.id)">
+        <mat-icon>delete_forever</mat-icon>
       </button>
     </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
 </table>
+
+
+<div *ngIf="isLoadingResults" class="loading-shade">
+  <mat-spinner></mat-spinner>
+</div>
 
 <mat-paginator
   [length]="pageContent.totalElements"
@@ -74,3 +81,8 @@
   [pageSizeOptions]="[12, 20, 40]"
   (page)="paginationHandler($event)">
 </mat-paginator>
+
+
+
+
+
