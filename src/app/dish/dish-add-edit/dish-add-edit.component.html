@@ -1,0 +1,139 @@
+<mat-card *ngIf="dishModel" fxFlex="40%" fxFlex.xs="95%">
+    <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmitForm()">
+            <h2>{{title}}</h2>
+            <alert id="formDish"></alert>
+            <mat-form-field class="full-width-input">
+                <input matInput placeholder="Name" formControlName="dishName" [(ngModel)]="dishModel.dishName">
+                <mat-error>
+                    {{dishNameErrorMessage}}
+                  </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="full-width-input">
+                <input matInput placeholder="Description" formControlName="description" [(ngModel)]="dishModel.description">
+                <mat-error>
+                    {{descriptionErrorMessage}}
+                  </mat-error>
+            </mat-form-field>
+
+            <div class="table-container">
+                <mat-table id="table" [dataSource]="dishModel.kitchenwares" #table class="mat-cell">
+                
+                    <ng-container matColumnDef="amount">
+                        <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                                <mat-form-field class="amount">
+                                    <input matInput type="number" min="1" value="{{row.amount}}" (change)="onAmountChange($event, row)">
+                                </mat-form-field>
+                        </mat-cell>
+                      </ng-container>
+
+                  <ng-container matColumnDef="image">
+                    <mat-header-cell *matHeaderCellDef>List Kitchenware</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <img [src]="row.imgUrl"/>
+                    </mat-cell>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>
+                        <button type="button" mat-icon-button color="primary" (click)="addKitchenware()">
+                            <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+                          </button>
+                    </mat-header-cell>
+                
+                    <mat-cell *matCellDef="let row; let i=index;">
+                        <button type="button" mat-flat-button color="warn" (click)="removeKitchenware(row.id)">Remove</button>
+                      </mat-cell>
+                  </ng-container>
+                
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                <div *ngIf="!dishModel.kitchenwares.length">
+                  No Record found
+                  </div>
+                </div>
+
+                <div class="table-container">
+                    <mat-table id="table" [dataSource]="dishModel.ingredients" #table class="mat-cell">
+                    
+                        <ng-container matColumnDef="amount">
+                            <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                    <mat-form-field class="amount">
+                                        <input matInput type="number" min="1" value="{{row.amount}}" (change)="onAmountChange($event, row)">
+                                    </mat-form-field>
+                            </mat-cell>
+                          </ng-container>
+    
+                      <ng-container matColumnDef="image">
+                        <mat-header-cell *matHeaderCellDef>List Ingredients</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          <img [src]="row.imgUrl"/>
+                        </mat-cell>
+                      </ng-container>
+                    
+                      <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+                      </ng-container>
+                    
+                      <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef>
+                            <button type="button" mat-icon-button color="primary" (click)="addIngredient()">
+                                <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+                              </button>
+                        </mat-header-cell>
+                    
+                        <mat-cell *matCellDef="let row; let i=index;">
+                            <button type="button" mat-flat-button color="warn" (click)="removeIngredient(row.id)">Remove</button>
+                          </mat-cell>
+                      </ng-container>
+                    
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                    <div *ngIf="!dishModel.ingredients.length">
+                      No Record found
+                      </div>
+                    </div>
+        
+            <mat-form-field class="full-width-input">
+                <input matInput placeholder="Image URL" formControlName="imgUrl" [(ngModel)]="dishModel.imgUrl">
+                <mat-error>
+                  {{imgUrlErrorMessage}}
+                  </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="full-width-input">
+              <input matInput placeholder="Type Dish" formControlName="dishType" [(ngModel)]="dishModel.dishType">
+              <mat-error>
+                 {{dishTypeErrorMessage}}
+                </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input">
+            <mat-select placeholder="Select category dish" formControlName="dishCategory" [(ngModel)]="dishModel.dishCategory">
+              <mat-option *ngFor="let category of listCategoryDish" [value]="category">{{category}}</mat-option>
+            </mat-select>
+            <mat-error>{{dishCategoryErrorMessage}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input">
+            <textarea matInput rows="5" placeholder="Enter receipt" formControlName="receipt" [(ngModel)]="dishModel.receipt"></textarea>
+            <mat-error>{{receiptErrorMessage}}</mat-error>
+          </mat-form-field>
+        
+          <button type="submit" mat-raised-button color="primary"> {{modeEdit ? "Submit" : "Add"}} </button>
+          <button type="button" mat-raised-button class="cancel-button" routerLink="/dishes">Cancel</button>
+
+        </form>
+    </mat-card-content>
+</mat-card>

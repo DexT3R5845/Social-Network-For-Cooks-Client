@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { MustMatch } from 'src/app/_helpers/must-match.validator';
@@ -11,10 +11,11 @@ import { PasswordValidatorShared } from '../sharedClass/passwordValidatorShared'
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent extends PasswordValidatorShared implements OnInit, OnDestroy {
+export class SignupComponent extends PasswordValidatorShared implements OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  hide = true;
+  hide: boolean = true;
+  hideConfirm: boolean = true;
 
 constructor(
   private formBuilder: FormBuilder,
@@ -34,7 +35,8 @@ constructor(
     gender: ['', Validators.required]
   }, {
     validator: MustMatch('password', 'confirmPassword')
-  });
+  } as AbstractControlOptions
+  );
 }
   ngOnDestroy(): void {
     this.destroy.next(null);
@@ -48,10 +50,7 @@ get firstNameErrorMessage(): string {
     'The name must contain only letters. Min length 3 characters' : '';
 }
 
-ngOnInit(){
-}
-
-onSubmit() {
+onSubmit(): void {
   this.alertService.clear();
   if (this.form.valid) {
     console.log(this.control['birthDate'].value);
@@ -79,7 +78,7 @@ onSubmit() {
                   }
                   this.alertService.error(this.alertMessage);
             }});
+    }
   }
-}
 
 }

@@ -9,7 +9,7 @@ import { AlertService, StockService } from 'src/app/_services';
   templateUrl: './delete.component.html',
   styleUrls: ['./delete.component.scss']
 })
-export class DeleteComponent implements OnInit, OnDestroy {
+export class DeleteComponent implements OnDestroy {
   stockItem: Stock;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
     
@@ -22,15 +22,12 @@ export class DeleteComponent implements OnInit, OnDestroy {
       this.stockItem = data;
     }
   
-    ngOnInit(): void {
-    }
-  
     ngOnDestroy(): void {
       this.destroy.next(null);
       this.destroy.complete();
     }
   
-    confirm(){
+    confirm(): void {
       this.stockService.deleteIngredientInStock(this.stockItem.id)
         .pipe(takeUntil(this.destroy)).subscribe({
           next: () => {
@@ -42,7 +39,7 @@ export class DeleteComponent implements OnInit, OnDestroy {
         this.dialogRef.close();
     }
   
-    close(){
+    close(): void {
       this.dialogRef.close();
     }
 

@@ -7,7 +7,7 @@
 
     <mat-form-field class="full-width-input">
       <mat-select placeholder="Select category" formControlName="ingredientCategories" multiple>
-        <mat-option *ngFor="let category of listCategory" [value]="category.name">{{category.name}}</mat-option>
+        <mat-option *ngFor="let category of listCategory" [value]="category">{{category}}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -61,6 +61,9 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+<div class="empty-table" *ngIf="!dataSource.length">
+  No Record found
+  </div>
 </div>
 
 <div *ngIf="isLoadingResults" class="loading-shade">

@@ -1,4 +1,4 @@
-export class AccountInList {
+export interface AccountInList {
   id: string;
   email: string;
   firstName?: string;

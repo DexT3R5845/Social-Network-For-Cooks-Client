@@ -33,6 +33,11 @@
     width: 100%;
   }
 
+  .empty-table{
+    text-align: center;
+    font-size: 15px;
+  }
+
   @mixin mat-table-columns($columns)
 {
     .mat-column-

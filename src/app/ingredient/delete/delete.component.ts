@@ -30,8 +30,8 @@ destroy: ReplaySubject<any> = new ReplaySubject<any>();
     this.destroy.complete();
   }
 
-  confirm(){
-    this.ingredientService.changeIngredientStatus(this.ingredient.id, !this.ingredient.active)
+  confirm(): void {
+    this.ingredientService.changeIngredientStatus(this.ingredient.id!, !this.ingredient.active)
       .pipe(takeUntil(this.destroy)).subscribe({
         next: () => {
           this.alertService.success(`${this.ingredient.name} successfully ${this.ingredient.active ? "de" : ""}activated`, false, true);
@@ -42,7 +42,7 @@ destroy: ReplaySubject<any> = new ReplaySubject<any>();
       this.dialogRef.close(this.ingredient);
   }
 
-  close(){
+  close(): void {
     this.dialogRef.close();
   }
 }

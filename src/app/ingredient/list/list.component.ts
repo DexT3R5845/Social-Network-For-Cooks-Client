@@ -5,12 +5,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ReplaySubject, takeUntil, finalize, merge } from 'rxjs';
 import { Ingredient } from 'src/app/_models';
-import { ingredientCategory } from 'src/app/_models/ingredient.category';
 import { IngredientFilter } from 'src/app/_models/_filters/ingredient.filter';
 import { AlertService, IngredientService } from 'src/app/_services';
-import { AddComponent } from '../add/add.component';
 import { DeleteComponent } from '../delete/delete.component';
-import { EditComponent } from '../edit/edit.component';
+import { AddEditComponent } from '../add-edit/add-edit.component';
 
 @Component({
   selector: 'app-list',
@@ -19,12 +17,12 @@ import { EditComponent } from '../edit/edit.component';
 })
 export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   formFilter: FormGroup;
-  displayedColumns = ['image', 'name', 'ingredientCategory', 'actions'];
+  displayedColumns: string[] = ['image', 'name', 'ingredientCategory', 'actions'];
   dataSource: Ingredient[] = [];
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  isLoadingResults = true;
-  resultsLength = 0;
-  listCategory: ingredientCategory[];
+  isLoadingResults: boolean = true;
+  resultsLength: number = 0;
+  listCategory: string[];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -55,12 +53,12 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy.complete();
   }
 
-  OnSubmitFilter(){
+  OnSubmitFilter(): void {
     this.paginator.pageIndex = 0;
     this.loadData();
   }
 
-loadData(){
+loadData(): void {
   const ingredientFilter: IngredientFilter = {
     sortASC: this.sort.direction == 'asc', sortBy: this.sort.active, ingredientCategory: this.ingredientCategories, searchText: this.searchText,
      numPage: this.paginator.pageIndex, sizePage: this.paginator.pageSize, status: this.filterStatus
@@ -81,7 +79,7 @@ loadData(){
   });
 }
 
-  loadCategory(){
+  loadCategory(): void {
     this.ingredientService.getAllIngredientCategory().pipe(takeUntil(this.destroy))
     .subscribe({
       next: data => this.listCategory = data,
@@ -89,17 +87,17 @@ loadData(){
     });
   }
 
-  editIngredient(ingredient: Ingredient){
+  editIngredient(ingredient: Ingredient): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    dialogConfig.autoFocus = false;
     let dataDialog = Object.assign({}, ingredient);
     dialogConfig.data = {
       ingredient: dataDialog,
       listCategories: this.listCategory
     };
 
-    const dialogRef = this.dialog.open(EditComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddEditComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
       if(data){
         ingredient.name = data.name;
@@ -110,20 +108,28 @@ loadData(){
     })
   }
 
-  addIngredient(){
+  addIngredient(): void {
+    let ingredient: Ingredient = {
+      name: '',
+      imgUrl: '',
+      ingredientCategory: '',
+      active: true
+    };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = this.listCategory;
-
-    this.dialog.open(AddComponent, dialogConfig);
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = {
+      ingredient: ingredient,
+      listCategories: this.listCategory
+    };
+    this.dialog.open(AddEditComponent, dialogConfig);
   }
 
-  deleteIngredient(ingredient: Ingredient){
+  deleteIngredient(ingredient: Ingredient): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = Object.assign({}, ingredient);
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = {...ingredient};
   
     const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
@@ -137,15 +143,15 @@ loadData(){
     return this.formFilter.controls;
   }
 
-  get searchText(){
+  get searchText(): string{
     return this.filterControl['searchText'].value;
   }
 
-  get filterStatus(){
+  get filterStatus(): boolean {
     return this.filterControl['status'].value;
   }
 
-  get ingredientCategories(){
+  get ingredientCategories(): string[]{
     return this.formFilter.controls['ingredientCategories'].value
   }
 }

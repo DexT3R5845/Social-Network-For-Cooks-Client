@@ -15,7 +15,7 @@
 
         <mat-form-field class="full-width-input">
           <mat-select placeholder="Select category" formControlName="ingredientCategories" multiple>
-            <mat-option *ngFor="let category of listCategory" [value]="category.name">{{category.name}}</mat-option>
+            <mat-option *ngFor="let category of listCategory" [value]="category">{{category}}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -45,17 +45,17 @@
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>
-          <button mat-icon-button color="primary">
+          <button mat-icon-button color="primary" (click)="addIngredient()">
             <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
           </button>
         </mat-header-cell>
 
         <mat-cell *matCellDef="let row; let i=index;">
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="editIngredient(row)">
             <mat-icon aria-label="Edit">edit</mat-icon>
           </button>
 
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="deleteIngredient(row)">
             <mat-icon *ngIf="row.active" aria-label="check_box">check_box</mat-icon>
             <mat-icon *ngIf="!row.active" aria-label="check_box">check_box_outline_blank</mat-icon>
           </button>
@@ -65,6 +65,9 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+    <div class="empty-table" *ngIf="!dataSource.length">
+      No Record found
+      </div>
   </div>
 
     <div *ngIf="isLoadingResults" class="loading-shade">

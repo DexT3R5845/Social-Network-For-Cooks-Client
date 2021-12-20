@@ -17,9 +17,9 @@ export class SigninComponent implements OnInit,OnDestroy {
   form: FormGroup;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  hide = true;
-  siteKey = environment.siteKey;
-  isCaptcha = false;
+  hide: boolean = true;
+  siteKey: string = environment.siteKey;
+  isCaptcha: boolean = false;
   @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
 
 constructor(
@@ -29,18 +29,18 @@ constructor(
   private cookie: CookieStorageService,
   private alertService: AlertService,
 ){
-  this.form = this.formBuilder.group({
-    email: ['', Validators.email],
-    password: ['', Validators.required],
-    recaptcha: []
-  });
 }
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
 
-ngOnInit(){}
+ngOnInit(){
+  this.form = this.formBuilder.group({
+    email: ['', Validators.email],
+    password: ['', Validators.required],
+    recaptcha: []
+  });}
 
 get control(){return this.form.controls}
 

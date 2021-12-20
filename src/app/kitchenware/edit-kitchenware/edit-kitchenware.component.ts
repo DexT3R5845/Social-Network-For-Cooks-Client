@@ -20,38 +20,34 @@ export class EditKitchenwareComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<EditKitchenwareComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Kitchenware,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public service: KitchenwareService,
     private formBuilder: FormBuilder,
     private alertService: AlertService
   ) {
-    this.form = this.formBuilder.group({
-      id: [this.data.id],
-      imgUrl: [null, [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
-      name: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){1,35}$')]],
-      category: ['', [Validators.required]]
-    });
   }
 
-  onNoClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 
   public editKitchenware(): void {
     if (this.form.valid) {
-      this.service.editKitchenware(this.form, this.data.id)
+      const kitchenware : Kitchenware = this.form.value;
+      this.service.editKitchenware(kitchenware)
         .pipe(takeUntil(this.destroy))
         .subscribe({
           next: () => {
-            this.alertService.success('Edit successful');
+            this.alertService.success("Kitchenware successfully updated.", true, true);
+            this.dialogRef.close(kitchenware);
           },
           error: error => {
             switch(error.status){
               case 404:
-                this.alertMessage = error.error.message;
+                this.alertService.error(error.error.message, false, false, "error-dialog");
                 break;
               default:
-                this.alertMessage = "There was an error on the server, please try again later."
+                this.alertService.error("unexpected error, try later", false, false, "error-dialog");
                 break;
             }
             this.alertService.error(this.alertMessage);
@@ -65,38 +61,13 @@ export class EditKitchenwareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getCategories();
-    this.service.getById(this.data.id)
-      .pipe(takeUntil(this.destroy))
-      .subscribe({
-        next: (data : Kitchenware) => {
-          this.kitchenware = data;
-        },
-        error: error => {
-          switch(error.status){
-            case 404:
-              this.alertMessage = error.error.message;
-              break;
-            default:
-              this.alertMessage = "There was an error on the server, please try again later."
-              break;
-          }
-          this.alertService.error(this.alertMessage);
-        }});
-  }
-
-  getCategories() {
-    this.service.getAllCategories()
-      .pipe(takeUntil(this.destroy))
-      .subscribe(
-        {next: response => {
-            console.log(response + " got categories");
-            this.categories = response;
-          },
-          error: () => {
-            this.alertService.error("There was an error on the server, please try again later.");
-          }}
-      )
+    this.kitchenware = this.data.kitchenware;
+    this.categories = this.data.categories;
+    this.form = this.formBuilder.group({
+      id: [this.data.kitchenware.id],
+      imgUrl: [this.data.kitchenware.imgUrl, [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
+      name: [this.data.kitchenware.name, [Validators.required, Validators.pattern('^([A-Z a-z]){1,35}$')]],
+      category: [this.data.kitchenware.category, [Validators.required]]
+    });
   }
 }
-

@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { ReplaySubject, Subscription } from 'rxjs';
-import { finalize, first, takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReplaySubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AlertService } from 'src/app/_services';
 import { AuthService } from 'src/app/_services/auth.service';
 
@@ -31,7 +31,7 @@ constructor(
 
 get control(){return this.form.controls}
 
-onSubmit() {
+onSubmit(): void {
   this.alertService.clear();
   if (this.form.valid) {
     this.authService.forgotPassword(this.control['email'].value)
@@ -52,7 +52,6 @@ onSubmit() {
                   }                  
                 this.alertService.error(this.alertMessage);}
             });
+    }
   }
-}
-
 }

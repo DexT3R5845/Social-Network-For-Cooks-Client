@@ -7,7 +7,7 @@ import {ReplaySubject, takeUntil} from "rxjs";
 import {MatTable} from "@angular/material/table";
 import {AlertService} from "../../_services";
 import {PageEvent} from "@angular/material/paginator";
-import {SearchParams} from "../../_models/search-params";
+import {SearchAccountParams} from "../../_models/search-account-params";
 
 @Component({
   selector: 'app-search-account',
@@ -17,7 +17,7 @@ import {SearchParams} from "../../_models/search-params";
 export class SearchAccountComponent implements OnInit {
 
   @ViewChild(MatTable) table: MatTable<AccountInList>;
-  pageContent: Page<AccountInList> = {content:[],totalElements:0};
+  pageContent: Page<AccountInList> = {content: [], totalElements: 0};
   pageSize: number = 12;
   alertMessage: string;
   currentPage: number;
@@ -28,12 +28,13 @@ export class SearchAccountComponent implements OnInit {
     order: new FormControl("asc"),
     gender: new FormControl("")
   });
-  accountSearch: SearchParams;
+  accountSearch: SearchAccountParams;
 
-  constructor(private service: FriendService,private alertService: AlertService) {
+  constructor(private service: FriendService, private alertService: AlertService) {
   }
 
   ngOnInit(): void {
+    this.searchForAccount();
   }
 
   get searchParamErrorMessage(): string {
@@ -43,7 +44,7 @@ export class SearchAccountComponent implements OnInit {
         'The name must contain only letters. Min length 3 characters' : '';
   }
 
-  searchForAccount() {
+  searchForAccount(): void {
     this.alertService.clear();
     this.accountSearch = {
       search: this.searchForm.value.search,
@@ -59,17 +60,17 @@ export class SearchAccountComponent implements OnInit {
           this.currentPage = 0;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later",true,true);
+          this.alertService.error("Unexpected error, try later", true, true);
         }
       });
   }
 
-  sendInvite(index:number,id:number){
+  sendInvite(index: number, id: number): void {
     this.service.createInvite(id)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success("The invite has been sent",true,true);
+          this.alertService.success("The invite has been sent", true, true);
           this.pageContent.content.splice(index, 1);
           this.table.renderRows();
         },
@@ -85,7 +86,7 @@ export class SearchAccountComponent implements OnInit {
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage,true,true);
+          this.alertService.error(this.alertMessage, true, true);
         }
       });
   }
@@ -101,9 +102,15 @@ export class SearchAccountComponent implements OnInit {
           this.pageSize = pageEvent.pageSize;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later",true,true);
+          this.alertService.error("Unexpected error, try later", true, true);
         }
       });
+  }
+
+  onKeydown(event: KeyboardEvent): void {
+    if (event.code === "Space") {
+      event.preventDefault();
+    }
   }
 
   ngOnDestroy(): void {

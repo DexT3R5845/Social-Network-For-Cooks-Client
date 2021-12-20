@@ -1,19 +1,15 @@
 import {Component} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
 import {ReplaySubject} from "rxjs";
 import {AlertService} from "../../_services";
-import {Page} from "../../_models/page";
 import {takeUntil} from "rxjs/operators";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {KitchenwareService} from "../../_services/kitchenware.service";
 import {Kitchenware} from "../../_models/kitchenware";
-import {CreateModerComponent} from "../../admin/create-moder/create-moder.component";
-import {Profile} from "../../_models/profile";
-import {EditModerComponent} from "../../admin/edit-moder/edit-moder.component";
 import {EditKitchenwareComponent} from "../edit-kitchenware/edit-kitchenware.component";
 import {CreateKitchenwareComponent} from "../create-kitchenware/create-kitchenware.component";
-import {KitchenwareCategory} from "../../_models/kitchenware-category";
+import {SearchKitchenwareParams} from "../../_models/search-kitchenware-params";
 
 
 @Component({
@@ -22,8 +18,9 @@ import {KitchenwareCategory} from "../../_models/kitchenware-category";
   styleUrls: ['./kitchenware-list-page.component.scss']
 })
 export class KitchenwareListPageComponent {
-  pageContent: Page<Kitchenware>;
-  categories: KitchenwareCategory[] = [];
+  pageContent: Kitchenware[] = [];
+  totalElements: number;
+  categories: string[] = [];
   searchForm: FormGroup = this.createFormGroup();
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   columnsToDisplay = ['image', 'name', 'category', 'actions'];
@@ -51,17 +48,20 @@ export class KitchenwareListPageComponent {
 
   getBySearch(searchForm: FormGroup): void {
     this.alertService.clear();
-    this.service.getKitchenwareBySearch(searchForm, this.pageSize)
+    const searchParams: SearchKitchenwareParams = searchForm.value;
+    this.service.getKitchenwareBySearch(searchParams, this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
-          this.pageContent = response;
+          this.pageContent = response.content;
+          this.totalElements = response.totalElements;
           this.currentPage = 0;
-          console.log("got search " + response.totalElements + " " + response.content);
-          console.log("got search " + this.pageContent.totalElements + " " + this.currentPage);
         },
         error: () => {
-          this.alertService.error("unexpected error, try later");}
+          this.pageContent = [];
+          this.alertService.error("There was an error on the server, please try again later.", false, true);
+
+        }
       });
   }
 
@@ -71,12 +71,15 @@ export class KitchenwareListPageComponent {
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
-          this.pageContent = response;
+          this.pageContent = response.content;
+          this.totalElements = response.totalElements;
           this.currentPage = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
         },
         error: () => {
-          this.alertService.error("unexpected error, try later");}
+          this.pageContent = [];
+          this.alertService.error("There was an error on the server, please try again later.", false, true);
+        }
       });
   }
 
@@ -85,12 +88,11 @@ export class KitchenwareListPageComponent {
       .pipe(takeUntil(this.destroy))
       .subscribe(
         {next: response => {
-          response.forEach( x => {
-            this.categories.push(new KitchenwareCategory(x));
-          })
+          this.categories = response;
           },
           error: () => {
-            this.alertService.error("There was an error on the server, please try again later.");
+            this.alertService.error("There was an error on the server, please try again later.", false, true);
+            this.categories = [];
           }}
       )
   }
@@ -102,10 +104,7 @@ export class KitchenwareListPageComponent {
 
   ngOnInit(): void {
     this.getCategories();
-    console.log("got categories");
     this.getBySearch(this.searchForm);
-    console.log("got search");
-
   }
 
 
@@ -115,28 +114,48 @@ export class KitchenwareListPageComponent {
       .pipe(takeUntil(this.destroy))
       .subscribe({
           next: () => {
-            this.pageContent.content[index].active = !active;
+            this.pageContent[index].active = !active;
           },
           error: error => {
             if (error.status == 404) {
-              this.alertMessage = error.error.message;
+              this.alertService.error(error.error.message, false, true);
+
             } else {
-              this.alertMessage = "unexpected error, try later";
+              this.alertService.error("There was an error on the server, please try again later.", false, true);
+
             }
-            this.alertService.error(this.alertMessage);
           }
         }
       )
   }
 
   newKitchenware() {
-    this.alertService.clear();
-    this.dialog.open(CreateKitchenwareComponent, {data: { profile: Kitchenware}});
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = this.categories;
+
+    this.dialog.open(CreateKitchenwareComponent, dialogConfig);
   }
 
-  editKitchenware(index: number, id: string){
-    this.alertService.clear();
-    this.dialog.open(EditKitchenwareComponent, {data: {profile: Kitchenware, id: id}})
+  editKitchenware(kitchenware: Kitchenware){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    let dataDialog = Object.assign({}, kitchenware);
+    dialogConfig.data = {
+      kitchenware: dataDialog,
+      categories: this.categories
+    };
+    const dialogRef = this.dialog.open(EditKitchenwareComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Kitchenware) => {
+      if(data){
+        kitchenware.name = data.name;
+        kitchenware.category = data.category;
+        kitchenware.imgUrl = data.imgUrl;
+      }
+    })
   }
+
 }
 

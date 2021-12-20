@@ -10,7 +10,7 @@ import { AlertService, StockService } from 'src/app/_services';
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })
-export class EditComponent implements OnInit, OnDestroy {
+export class EditComponent implements OnDestroy {
   form: FormGroup;
   stockItem: Stock;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
@@ -29,19 +29,16 @@ export class EditComponent implements OnInit, OnDestroy {
     })
    }
 
-  ngOnInit(): void {
-  }
-
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
 
-  close(){
+  close(): void {
     this.diaglogRef.close();
   }
 
-  save(){
+  save(): void {
     this.alertService.clear();
     if(this.form.valid){  
     this.stockService.editIngredientInStock(this.stockItem.id, this.amount)
@@ -74,7 +71,7 @@ export class EditComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
-  get amount(){
+  get amount(): number{
     return this.control['amount'].value;
   }
 

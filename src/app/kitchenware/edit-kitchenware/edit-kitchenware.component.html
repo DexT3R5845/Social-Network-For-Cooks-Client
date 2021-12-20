@@ -1,17 +1,17 @@
 <div class="container">
   <h3 class="title" mat-dialog-title>Kitchenware information</h3>
 
-  <form class="mat-dialog-content" [formGroup]="form">
-
+  <form class="mat-dialog-content" [formGroup]="form" *ngIf="kitchenware">
+    <alert id="error-dialog"></alert>
     <div class="form">
       <mat-form-field>
-        <input matInput placeholder="Kitchenware identifier"  formControlName="id" [(ngModel)]="this.kitchenware.id" [readonly]="true">
+        <input matInput placeholder="Kitchenware identifier"  formControlName="id" value="kitchenware.id" [readonly]="true">
       </mat-form-field>
     </div>
 
     <div class="form">
       <mat-form-field>
-        <input matInput placeholder="Image url"  formControlName="imgUrl" [(ngModel)]="this.kitchenware.imgUrl">
+        <input matInput placeholder="Image url"  formControlName="imgUrl" value="kitchenware.imgUrl">
         <mat-error>
           Entered link has incorrect format. Set only .jpeg|.jpg|.png images.
         </mat-error>
@@ -22,7 +22,7 @@
     <div class="form">
       <mat-form-field>
         <mat-label>Category</mat-label>
-        <mat-select formControlName="category" [(ngModel)]="this.kitchenware.category">
+        <mat-select formControlName="category" value="kitchenware.category">
           <mat-option *ngFor="let category of categories; let i=index" value="{{category}}">{{category}}</mat-option>
         </mat-select>
         <mat-error>You must make a selection</mat-error>
@@ -31,16 +31,16 @@
 
     <div class="form">
       <mat-form-field>
-        <input matInput placeholder="Name"  formControlName="name" [(ngModel)]="this.kitchenware.name">
+        <input matInput placeholder="Name"  formControlName="name" value="kitchenware.name">
         <mat-error>
           Please enter kitchenware name correctly
         </mat-error>
       </mat-form-field>
     </div>
 
-    <div mat-dialog-actions>
-      <button class="control-button" mat-button [mat-dialog-close] [disabled]="!form.valid" (click)="editKitchenware()">Submit edits</button>
-      <button class="control-button" mat-button (click)="onNoClick()">Cancel</button>
-    </div>
+    <mat-dialog-actions>
+      <button class="mat-raised-button" (click)="close()">Close</button>
+      <button class="mat-raised-button mat-primary" [disabled]="!form.valid" (click)="editKitchenware()">Save</button>
+    </mat-dialog-actions>
   </form>
 </div>

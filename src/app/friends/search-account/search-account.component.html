@@ -1,7 +1,7 @@
 <div class="search-bar">
   <form [formGroup]="searchForm">
     <mat-form-field color="primary">
-      <input matInput placeholder="Search" required formControlName="search">
+      <input matInput placeholder="Search" required formControlName="search" (keydown)="onKeydown($event)">
       <mat-error>
         {{searchParamErrorMessage}}
       </mat-error>
@@ -15,34 +15,33 @@
             [disabled]="searchForm.invalid"
             (click)="searchForAccount()">Search
     </button>
-
   </form>
 </div>
 
 <table mat-table class="table-accounts" [dataSource]="pageContent.content">
 
   <ng-container matColumnDef="image">
-    <mat-header-cell *matHeaderCellDef> Image</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
     <mat-cell *matCellDef="let element">
       <img [src]="element.imgUrl ? element.imgUrl : '../assets/images/defaultAv.png'"/>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="firstName">
-    <mat-header-cell *matHeaderCellDef> FistName</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> First name</mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="lastName">
-    <mat-header-cell *matHeaderCellDef> LastName</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Last name</mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="invite">
     <mat-header-cell *matHeaderCellDef></mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-      <button mat-raised-button color="primary" (click)="sendInvite(i,element.id)">Send
-        invite
+      <button mat-raised-button color="primary" (click)="sendInvite(i,element.id)">
+        Invite
       </button>
     </mat-cell>
   </ng-container>
@@ -58,5 +57,4 @@
   [pageSizeOptions]="[12, 20, 40]"
   (page)="paginationHandler($event)">
 </mat-paginator>
-
 

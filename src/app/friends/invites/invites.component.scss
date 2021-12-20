@@ -2,23 +2,22 @@
 
 mat-cell {
   font-size: 20px;
-  margin: 0 10px;
+  margin: 0 5px;
+  display: flex;
+  flex-flow: wrap;
 }
 
 mat-header-cell {
-  margin: 0 10px;
+  margin: 0 5px;
 }
 
 .table-invites {
-  min-height: 200px;
-  max-height: 80%;
   width: 100%;
-
 }
 
 mat-form-field {
   padding-top: 10px;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 
 img {
@@ -40,6 +39,10 @@ form {
   flex-flow: wrap;
 }
 
+.btn-action {
+  margin: 5px;
+}
+
 @mixin mat-table-columns($columns) {
   .mat-column- {
     @each $colName, $props in $columns {
@@ -56,7 +59,8 @@ form {
 
 @include mat-table-columns((
   image: (width: 20%),
-  firstName: (width: 25%),
-  lastName: (width: 25%),
+  firstName: (width: 20%),
+  lastName: (width: 29%),
+  action: (width: 20%)
 ));
 

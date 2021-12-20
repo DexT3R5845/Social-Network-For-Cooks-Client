@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {SearchParams} from "../_models/search-params";
+import {SearchAccountParams} from "../_models/search-account-params";
 import {Observable} from "rxjs";
 import {AccountInList} from "../_models/account-in-list";
 import {Page} from "../_models/page";
@@ -12,12 +12,12 @@ const baseUrl = `${environment.serverUrl}/friends`;
   providedIn: 'root'
 })
 export class FriendService {
-  searchParams: SearchParams;
+  searchParams: SearchAccountParams;
 
   constructor(private http: HttpClient) {
   }
 
-  private getAllFriends(currentPage: number, pageSize: number, searchParams: SearchParams): Observable<Page<AccountInList>> {
+  private getAllFriends(currentPage: number, pageSize: number, searchParams: SearchAccountParams): Observable<Page<AccountInList>> {
     return this.http.get<Page<AccountInList>>(
       baseUrl,
       {
@@ -31,7 +31,7 @@ export class FriendService {
     );
   }
 
-  private getAccount(currentPage: number, pageSize: number, searchParams: SearchParams): Observable<Page<AccountInList>> {
+  private getAccount(currentPage: number, pageSize: number, searchParams: SearchAccountParams): Observable<Page<AccountInList>> {
     return this.http.get<Page<AccountInList>>(
       `${baseUrl}/new`,
       {
@@ -45,41 +45,41 @@ export class FriendService {
     );
   }
 
-  getFriendsBySearch(search: SearchParams, pageSize: number): Observable<Page<AccountInList>> {
+  getFriendsBySearch(search: SearchAccountParams, pageSize: number): Observable<Page<AccountInList>> {
     this.searchParams = search;
     return this.getAllFriends(0, pageSize, search);
   }
 
-  getFriendsByPageNum(currentPage: number, pageSize: number) {
+  getFriendsByPageNum(currentPage: number, pageSize: number): Observable<Page<AccountInList>> {
     return this.getAllFriends(currentPage, pageSize, this.searchParams);
   }
 
-  getAccountsByPageNum(currentPage: number, pageSize: number) {
+  getAccountsByPageNum(currentPage: number, pageSize: number): Observable<Page<AccountInList>> {
     return this.getAccount(currentPage, pageSize, this.searchParams);
   }
 
-  getAccountBySearch(search: SearchParams, pageSize: number) {
+   getAccountBySearch(search: SearchAccountParams, pageSize: number): Observable<Page<AccountInList>> {
     this.searchParams = search;
     return this.getAccount(0, pageSize, this.searchParams);
   }
 
-  getInvitesBySearch(search: SearchParams, pageSize: number) {
+   getInvitesBySearch(search: SearchAccountParams, pageSize: number): Observable<Page<AccountInList>> {
     this.searchParams = search;
     return this.getInvites(0, pageSize, this.searchParams);
   }
 
-  createInvite(id: number) {
+  createInvite(id: number): Observable<Object> {
     return this.http.post(baseUrl, {}, {
       params: new HttpParams()
         .set('friendId', id)
     });
   }
 
-  getInvitesByPageNum(currentPage: number, pageSize: number) {
+  getInvitesByPageNum(currentPage: number, pageSize: number): Observable<Page<AccountInList>> {
     return this.getInvites(currentPage, pageSize, this.searchParams);
   }
 
-  getInvites(currentPage: number, pageSize: number, searchParams: SearchParams): Observable<Page<AccountInList>> {
+  getInvites(currentPage: number, pageSize: number, searchParams: SearchAccountParams): Observable<Page<AccountInList>> {
     return this.http.get<Page<AccountInList>>(`${baseUrl}/invites`, {
       params: new HttpParams()
         .set('size', pageSize)
@@ -90,15 +90,15 @@ export class FriendService {
     });
   }
 
-  removeFried(id: number) {
+  removeFried(id: number): Observable<Object> {
     return this.http.delete(`${baseUrl}/` + id);
   }
 
-  acceptInvite(id: number) {
+  acceptInvite(id: number): Observable<Object> {
     return this.http.patch(`${baseUrl}/invites/` + id, {});
   }
 
-  declineInvite(id: number) {
+  declineInvite(id: number): Observable<Object> {
     return this.http.delete(`${baseUrl}/invites/` + id);
   }
 }

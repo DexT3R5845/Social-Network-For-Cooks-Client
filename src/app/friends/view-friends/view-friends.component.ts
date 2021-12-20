@@ -3,11 +3,11 @@ import {FriendService} from "../../_services/friend.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AccountInList} from "../../_models/account-in-list";
 import {Page} from "../../_models/page";
-import {ReplaySubject, takeUntil} from "rxjs";
+import {finalize, ReplaySubject, takeUntil} from "rxjs";
 import {AlertService} from "../../_services";
 import {MatTable} from "@angular/material/table";
 import {PageEvent} from "@angular/material/paginator";
-import {SearchParams} from "../../_models/search-params";
+import {SearchAccountParams} from "../../_models/search-account-params";
 
 @Component({
   selector: 'app-view-friends',
@@ -28,7 +28,8 @@ export class ViewFriendsComponent implements OnInit {
     order: new FormControl("asc"),
     gender: new FormControl("")
   });
-  friendSearch: SearchParams;
+  friendSearch: SearchAccountParams;
+  isLoadingResults = true;
 
   constructor(private service: FriendService, private alertService: AlertService) {
   }
@@ -43,16 +44,16 @@ export class ViewFriendsComponent implements OnInit {
     this.getFriendsBySearch();
   }
 
-  getFriendsBySearch() {
+  getFriendsBySearch(): void {
     this.service.getFriendsBySearch(this.friendSearch, this.pageSize)
-      .pipe(takeUntil(this.destroy))
+      .pipe(takeUntil(this.destroy), finalize(() => this.isLoadingResults = false))
       .subscribe({
         next: response => {
           this.pageContent = response;
           this.currentPage = 0;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later",true,true);
+          this.alertService.error("Unexpected error, try later", true, true);
         }
       })
   }
@@ -68,17 +69,17 @@ export class ViewFriendsComponent implements OnInit {
           this.pageSize = pageEvent.pageSize;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later",true,true);
+          this.alertService.error("Unexpected error, try later", true, true);
         }
       });
   }
 
-  removeFriend(index: number, id: number) {
+  removeFriend(index: number, id: number): void {
     this.service.removeFried(id)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success("Friend deleted",true,true);
+          this.alertService.success("Friend deleted", true, true);
           this.pageContent.content.splice(index, 1);
           this.table.renderRows();
         },
@@ -94,9 +95,15 @@ export class ViewFriendsComponent implements OnInit {
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage,true,true);
+          this.alertService.error(this.alertMessage, true, true);
         }
       });
+  }
+
+  onKeydown(event: KeyboardEvent): void {
+    if (event.code === "Space") {
+      event.preventDefault();
+    }
   }
 
   get searchParamErrorMessage(): string {

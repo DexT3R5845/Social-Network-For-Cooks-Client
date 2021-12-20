@@ -1,5 +1,4 @@
-
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ReplaySubject, takeUntil} from "rxjs";
@@ -20,11 +19,12 @@ export class CreateKitchenwareComponent implements OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<CreateKitchenwareComponent>,
-    @Inject(MAT_DIALOG_DATA) public kitchenware: Kitchenware,
+    @Inject(MAT_DIALOG_DATA) data: string[],
     public service: KitchenwareService,
     private formBuilder: FormBuilder,
     private alertService: AlertService
   ) {
+    this.categories = data;
     this.form = this.formBuilder.group({
       imgUrl: [null, [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
       name: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){1,35}$')]],
@@ -32,44 +32,29 @@ export class CreateKitchenwareComponent implements OnDestroy {
     });
   }
 
-  getCategories() {
-    this.service.getAllCategories()
-      .pipe(takeUntil(this.destroy))
-      .subscribe(
-        {next: response => {
-            console.log(response + " got categories");
-            this.categories = response;
-          },
-        error: () => {
-          this.alertService.error("There was an error on the server, please try again later.");
-        }}
-      )
-  }
-
-  onNoClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 
   public confirmAdd(): void {
     if (this.form.valid) {
-      this.service.addKitchenware(this.form)
+      const kitchenware : Kitchenware = this.form.value;
+      this.service.addKitchenware(kitchenware)
         .pipe(takeUntil(this.destroy))
         .subscribe({
           next: () => {
-            this.alertService.success('Creation successful');
+            this.alertService.success("Kitchenware successfully created.", true, true);
+            this.dialogRef.close();
           },
-          error: () => {
-            this.alertService.error("There was an error on the server, please try again later.");
-          }});
+          error: error => {
+            this.alertService.error(error.error.message, false, false, "error-dialog");
+          }
+        });
     }
   }
 
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
-  }
-
-  ngOnInit(): void {
-    this.getCategories();
   }
 }
