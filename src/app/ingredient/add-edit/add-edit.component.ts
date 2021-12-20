@@ -46,11 +46,11 @@ export class AddEditComponent implements OnInit, OnDestroy {
     this.destroy.complete();
   }
 
-  close(){
+  close(): void {
     this.dialogRef.close();
   }
 
-  save(){
+  save(): void {
     this.alertService.clear();
     if(this.form.valid){
       if(this.modeEdit){

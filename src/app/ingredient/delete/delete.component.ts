@@ -30,7 +30,7 @@ destroy: ReplaySubject<any> = new ReplaySubject<any>();
     this.destroy.complete();
   }
 
-  confirm(){
+  confirm(): void {
     this.ingredientService.changeIngredientStatus(this.ingredient.id!, !this.ingredient.active)
       .pipe(takeUntil(this.destroy)).subscribe({
         next: () => {
@@ -42,7 +42,7 @@ destroy: ReplaySubject<any> = new ReplaySubject<any>();
       this.dialogRef.close(this.ingredient);
   }
 
-  close(){
+  close(): void {
     this.dialogRef.close();
   }
 }

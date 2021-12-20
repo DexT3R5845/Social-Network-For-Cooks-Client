@@ -18,11 +18,11 @@ import { EditComponent } from '../edit/edit.component';
 })
 export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   formFilter: FormGroup;
-  displayedColumns = ['image', 'name', 'ingredientCategory', 'amount', 'actions'];
+  displayedColumns: string[] = ['image', 'name', 'ingredientCategory', 'amount', 'actions'];
   dataSource: Stock[] = [];
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  isLoadingResults = true;
-  resultsLength = 0;
+  isLoadingResults: boolean = true;
+  resultsLength: number = 0;
   listCategory: string[];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -55,12 +55,12 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy.complete();
   }
 
-  OnSubmitFilter(){
+  OnSubmitFilter(): void {
     this.paginator.pageIndex = 0;
     this.loadData();
   }
 
-loadData(){
+loadData(): void {
   const ingredientFilter: StockFilter = {
     sortASC: this.sort.direction == 'asc', sortBy: this.sort.active, ingredientCategory: this.ingredientCategories, searchText: this.searchText,
      numPage: this.paginator.pageIndex, sizePage: this.paginator.pageSize
@@ -81,7 +81,7 @@ loadData(){
   });
 }
 
-  loadCategory(){
+  loadCategory(): void {
     this.ingredientService.getAllIngredientCategory().pipe(takeUntil(this.destroy))
     .subscribe({
       next: data => this.listCategory = data,
@@ -89,7 +89,7 @@ loadData(){
     });
   }
 
-  editIngredient(stockItem: Stock){
+  editIngredient(stockItem: Stock): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -104,7 +104,7 @@ loadData(){
     })
   }
 
-  addIngredient(){
+  addIngredient(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = false;
@@ -114,7 +114,7 @@ loadData(){
     dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe(() => this.OnSubmitFilter())
   }
 
-  deleteIngredient(stockItem: Stock){
+  deleteIngredient(stockItem: Stock): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.data = Object.assign({}, stockItem);
@@ -131,11 +131,11 @@ loadData(){
     return this.formFilter.controls;
   }
 
-  get searchText(){
+  get searchText(): string {
     return this.filterControl['searchText'].value;
   }
 
-  get ingredientCategories(){
+  get ingredientCategories(): string[] {
     return this.formFilter.controls['ingredientCategories'].value
   }
   

@@ -17,11 +17,11 @@ import { AddEditComponent } from '../add-edit/add-edit.component';
 })
 export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   formFilter: FormGroup;
-  displayedColumns = ['image', 'name', 'ingredientCategory', 'actions'];
+  displayedColumns: string[] = ['image', 'name', 'ingredientCategory', 'actions'];
   dataSource: Ingredient[] = [];
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  isLoadingResults = true;
-  resultsLength = 0;
+  isLoadingResults: boolean = true;
+  resultsLength: number = 0;
   listCategory: string[];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -143,15 +143,15 @@ loadData(): void {
     return this.formFilter.controls;
   }
 
-  get searchText(){
+  get searchText(): string{
     return this.filterControl['searchText'].value;
   }
 
-  get filterStatus(){
+  get filterStatus(): boolean {
     return this.filterControl['status'].value;
   }
 
-  get ingredientCategories(){
+  get ingredientCategories(): string[]{
     return this.formFilter.controls['ingredientCategories'].value
   }
 }
