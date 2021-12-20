@@ -18,7 +18,7 @@
     <div class="ingredient-filter">
     <mat-form-field class="full-width-input chip-list">
       <mat-label>Select ingredients</mat-label>
-      <mat-chip-list #chipList aria-label="Ingredient selection">
+      <mat-chip-list #chipList aria-label="Ingredient selection" [disabled] = "isFilteredByFavorite || isFilteredByStock">
         <mat-chip
           *ngFor="let ingredient of selectedIngredients"
           (removed)="removeIngredientFromList(ingredient)">
@@ -33,7 +33,7 @@
           [formControl]="ingredientControl"
           [matAutocomplete]="auto"
           [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [disabled] = "isFilteredByFavorite || isFilteredByStock">
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onIngredientSelected($event)">
         <mat-option *ngFor="let ingredient of filteredIngredients | async" [value]="ingredient">
