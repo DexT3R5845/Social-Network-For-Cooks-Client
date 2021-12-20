@@ -44,42 +44,29 @@ export class EditModerComponent implements OnInit, OnDestroy {
     });
       },
         error: error => {
-          this.displayError(error);
+          this.alertService.error(error.error.message, false, false, "error-dialog");
       }});
   }
 
-  onNoClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 
   editModerator(): void {
     if (this.form.valid) {
-      this.service.editModerator(this.form)
+      const account: AccountInList = this.form.value;
+      this.service.editModerator(account)
         .pipe(takeUntil(this.destroy))
         .subscribe({
-          next: response => {
-            this.alertService.success('Edit successful');
-            console.log(response)
+          next: () => {
+            this.alertService.success("Account successfully updated.", true, true);
+            this.dialogRef.close(account);
           },
           error: error => {
-            this.displayError(error);
-          }});
+            this.alertService.error(error.error.message, false, false, "error-dialog");
+          }
+        });
     }
-  }
-  
-  displayError(error: any) : void {
-    switch (error.status) {
-      case 400:
-        this.alertMessage = "Something went wrong";
-        break;
-      case 404:
-        this.alertMessage = error.error.message;
-        break;
-      default:
-        this.alertMessage = "There was an error on the server, please try again later."
-        break;
-    }
-    this.alertService.error(this.alertMessage,true,true);
   }
 
   ngOnDestroy(): void {

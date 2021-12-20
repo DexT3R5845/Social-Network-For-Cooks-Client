@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Page} from "../_models/page";
-import {FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Kitchenware} from "../_models/kitchenware";
 import {SearchKitchenwareParams} from "../_models/search-kitchenware-params";
@@ -38,8 +37,8 @@ export class KitchenwareService {
           .set('categories', searchedParams.categories)});
   }
 
-  getKitchenwareBySearch(search: FormGroup, pageSize: number): Observable<Page<Kitchenware>> {
-    this.searchParams = search.value;
+  getKitchenwareBySearch(searchParams: SearchKitchenwareParams, pageSize: number): Observable<Page<Kitchenware>> {
+    this.searchParams = searchParams;
     return this.getKitchenwareList(0, this.searchParams, pageSize);
   }
 
@@ -47,19 +46,16 @@ export class KitchenwareService {
     return this.getKitchenwareList(currentPage, this.searchParams, pageSize);
   }
 
-  changeStatus(id: string): Observable<any> {
+  changeStatus(id: string) {
     return this.http.put(`${baseUrl}/changeStatus/` + id, {});
   }
 
-  editKitchenware(formGroup: FormGroup, id: string): Observable<any> {
-      return this.http.put(`${baseUrl}/` + id, formGroup.value);
+  editKitchenware(kitchenware: Kitchenware) {
+      return this.http.put(`${baseUrl}/` + kitchenware.id, kitchenware);
   }
 
-  getById(id: string): Observable<Kitchenware> {
-    return this.http.get<Kitchenware>(`${baseUrl}/` + id);
-  }
 
-  addKitchenware(formGroup: FormGroup): Observable<any> {
-    return this.http.post(`${baseUrl}`, formGroup.value);
+  addKitchenware(kitchenware: Kitchenware) {
+    return this.http.post(`${baseUrl}`, kitchenware);
   }
 }

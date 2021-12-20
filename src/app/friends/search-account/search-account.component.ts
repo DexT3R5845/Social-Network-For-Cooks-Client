@@ -7,7 +7,7 @@ import {ReplaySubject, takeUntil} from "rxjs";
 import {MatTable} from "@angular/material/table";
 import {AlertService} from "../../_services";
 import {PageEvent} from "@angular/material/paginator";
-import {SearchParams} from "../../_models/search-params";
+import {SearchAccountParams} from "../../_models/search-account-params";
 
 @Component({
   selector: 'app-search-account',
@@ -28,7 +28,7 @@ export class SearchAccountComponent implements OnInit {
     order: new FormControl("asc"),
     gender: new FormControl("")
   });
-  accountSearch: SearchParams;
+  accountSearch: SearchAccountParams;
 
   constructor(private service: FriendService, private alertService: AlertService) {
   }

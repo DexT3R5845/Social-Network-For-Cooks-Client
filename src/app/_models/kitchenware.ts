@@ -1,4 +1,4 @@
-export class Kitchenware {
+export interface Kitchenware {
   id: string;
   name: string;
   imgUrl: string;

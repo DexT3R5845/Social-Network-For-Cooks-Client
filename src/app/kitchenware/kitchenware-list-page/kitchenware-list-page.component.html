@@ -1,6 +1,7 @@
+<alert></alert>
 <div>
   <form [formGroup]="searchForm" (ngSubmit)="getBySearch(searchForm)">
-    <button mat-raised-button class="btn-filter"  type="submit">Search</button>
+
 
     <mat-form-field class="full-width-input">
       <input matInput placeholder="Search by name" formControlName="name">
@@ -8,7 +9,7 @@
 
     <mat-form-field class="full-width-input">
       <mat-select placeholder="Select category" formControlName="categories" multiple>
-        <mat-option *ngFor="let category of categories" [value]="category.categoryName">{{category.categoryName}}</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -27,12 +28,14 @@
         <mat-option value="false">Inactive</mat-option>
       </mat-select>
     </mat-form-field>
+
+    <button type="submit" class="btn-filter" mat-flat-button color="warn">Apply Filter</button>
   </form>
 </div>
 
 
 <div class="table-container">
-  <mat-table id="table" [dataSource]="pageContent.content" #table matSort class="mat-cell">
+  <mat-table id="table" [dataSource]="pageContent" #table matSort class="mat-cell">
 
     <ng-container matColumnDef="image">
       <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
@@ -57,7 +60,7 @@
       </mat-header-cell>
 
       <mat-cell *matCellDef="let row; let i=index;">
-        <button mat-icon-button color="accent" (click)="editKitchenware(i, row.id)">
+        <button mat-icon-button color="accent" (click)="editKitchenware(row)">
           <mat-icon aria-label="Edit">edit</mat-icon>
         </button>
 
@@ -74,7 +77,7 @@
 </div>
 
 <mat-paginator
-  [length]="pageContent.totalElements"
+  [length]="totalElements"
   [pageIndex]="currentPage"
   [pageSize]="pageSize"
   [pageSizeOptions]="[12, 20, 40]"

@@ -3,8 +3,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {Injectable} from "@angular/core";
-import {FormGroup} from "@angular/forms";
-import {SearchParams} from "../_models/search-params";
+import {SearchAccountParams} from "../_models/search-account-params";
 import {Page} from "../_models/page";
 import {AccountInList} from "../_models/account-in-list";
 
@@ -14,7 +13,7 @@ const baseUrl = `${environment.serverUrl}/management`;
   providedIn: 'root',
 })
 export class AdminService {
-  searchParams: SearchParams;
+  searchParams: SearchAccountParams;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -23,7 +22,7 @@ export class AdminService {
   ) {
   }
 
-  private getAccounts(currentPage: number, searchedParams: SearchParams, pageSize: number): Observable<Page<AccountInList>> {
+  private getAccounts(currentPage: number, searchedParams: SearchAccountParams, pageSize: number): Observable<Page<AccountInList>> {
     return this.http.get<Page<AccountInList>>(
       `${baseUrl}`,
       {
@@ -38,8 +37,8 @@ export class AdminService {
     );
   }
 
-  getAccountsBySearch(search: FormGroup, pageSize: number): Observable<Page<AccountInList>> {
-    this.searchParams = search.value;
+  getAccountsBySearch(searchParams: SearchAccountParams, pageSize: number): Observable<Page<AccountInList>> {
+    this.searchParams = searchParams;
     return this.getAccounts(0, this.searchParams, pageSize);
   }
 
@@ -47,20 +46,20 @@ export class AdminService {
     return this.getAccounts(currentPage, this.searchParams, pageSize);
   }
 
-  addModerator(formGroup: FormGroup): Observable<any> {
-    return this.http.post(`${baseUrl}`, formGroup.value);
+  addModerator(account: AccountInList) {
+    return this.http.post(`${baseUrl}`, account);
   }
 
-  editModerator(formGroup: FormGroup): Observable<Object> {
-    return this.http.put(`${baseUrl}`, formGroup.value);
+  editModerator(account: AccountInList) {
+    return this.http.put(`${baseUrl}`, account);
   }
 
-  changeStatus(id: string): Observable<any> {
+  changeStatus(id: string) {
     return this.http.put(`${baseUrl}/` + id, {});
   }
 
-  getById(id: string): Observable<any> {
-    return this.http.get(`${baseUrl}/` + id);
+  getById(id: string): Observable<AccountInList> {
+    return this.http.get<AccountInList>(`${baseUrl}/` + id);
   }
 }
 

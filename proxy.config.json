@@ -1,6 +1,6 @@
 {
   "/api/**": {
-    "target": "https://bakensweets-server.herokuapp.com/",
+    "target": "http://localhost:8080/api/",
     "secure": false,
     "changeOrigin": true
   }

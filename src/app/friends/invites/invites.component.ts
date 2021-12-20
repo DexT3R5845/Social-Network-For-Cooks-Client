@@ -7,7 +7,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
 import {FriendService} from "../../_services/friend.service";
 import {AlertService} from "../../_services";
-import {SearchParams} from "../../_models/search-params";
+import {SearchAccountParams} from "../../_models/search-account-params";
 
 @Component({
   selector: 'app-invites',
@@ -28,7 +28,7 @@ export class InvitesComponent implements OnInit {
     order: new FormControl("asc"),
     gender: new FormControl("")
   });
-  inviteSearch: SearchParams;
+  inviteSearch: SearchAccountParams;
 
   constructor(private service: FriendService, private alertService: AlertService) {
   }
