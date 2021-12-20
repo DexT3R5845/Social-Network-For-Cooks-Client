@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { finalize, merge, ReplaySubject, takeUntil } from 'rxjs';
-import { Ingredient, ingredientCategory, Stock } from 'src/app/_models';
+import { Ingredient } from 'src/app/_models';
 import { IngredientFilter } from 'src/app/_models/_filters';
-import { AlertService, IngredientService, StockService } from 'src/app/_services';
+import { IngredientService } from 'src/app/_services';
 
 @Component({
   selector: 'app-ingredient-edit',
@@ -20,7 +20,7 @@ export class IngredientEditComponent implements AfterViewInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   isLoadingResults = true;
   resultsLength = 0;
-  listCategory: ingredientCategory[];
+  listCategory: string[];
   selectedIngredients: Ingredient[] = [];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;

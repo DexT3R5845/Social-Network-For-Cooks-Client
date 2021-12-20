@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ReplaySubject, takeUntil} from 'rxjs';
 import {Ingredient} from 'src/app/_models';
-import {ingredientCategory} from 'src/app/_models/ingredient.category';
 import {AlertService, IngredientService} from 'src/app/_services';
 
 @Component({
@@ -14,7 +13,7 @@ import {AlertService, IngredientService} from 'src/app/_services';
 export class EditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   ingredient: Ingredient;
-  listCategories: ingredientCategory[] = [];
+  listCategories: string[] = [];
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
 
   constructor(

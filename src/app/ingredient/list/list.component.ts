@@ -5,7 +5,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ReplaySubject, takeUntil, finalize, merge } from 'rxjs';
 import { Ingredient } from 'src/app/_models';
-import { ingredientCategory } from 'src/app/_models/ingredient.category';
 import { IngredientFilter } from 'src/app/_models/_filters/ingredient.filter';
 import { AlertService, IngredientService } from 'src/app/_services';
 import { AddComponent } from '../add/add.component';
@@ -24,7 +23,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   isLoadingResults = true;
   resultsLength = 0;
-  listCategory: ingredientCategory[];
+  listCategory: string[];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

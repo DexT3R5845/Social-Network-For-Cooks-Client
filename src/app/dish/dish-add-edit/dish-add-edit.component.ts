@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { Dish, Ingredient, ingredientCategory, NewKitchenware } from 'src/app/_models';
+import { Dish, Ingredient, NewKitchenware } from 'src/app/_models';
 import { AlertService, DishService, IngredientService } from 'src/app/_services';
 import { KitchenwareService } from 'src/app/_services/kitchenware.service';
 import { IngredientEditComponent } from '../ingredient-edit/ingredient-edit.component';
@@ -18,7 +18,7 @@ import { DishFormError } from './dish-form-error';
 export class DishAddEditComponent extends DishFormError implements OnInit {
 
 displayedColumns: string[] = ['image', 'name', 'amount', 'actions'];
-listCategoryIngredient: ingredientCategory[] = [];
+listCategoryIngredient: string[] = [];
 listCategoryKitchenware: string[] = [];
 listCategoryDish: string[] = [];
 destroy: ReplaySubject<any> = new ReplaySubject<any>();

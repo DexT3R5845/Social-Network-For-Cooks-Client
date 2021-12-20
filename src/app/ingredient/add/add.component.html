@@ -19,7 +19,7 @@
     
         <mat-form-field class="full-width-input">
             <mat-select placeholder="Select category" formControlName="ingredientCategory">
-                <mat-option *ngFor="let category of listCategories" [value]="category.name">{{category.name}}</mat-option>
+                <mat-option *ngFor="let category of listCategories" [value]="category">{{category}}</mat-option>
               </mat-select>
               <mat-error>
                 Please provide a category for ingredient.

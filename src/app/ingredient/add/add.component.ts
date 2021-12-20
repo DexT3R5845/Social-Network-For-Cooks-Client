@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { Ingredient } from 'src/app/_models';
-import { ingredientCategory } from 'src/app/_models/ingredient.category';
 import { AlertService, IngredientService } from 'src/app/_services';
 
 @Component({
@@ -12,12 +11,12 @@ import { AlertService, IngredientService } from 'src/app/_services';
   styleUrls: ['./add.component.scss']
 })
 export class AddComponent implements OnInit, OnDestroy {
-listCategories: ingredientCategory[] = [];
+listCategories: string[] = [];
 form: FormGroup;
 destroy: ReplaySubject<any> = new ReplaySubject<any>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) data: ingredientCategory[],
+    @Inject(MAT_DIALOG_DATA) data: string[],
     private formBuilder: FormBuilder,
     private diaglogRef: MatDialogRef<AddComponent>,
     private ingredientService: IngredientService,
@@ -44,7 +43,6 @@ destroy: ReplaySubject<any> = new ReplaySubject<any>();
     this.alertService.clear();
     if(this.form.valid){
     const ingredient: Ingredient = {
-      id: "0",
       name: this.name,
       imgUrl: this.imgUrl,
       ingredientCategory: this.ingredientCategory,

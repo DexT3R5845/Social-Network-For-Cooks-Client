@@ -7,7 +7,7 @@ import { AlertMessage, TypeAlert } from "../_models/alert.message";
     providedIn: 'root'
   })
 export class AlertService {
-    private subject = new Subject<AlertMessage | null>();
+    private subject: Subject<AlertMessage | null> = new Subject<AlertMessage | null>();
     private keepAfterRouteChange: boolean = false;
     private defaultId: string = 'default-alert';
 
@@ -27,17 +27,17 @@ export class AlertService {
         return this.subject.asObservable().pipe(filter(x => x !=null ? x.id === id : true));
     }
 
-    success(message: string, keepAfterRouteChange = false, autoClose = false, componentID = this.defaultId) {
+    success(message: string, keepAfterRouteChange = false, autoClose = false, componentID = this.defaultId): void {
         this.keepAfterRouteChange = keepAfterRouteChange;
         this.subject.next({ type: TypeAlert.SUCCESS, text: message, id: componentID, autoClose: autoClose });
     }
 
-    error(message: string, keepAfterRouteChange = false, autoClose = false, componentID = this.defaultId) {
+    error(message: string, keepAfterRouteChange = false, autoClose = false, componentID = this.defaultId): void {
         this.keepAfterRouteChange = keepAfterRouteChange;
         this.subject.next({ type: TypeAlert.ERROR, text: message, id: componentID, autoClose: autoClose });
     }
 
-    clear() {
+    clear(): void {
         this.subject.next(null);
     }
 }

@@ -12,7 +12,7 @@
 
     <mat-form-field class="full-width-input">
       <mat-select placeholder="Select category" formControlName="ingredientCategories" multiple>
-        <mat-option *ngFor="let category of listCategory" [value]="category.name">{{category.name}}</mat-option>
+        <mat-option *ngFor="let category of listCategory" [value]="category">{{category}}</mat-option>
       </mat-select>
     </mat-form-field>
 
