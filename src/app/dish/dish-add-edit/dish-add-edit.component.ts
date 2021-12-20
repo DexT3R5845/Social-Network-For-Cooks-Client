@@ -65,7 +65,7 @@ modeEdit: boolean = false;
     this.loadKitchenwareCategory();
   }
 
-  addIngredient(){
+  addIngredient(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = false;
@@ -77,7 +77,7 @@ modeEdit: boolean = false;
     dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient[]) => this.dishModel.ingredients = [...data]);
   }
 
-  addKitchenware(){
+  addKitchenware(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = false;
@@ -89,7 +89,7 @@ modeEdit: boolean = false;
     dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: NewKitchenware[]) => this.dishModel.kitchenwares = [...data]);
   }
 
-  loadCategoryIngredients(){
+  loadCategoryIngredients(): void {
     this.ingredientService.getAllIngredientCategory().pipe(takeUntil(this.destroy))
     .subscribe({
       next: data => this.listCategoryIngredient = data,
@@ -111,15 +111,15 @@ modeEdit: boolean = false;
     })
   }
 
-  removeIngredient(id: string){
+  removeIngredient(id: string): void {
     this.dishModel.ingredients = this.dishModel.ingredients.filter(u => u.id != id);
   }
 
-  removeKitchenware(id: string){
+  removeKitchenware(id: string): void {
     this.dishModel.kitchenwares = this.dishModel.kitchenwares.filter(u => u.id != id);
   }
 
-  onSubmitForm(){
+  onSubmitForm(): void {
     this.alertService.clear();
     if(!this.dishModel.ingredients.length || !this.dishModel.kitchenwares.length){
       this.alertService.error("You forgot to choose the ingredients or kitchenware for the dish.", false, false, "formDish");
@@ -146,7 +146,7 @@ modeEdit: boolean = false;
   }
   }
 
-  onAmountChange(event: Event, ingredient: Ingredient){
+  onAmountChange(event: Event, ingredient: Ingredient): void{
     if((<HTMLInputElement>event.target).value === ""){
       (<HTMLInputElement>event.target).value = "1";
     }

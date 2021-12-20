@@ -15,11 +15,11 @@ import { IngredientService } from 'src/app/_services';
 })
 export class IngredientEditComponent implements AfterViewInit, OnDestroy {
   formFilter: FormGroup;
-  displayedColumns = ['image', 'name', 'ingredientCategory', 'actions'];
+  displayedColumns: string[] = ['image', 'name', 'ingredientCategory', 'actions'];
   dataSource: Ingredient[] = [];
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   isLoadingResults = true;
-  resultsLength = 0;
+  resultsLength: number = 0;
   listCategory: string[];
   selectedIngredients: Ingredient[] = [];
 
@@ -50,12 +50,12 @@ export class IngredientEditComponent implements AfterViewInit, OnDestroy {
     this.destroy.complete();
   }
 
-  OnSubmitFilter(){
+  OnSubmitFilter(): void {
     this.paginator.pageIndex = 0;
     this.loadData();
   }
 
-loadData(){
+loadData(): void{
   const ingredientFilter: IngredientFilter = {
     sortASC: this.sort.direction == 'asc', sortBy: this.sort.active, ingredientCategory: this.ingredientCategories, searchText: this.searchText,
      numPage: this.paginator.pageIndex, sizePage: this.paginator.pageSize, status: true
@@ -76,13 +76,21 @@ loadData(){
   });
 }
 
-  addIngredient(ingredient: Ingredient){
+  addIngredient(ingredient: Ingredient): void {
     ingredient.amount = 1;
     this.selectedIngredients.push(ingredient);
   }
 
-  cancelAddIngredient(ingredientId: string){
+  cancelAddIngredient(ingredientId: string): void {
     this.selectedIngredients = this.selectedIngredients.filter(u => u.id !== ingredientId);
+  }
+
+  checkSelectedIngredient(id: string): boolean {
+    return this.selectedIngredients.some(ingr => ingr.id == id);
+  }
+
+  close(): void{
+    this.dialogRef.close(this.selectedIngredients);
   }
 
   get filterControl(){
@@ -96,13 +104,4 @@ loadData(){
   get ingredientCategories(){
     return this.formFilter.controls['ingredientCategories'].value
   }
-
-  checkSelectedIngredient(id: string): boolean {
-    return this.selectedIngredients.some(ingr => ingr.id == id);
-  }
-
-  close(): void{
-    this.dialogRef.close(this.selectedIngredients);
-  }
-
 }

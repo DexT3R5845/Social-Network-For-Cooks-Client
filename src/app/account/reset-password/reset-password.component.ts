@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControlOptions, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/_services/auth.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
 import { MustMatch } from 'src/app/_helpers/must-match.validator';
-import { first, ReplaySubject, takeUntil } from 'rxjs';
 import { AlertService } from 'src/app/_services';
+import { AuthService } from 'src/app/_services/auth.service';
 import { PasswordValidatorShared } from '../sharedClass/passwordValidatorShared';
 
 enum TokenStatus {
@@ -21,9 +21,10 @@ enum TokenStatus {
 export class ResetPasswordComponent extends PasswordValidatorShared implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  hide = true;
+  hide: boolean = true;
+  hideConfirm: boolean = true;
   TokenStatus = TokenStatus;
-  tokenStatus = TokenStatus.Validating;
+  tokenStatus: TokenStatus = TokenStatus.Validating;
   token: string = "";
 
 constructor(
@@ -39,14 +40,15 @@ constructor(
     confirmPassword: ['', Validators.required]
   }, {
     validator: MustMatch('password', 'confirmPassword')
-  });
+  } as AbstractControlOptions
+  );
 }
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
 
-ngOnInit(){
+ngOnInit(): void{
   const token = this.route.snapshot.params['token'];
   this.authService.validateResetToken(token)
   .pipe(takeUntil(this.destroy))
@@ -61,7 +63,7 @@ ngOnInit(){
   });
 }
 
-onSubmit() {
+onSubmit(): void {
   this.alertService.clear();
   this.alertMessage = "";
   if (this.form.valid) {
@@ -85,7 +87,7 @@ onSubmit() {
           }
           this.alertService.error(this.alertMessage);
         }});
+    }
   }
-}
 
 }
