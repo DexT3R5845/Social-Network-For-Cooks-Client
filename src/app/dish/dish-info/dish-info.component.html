@@ -1,8 +1,7 @@
-<alert></alert>
-  <mat-card fxFlex="50%" fxFlex.xs="90%">
+<mat-card fxFlex="50%" fxFlex.xs="90%">
   <mat-card-content> 
     <div *ngIf="dishInfo">
-      <img mat-card-image class="dish-img"  [src]="dishInfo.imgUrl">
+      <img mat-card-image class="dish-img" [src]="dishInfo.imgUrl">
       <table class="mat-table">
         <tr class="mat-row">
           <td class="mat-cell">Name:</td>
@@ -41,6 +40,9 @@
           </td>
         </tr>
       </table>
+    </div>
+    <div *ngIf="isNotFound" class="dish-not-found">
+      <b>Dish not found</b>
     </div>
   </mat-card-content></mat-card>
   
