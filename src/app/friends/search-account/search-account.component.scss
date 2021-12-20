@@ -1,27 +1,24 @@
 @import "../layout/layout.component.scss";
 
-mat-cell{
+mat-cell {
   font-size: 20px;
   margin: 0 10px;
 }
 
-mat-header-cell{
+mat-header-cell {
   margin: 0 10px;
 }
 
-.table-accounts{
-  min-height: 200px;
-  max-height: 80%;
+.table-accounts {
   width: 100%;
-
 }
 
-mat-form-field{
+mat-form-field {
   padding-top: 10px;
   margin-left: 15px;
 }
 
-img{
+img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -30,26 +27,23 @@ img{
   max-height: 150px;
 }
 
-button.btn-filter{
+button.btn-filter {
   height: 20%;
   margin: auto 0 auto 15px;
 }
 
-form{
+form {
   display: flex;
   flex-flow: wrap;
 }
 
-@mixin mat-table-columns($columns)
-{
-  .mat-column-
-  {
+@mixin mat-table-columns($columns) {
+  .mat-column- {
     @each $colName, $props in $columns {
 
       $width: map-get($props, 'width');
 
-      &#{$colName}
-      {
+      &#{$colName} {
         flex: 0 0 $width;
         min-width: $width;
       }
@@ -58,10 +52,10 @@ form{
 }
 
 @include mat-table-columns((
-  image: (width: 18%),
-  firstName: (width: 18%),
-  lastName: (width: 20%),
-  invite: (width: 32%)
+  image: (width: 20%),
+  firstName: (width: 20%),
+  lastName: (width: 29%),
+  invite: (width: 25%)
 ));
 
 

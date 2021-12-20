@@ -15,7 +15,6 @@
             [disabled]="searchForm.invalid"
             (click)="searchForAccount()">Search
     </button>
-
   </form>
 </div>
 
@@ -41,8 +40,8 @@
   <ng-container matColumnDef="invite">
     <mat-header-cell *matHeaderCellDef></mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-      <button mat-raised-button color="primary" (click)="sendInvite(i,element.id)">Send
-        invite
+      <button mat-raised-button color="primary" (click)="sendInvite(i,element.id)">
+        Invite
       </button>
     </mat-cell>
   </ng-container>
@@ -58,5 +57,4 @@
   [pageSizeOptions]="[12, 20, 40]"
   (page)="paginationHandler($event)">
 </mat-paginator>
-
 

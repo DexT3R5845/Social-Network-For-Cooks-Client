@@ -2,7 +2,6 @@
 <mat-toolbar color="primary" class="expanded-toolbar">
   <span>
     <button mat-button routerLink="/">{{title}}</button>
-    <button *ngIf="account && account.role == Role.User" mat-button routerLink="/friends">Friends</button>
   </span>
 
   <div *ngIf="account && account.role == Role.Moderator" fxFlex fxShow fxHide.lt-md>

@@ -12,10 +12,7 @@ mat-header-cell {
 }
 
 .table-invites {
-  min-height: 200px;
-  max-height: 80%;
   width: 100%;
-
 }
 
 mat-form-field {
@@ -42,7 +39,7 @@ form {
   flex-flow: wrap;
 }
 
-.btn-action{
+.btn-action {
   margin: 5px;
 }
 
@@ -63,7 +60,7 @@ form {
 @include mat-table-columns((
   image: (width: 20%),
   firstName: (width: 20%),
-  lastName: (width: 20%),
+  lastName: (width: 29%),
   action: (width: 20%)
 ));
 

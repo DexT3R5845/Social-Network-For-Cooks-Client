@@ -11,6 +11,11 @@ mat-form-field {
   font-size: 20px;
 }
 
+div {
+  max-height: 90%;
+  overflow: auto;
+}
+
 mat-form-field.ng-invalid.ng-touched {
   animation: margError;
   animation-duration: 0.3s;
