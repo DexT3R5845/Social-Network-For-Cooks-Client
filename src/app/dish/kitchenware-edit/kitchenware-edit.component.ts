@@ -13,7 +13,7 @@ import { KitchenwareService } from 'src/app/_services/kitchenware.service';
   templateUrl: './kitchenware-edit.component.html',
   styleUrls: ['./kitchenware-edit.component.scss']
 })
-export class KitchenwareEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class KitchenwareEditComponent implements AfterViewInit, OnDestroy {
   formFilter: FormGroup;
   displayedColumns = ['image', 'name', 'kitchenwareCategory', 'actions'];
   dataSource: NewKitchenware[] = [];
@@ -37,13 +37,6 @@ export class KitchenwareEditComponent implements OnInit, AfterViewInit, OnDestro
       status: [],
       kitchenwareCategories: [],
     });
-  }
-
-  ngOnInit(): void {
-    this.kitchenwareService.getAllCategories().pipe(takeUntil(this.destroy)).subscribe({
-      next: (data: string[]) => this.listCategory = data,
-      error: () => this.listCategory = []
-    })
   }
 
   ngAfterViewInit(): void {

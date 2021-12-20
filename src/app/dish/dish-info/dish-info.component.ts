@@ -15,13 +15,16 @@ export class DishInfoComponent implements OnInit {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
 
-  constructor(private dishService: DishService, private route: ActivatedRoute, private alertService: AlertService) {
+  constructor(private dishService: DishService, private route: ActivatedRoute, private alertService: AlertService, private router: Router) {
   }
 
   ngOnInit(): void {
     const id: string | null = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    if (id && Number(id)) {
       this.getDishInfo(id);
+    }
+    else{
+      this.router.navigateByUrl("/dishes");
     }
   }
 

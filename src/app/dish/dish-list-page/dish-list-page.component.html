@@ -1,4 +1,3 @@
-<alert></alert>
   <form [formGroup]="searchForm" (ngSubmit)="searchDishes()" class="dish-search-form">
     <div class="filters">
     <div class="main-filters">
@@ -83,7 +82,7 @@
         </button>
       </mat-header-cell>
       <mat-cell *matCellDef="let item" >
-          <button mat-icon-button color="accent" *ngIf = "userRole === 'ROLE_MODERATOR'">
+          <button mat-icon-button color="accent" *ngIf = "userRole === 'ROLE_MODERATOR'" [routerLink]="['edit', item.id]">
           <mat-icon aria-label="Edit">edit</mat-icon>
         </button>
           <button mat-icon-button color="accent" *ngIf = "userRole === 'ROLE_MODERATOR'">

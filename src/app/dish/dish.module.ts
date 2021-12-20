@@ -10,7 +10,7 @@ import {FormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 
-import { DishAddComponent } from './dish-add/dish-add.component';
+import { DishAddEditComponent } from './dish-add-edit/dish-add-edit.component';
 import { IngredientEditComponent } from './ingredient-edit/ingredient-edit.component';
 import { KitchenwareEditComponent } from './kitchenware-edit/kitchenware-edit.component';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
@@ -22,7 +22,7 @@ import { DishInfoComponent } from './dish-info/dish-info.component';
   declarations: [
     LayoutComponent,
     DishListPageComponent,
-    DishAddComponent,
+    DishAddEditComponent,
     IngredientEditComponent,
     KitchenwareEditComponent,
     DeleteConfirmationComponent,

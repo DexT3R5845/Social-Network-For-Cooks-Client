@@ -1,5 +1,4 @@
-import { Ingredient } from ".";
-import { Kitchenware } from "./kitchenware";
+import { Ingredient, NewKitchenware } from ".";
 
 export interface Dish {
     description: string;
@@ -9,9 +8,9 @@ export interface Dish {
     id?: string;
     imgUrl: string;
     ingredients: Ingredient[];
-    kitchenwares: Kitchenware[];
+    kitchenwares: NewKitchenware[];
     receipt: string;
-    isLiked: boolean;
-    isFavorite: boolean;
-    totalLikes: number;
+    isLiked?: boolean;
+    isFavorite?: boolean;
+    totalLikes?: number;
 }
