@@ -1,9 +1,9 @@
 <div class="container">
-<h2 mat-dialog-title>Edit Ingredient</h2>
+<h2 mat-dialog-title>{{title}}</h2>
 
 <mat-dialog-content [formGroup]="form">
     <alert id="error-dialog"></alert>
-    <mat-form-field class="full-width-input">
+    <mat-form-field *ngIf="ingredient && ingredient.id" class="full-width-input">
         <input matInput placeholder="ID" formControlName="id" [(ngModel)]="ingredient.id" >
         <mat-error>
             Please provide a ID.
@@ -47,6 +47,6 @@
 
 <mat-dialog-actions>
     <button class="mat-raised-button cancel-button" (click)="close()">Close</button>
-    <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
+    <button class="mat-raised-button mat-primary" (click)="save()">{{modeEdit ? "Save" : "Add"}}</button>
 </mat-dialog-actions>
 </div>

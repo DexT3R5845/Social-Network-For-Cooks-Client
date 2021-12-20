@@ -7,9 +7,8 @@ import { ReplaySubject, takeUntil, finalize, merge } from 'rxjs';
 import { Ingredient } from 'src/app/_models';
 import { IngredientFilter } from 'src/app/_models/_filters/ingredient.filter';
 import { AlertService, IngredientService } from 'src/app/_services';
-import { AddComponent } from '../add/add.component';
 import { DeleteComponent } from '../delete/delete.component';
-import { EditComponent } from '../edit/edit.component';
+import { AddEditComponent } from '../add-edit/add-edit.component';
 
 @Component({
   selector: 'app-list',
@@ -54,12 +53,12 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy.complete();
   }
 
-  OnSubmitFilter(){
+  OnSubmitFilter(): void {
     this.paginator.pageIndex = 0;
     this.loadData();
   }
 
-loadData(){
+loadData(): void {
   const ingredientFilter: IngredientFilter = {
     sortASC: this.sort.direction == 'asc', sortBy: this.sort.active, ingredientCategory: this.ingredientCategories, searchText: this.searchText,
      numPage: this.paginator.pageIndex, sizePage: this.paginator.pageSize, status: this.filterStatus
@@ -80,7 +79,7 @@ loadData(){
   });
 }
 
-  loadCategory(){
+  loadCategory(): void {
     this.ingredientService.getAllIngredientCategory().pipe(takeUntil(this.destroy))
     .subscribe({
       next: data => this.listCategory = data,
@@ -88,17 +87,17 @@ loadData(){
     });
   }
 
-  editIngredient(ingredient: Ingredient){
+  editIngredient(ingredient: Ingredient): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    dialogConfig.autoFocus = false;
     let dataDialog = Object.assign({}, ingredient);
     dialogConfig.data = {
       ingredient: dataDialog,
       listCategories: this.listCategory
     };
 
-    const dialogRef = this.dialog.open(EditComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddEditComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
       if(data){
         ingredient.name = data.name;
@@ -109,20 +108,28 @@ loadData(){
     })
   }
 
-  addIngredient(){
+  addIngredient(): void {
+    let ingredient: Ingredient = {
+      name: '',
+      imgUrl: '',
+      ingredientCategory: '',
+      active: true
+    };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = this.listCategory;
-
-    this.dialog.open(AddComponent, dialogConfig);
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = {
+      ingredient: ingredient,
+      listCategories: this.listCategory
+    };
+    this.dialog.open(AddEditComponent, dialogConfig);
   }
 
-  deleteIngredient(ingredient: Ingredient){
+  deleteIngredient(ingredient: Ingredient): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = Object.assign({}, ingredient);
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = {...ingredient};
   
     const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.destroy)).subscribe((data: Ingredient) => {
