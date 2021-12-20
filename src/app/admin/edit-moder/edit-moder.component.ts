@@ -25,41 +25,6 @@ export class EditModerComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private alertService: AlertService
   ) {
-    this.form = this.formBuilder.group({
-      id: [this.data.id],
-      imgUrl: ['', [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
-      firstName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
-      lastName: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
-      birthDate: ['', Validators.required],
-      gender: ['', Validators.required],
-      email: [null],
-    });
-  }
-
-  close(): void {
-    this.dialogRef.close();
-  }
-
-  public editModerator(): void {
-    if (this.form.valid) {
-      const account: AccountInList = this.form.value;
-      this.service.editModerator(account)
-        .pipe(takeUntil(this.destroy))
-        .subscribe({
-          next: () => {
-            this.alertService.success("Account successfully updated.", true, true);
-            this.dialogRef.close(account);
-          },
-          error: error => {
-            this.alertService.error(error.error.message, false, false, "error-dialog");
-          }
-        });
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 
   ngOnInit(): void {
@@ -68,9 +33,84 @@ export class EditModerComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data: AccountInList) => {
         this.profile = data;
+    this.form = this.formBuilder.group({
+      id: [this.data.id],
+      imgUrl: [this.profile.imgUrl, [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
+      firstName: [this.profile.firstName, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
+      lastName: [this.profile.lastName, [Validators.required, Validators.pattern('^([A-Z a-z]){3,35}$')]],
+      birthDate: [this.profile.birthDate, Validators.required],
+      gender: [this.profile.gender, Validators.required],
+      email: [this.profile.email],
+    });
       },
         error: error => {
-          this.alertService.error(error.error.message, false, false, "error-dialog");
-        }});
+          this.displayError(error);
+      }});
   }
+
+  close(): void {
+    this.dialogRef.close();
+  }
+
+  editModerator(): void {
+    if (this.form.valid) {
+      const account: AccountInList = this.form.value;
+      this.service.editModerator(account)
+        .pipe(takeUntil(this.destroy))
+        .subscribe({
+// <<<<<<< refactor_vlasureguy
+//           next: () => {
+//             this.alertService.success("Account successfully updated.", true, true);
+//             this.dialogRef.close(account);
+//           },
+//           error: error => {
+//             this.alertService.error(error.error.message, false, false, "error-dialog");
+//           }
+//         });
+// =======
+//           next: response => {
+//             this.alertService.success('Edit successful');
+//             console.log(response)
+//           },
+//           error: error => {
+//             this.displayError(error);
+//           }});
+// >>>>>>> dev
+    }
+  }
+  
+  displayError(error: any) : void {
+    switch (error.status) {
+      case 400:
+        this.alertMessage = "Something went wrong";
+        break;
+      case 404:
+        this.alertMessage = error.error.message;
+        break;
+      default:
+        this.alertMessage = "There was an error on the server, please try again later."
+        break;
+    }
+    this.alertService.error(this.alertMessage,true,true);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
+  }
+// <<<<<<< refactor_vlasureguy
+
+//   ngOnInit(): void {
+//     this.service.getById(this.data.id)
+//       .pipe(takeUntil(this.destroy))
+//       .subscribe({
+//         next: (data: AccountInList) => {
+//         this.profile = data;
+//       },
+//         error: error => {
+//           this.alertService.error(error.error.message, false, false, "error-dialog");
+//         }});
+//   }
+// =======
+// >>>>>>> dev
 }

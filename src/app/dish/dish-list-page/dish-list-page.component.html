@@ -1,41 +1,58 @@
-<div>
-  <form [formGroup]="searchForm" (ngSubmit)="getBySearch(searchForm)">
-    <button mat-raised-button class="btn-filter"  type="submit">Search</button>
-
+  <form [formGroup]="searchForm" (ngSubmit)="searchDishes()" class="dish-search-form">
+    <div class="filters">
+    <div class="main-filters">
+    <button type="submit" class="btn-filter" mat-flat-button color="warn">Apply Filter</button>
     <mat-form-field class="full-width-input">
-      <input matInput placeholder="Search by name" formControlName="name">
+      <input matInput placeholder="Search by name" formControlName="name" [disabled]="isFilteredByStock">
     </mat-form-field>
 
     <mat-form-field class="full-width-input">
       <mat-select placeholder="Select categories" formControlName="categories" multiple>
-        <mat-option *ngFor="let category of categories" [value]="category.name">{{category.name}}</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
       </mat-select>
     </mat-form-field>
-
-    <mat-form-field class="full-width-input">
-      <mat-select placeholder="Select ingredeints" formControlName="ingredients" multiple>
-        <input (input)="onIngredientFilterChange()" formControlName="ingredientSearchInput" class="ingredientSearchInput">
-        <mat-option *ngFor="let ingredient of ingredients" [value]="ingredient.id">{{ingredient.name}}</mat-option>
-      </mat-select>
+    <mat-checkbox color="primary" (change)="manageFilterByStock($event)" [disabled] = "isFilteredByFavorite" *ngIf = "userRole === 'ROLE_USER'">Filter by my stock</mat-checkbox>
+      <mat-checkbox color="primary" (change)="manageFilterByFavorite($event)" [disabled] = "isFilteredByStock" *ngIf = "userRole === 'ROLE_USER'">Show my favorites</mat-checkbox>
+    
+    </div>
+    <div class="ingredient-filter">
+    <mat-form-field class="full-width-input chip-list">
+      <mat-label>Select ingredients</mat-label>
+      <mat-chip-list #chipList aria-label="Ingredient selection">
+        <mat-chip
+          *ngFor="let ingredient of selectedIngredients"
+          (removed)="removeIngredientFromList(ingredient)">
+          {{ingredient.name}}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        <input
+          placeholder="Add ingredient..."
+          #ingredientInput
+          [formControl]="ingredientControl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onIngredientSelected($event)">
+        <mat-option *ngFor="let ingredient of filteredIngredients | async" [value]="ingredient">
+          {{ingredient.name}}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
-
-    <mat-form-field class="full-width-input">
-      <mat-select placeholder="Sorting" formControlName="order">
-        <mat-option value="" disabled selected>Sorting</mat-option>
-        <mat-option value="asc">Sort by name (A-Z)</mat-option>
-        <mat-option value="desc">Sort by name (Z-A)</mat-option>
-      </mat-select>
-    </mat-form-field>
+  </div></div>
+      
   </form>
-</div>
 
 
-<div class="table-container">
-  <mat-table id="table" [dataSource]="pageContent.content" #table matSort class="mat-cell">
+<div class="table-container" *ngIf="pageContent" [ngClass] = "this.isWithActions">
+  <mat-table id="table" [dataSource]="pageContent.content" #table 
+  matSort matSortDisableClear [matSortDirection] = "sortOrder" [matSortDisabled]='isFilteredByStock || isFilteredByFavorite' (matSortChange)="sortData($event.direction)" class="mat-cell">  
 
     <ng-container matColumnDef="image">
-      <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
-      <mat-cell *matCellDef="let item"><img [src]="item.imgUrl"/></mat-cell>
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let item"><img [src]="item.imgUrl" routerLink="{{item.id}}" class="dish-img"/></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="category">
@@ -44,8 +61,8 @@
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-      <mat-cell class="content-text" *matCellDef="let item">{{item.dishName}}</mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Name</mat-header-cell>
+      <mat-cell class="content-text dish-img" *matCellDef="let item" routerLink="{{item.id}}">{{item.dishName}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="type">
@@ -58,24 +75,27 @@
       <mat-cell class="content-text" *matCellDef="let item">{{item.description}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="actions">
+    <ng-container matColumnDef="actions"  *ngIf = "userRole !== 'ROLE_ADMIN'">
       <mat-header-cell *matHeaderCellDef>
-        <!-- <button mat-icon-button color="primary" (click)="newKitchenware()"> -->
-          <button mat-icon-button color="primary">
+          <button mat-icon-button color="primary" *ngIf = "userRole === 'ROLE_MODERATOR'" routerLink="./add">
           <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
         </button>
       </mat-header-cell>
-
-      <mat-cell *matCellDef="let row; let i=index;">
-        <!-- <button mat-icon-button color="accent" (click)="editKitchenware(i, row.id)"> -->
-          <button mat-icon-button color="accent">
+      <mat-cell *matCellDef="let item" >
+          <button mat-icon-button color="accent" *ngIf = "userRole === 'ROLE_MODERATOR'" [routerLink]="['edit', item.id]">
           <mat-icon aria-label="Edit">edit</mat-icon>
         </button>
-
-        <!-- <button mat-icon-button color="accent" (click)="changeStatus(i, row.id, row.active)"> -->
-          <button mat-icon-button color="accent">
-          <mat-icon *ngIf="row.active == true" aria-label="Change status">check_box</mat-icon>
-          <mat-icon *ngIf="row.active == false" aria-label="Change status">check_box_outline_blank</mat-icon>
+          <button mat-icon-button color="accent" *ngIf = "userRole === 'ROLE_MODERATOR'">
+            <mat-icon aria-label="Delete" (click)="confirmDelete(item.id)">delete</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" (click)="manageDishLike(item)" *ngIf = "userRole === 'ROLE_USER'">
+          <mat-icon *ngIf="item.isLiked" aria-label="check_box">favorite</mat-icon>
+          <mat-icon *ngIf="!item.isLiked" aria-label="check_box">favorite_border</mat-icon>
+        </button>
+        <span class = "likes" *ngIf = "userRole === 'ROLE_USER'">{{item.totalLikes}}</span>
+        <button mat-icon-button color="accent" (click)="manageFavoriteDish(item)" *ngIf = "userRole === 'ROLE_USER'">
+          <mat-icon *ngIf="item.isFavorite" aria-label="check_box">star</mat-icon>
+          <mat-icon *ngIf="!item.isFavorite" aria-label="check_box">star_border</mat-icon>
         </button>
       </mat-cell>
     </ng-container>
@@ -85,7 +105,7 @@
   </mat-table>
 </div>
 
-<mat-paginator
+<mat-paginator *ngIf="pageContent"
   [length]="pageContent.totalElements"
   [pageIndex]="currentPage"
   [pageSize]="pageSize"

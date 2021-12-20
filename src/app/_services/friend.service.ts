@@ -50,32 +50,36 @@ export class FriendService {
     return this.getAllFriends(0, pageSize, search);
   }
 
-  getFriendsByPageNum(currentPage: number, pageSize: number) {
+  getFriendsByPageNum(currentPage: number, pageSize: number): Observable<Page<AccountInList>> {
     return this.getAllFriends(currentPage, pageSize, this.searchParams);
   }
 
-  getAccountsByPageNum(currentPage: number, pageSize: number) {
+  getAccountsByPageNum(currentPage: number, pageSize: number): Observable<Page<AccountInList>> {
     return this.getAccount(currentPage, pageSize, this.searchParams);
   }
 
-  getAccountBySearch(search: SearchAccountParams, pageSize: number) {
+   //getAccountBySearch(search: SearchAccountParams, pageSize: number) {
+// =======
+   getAccountBySearch(search: SearchParams, pageSize: number): Observable<Page<AccountInList>> {
     this.searchParams = search;
     return this.getAccount(0, pageSize, this.searchParams);
   }
 
-  getInvitesBySearch(search: SearchAccountParams, pageSize: number) {
+   //getInvitesBySearch(search: SearchAccountParams, pageSize: number) {
+// =======
+   getInvitesBySearch(search: SearchParams, pageSize: number): Observable<Page<AccountInList>> {
     this.searchParams = search;
     return this.getInvites(0, pageSize, this.searchParams);
   }
 
-  createInvite(id: number) {
+  createInvite(id: number): Observable<Object> {
     return this.http.post(baseUrl, {}, {
       params: new HttpParams()
         .set('friendId', id)
     });
   }
 
-  getInvitesByPageNum(currentPage: number, pageSize: number) {
+  getInvitesByPageNum(currentPage: number, pageSize: number): Observable<Page<AccountInList>> {
     return this.getInvites(currentPage, pageSize, this.searchParams);
   }
 
@@ -90,15 +94,15 @@ export class FriendService {
     });
   }
 
-  removeFried(id: number) {
+  removeFried(id: number): Observable<Object> {
     return this.http.delete(`${baseUrl}/` + id);
   }
 
-  acceptInvite(id: number) {
+  acceptInvite(id: number): Observable<Object> {
     return this.http.patch(`${baseUrl}/invites/` + id, {});
   }
 
-  declineInvite(id: number) {
+  declineInvite(id: number): Observable<Object> {
     return this.http.delete(`${baseUrl}/invites/` + id);
   }
 }

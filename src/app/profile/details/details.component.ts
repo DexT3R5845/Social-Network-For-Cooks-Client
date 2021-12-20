@@ -28,11 +28,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  edit() {
+  edit(): void {
     this.router.navigateByUrl('/profile/edit-details');
   }
 
-  changePassword() {
+  changePassword(): void {
     this.router.navigateByUrl('/profile/change-password');
   }
 

@@ -50,8 +50,13 @@ export class AdminService {
     return this.http.post(`${baseUrl}`, account);
   }
 
-  editModerator(account: AccountInList) {
-    return this.http.put(`${baseUrl}`, account);
+// <<<<<<< refactor_vlasureguy
+//   editModerator(account: AccountInList) {
+//     return this.http.put(`${baseUrl}`, account);
+// =======
+//   editModerator(formGroup: FormGroup): Observable<Object> {
+//     return this.http.put(`${baseUrl}`, formGroup.value);
+// >>>>>>> dev
   }
 
   changeStatus(id: string) {

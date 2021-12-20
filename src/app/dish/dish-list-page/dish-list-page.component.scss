@@ -1,20 +1,20 @@
-mat-header-cell, mat-header-row, .mat-header-cell-def {
+.mat-header-cell, .mat-header-row, .mat-header-cell-def {
   font-size: 20px;
   font-weight: bold;
 }
 
-mat-cell{
+.mat-cell{
   font-size: 20px;
 }
 
 .table-container{
   position: relative;
   min-height: 200px;
-  max-height: 80%;
+  max-height: 60%;
   overflow: auto;
 }
 
-mat-form-field{
+.mat-form-field, .mat-checkbox{
   margin-left: 15px;
 }
 
@@ -27,12 +27,13 @@ img{
 
 button.btn-filter{
   margin-left: 15px;
-  background-color: #3f51b5;
   color: #FFFFFF;
 }
 
 table{
   width: 100%;
+  
+  overflow: auto;
 }
 
 @mixin mat-table-columns($columns)
@@ -52,23 +53,57 @@ table{
   }
 }
 
-@include mat-table-columns((
+.withActions {
+  @include mat-table-columns((
   image: (width: 20%),
-  name: (width: 20%),
-  category: (width: 10%),
+  name: (width: 12%),
+  category: (width: 18%),
   type: (width: 10%),
   description: (width: 25%),
   actions: (width: 15%),
-));
+  ));
+}
+
+.withoutActions {
+  @include mat-table-columns((
+  image: (width: 25%),
+  name: (width: 14%),
+  category: (width: 18%),
+  type: (width: 14%),
+  description: (width: 29%)
+  ));
+}
 
 
-.mat-form-field {
+.mat-form-field, .mat-checkbox {
   font-size: 20px;
   margin-top: 5px;
 
   margin-bottom: -1%;
 }
 
-.ingredientSearchInput {
+
+.dish-name:hover, .dish-img:hover {
+  cursor: pointer;
+}
+
+.likes {
+  color: #fe3e81;
+}
+
+.ingredient-filter {
   width: 100%;
 }
+
+.chip-list {
+  width: 100%;
+}
+
+.filters {
+  display: inline-block
+}
+
+
+
+
+

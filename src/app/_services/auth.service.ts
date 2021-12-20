@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CookieStorageService } from '../_helpers/cookies.storage';
 import { Account } from '../_models/account';
@@ -33,7 +33,7 @@ export class AuthService {
     this.account = this.accountSubject.asObservable();
   }
 
-  forgotPassword(email: string) {
+  forgotPassword(email: string): Observable<Object> {
     let httpParams = new HttpParams().set('email', email);
     const httpOptions = {
       params: httpParams
@@ -41,7 +41,7 @@ export class AuthService {
     return this.http.post(`${baseUrl}/password/resetlink`,{}, httpOptions);
   }
 
-  signIn(email: string, password: string, recaptchaToken: string) {
+  signIn(email: string, password: string, recaptchaToken: string): Observable<Account> {
     let reqParams = new HttpParams().set('email', email).set('password', password).set('g-recaptcha-response', recaptchaToken ? recaptchaToken : '');
     return this.http.post<Account>(`${baseUrl}/signin`, {}, { withCredentials: true, params: reqParams })
       .pipe(map(response => {
@@ -51,31 +51,31 @@ export class AuthService {
   }));
   }
 
-logout(){
+logout(): void{
   this.cookie.clear();
   this.accountSubject.next(null);
   this.router.navigateByUrl('/account/signin');
 }
 
-signUp(account: Account) {
+signUp(account: Account): Observable<Object> {
   return this.http.post(`${baseUrl}/signup`, account);
 }
 
-validateResetToken(token: string) {
+validateResetToken(token: string): Observable<Object> {
   let reqParams = new HttpParams().set('token', token);
   return this.http.get(`${baseUrl}/password/reset`, { params: reqParams });
 }
 
-resetPassword(token: string, password: string, confirmPassword: string) {
+resetPassword(token: string, password: string, confirmPassword: string): Observable<Object> {
   return this.http.put(`${baseUrl}/password/reset`, { token, password, confirmPassword });
 }
 
-validateConfirmToken(token: string) {
+validateConfirmToken(token: string): Observable<Object> {
   let reqParams = new HttpParams().set('token', token);
   return this.http.get(`${baseUrl}/password/creation`, { params: reqParams });
 }
 
-  confirmModerator(token: string, password: string, confirmPassword: string) {
+  confirmModerator(token: string, password: string, confirmPassword: string): Observable<Object> {
   return this.http.put(`${baseUrl}/password/creation`, { token, password, confirmPassword });
 }
 

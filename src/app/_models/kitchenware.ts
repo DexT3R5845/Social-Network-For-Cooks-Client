@@ -4,4 +4,5 @@ export interface Kitchenware {
   imgUrl: string;
   category: string;
   active: boolean;
+  amount?: number;
 }

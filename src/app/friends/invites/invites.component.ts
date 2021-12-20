@@ -21,7 +21,7 @@ export class InvitesComponent implements OnInit {
   pageSize: number = 12;
   alertMessage: string;
   currentPage: number;
-  displayedColumns: string[] = ['image', 'firstName', 'lastName', 'accept', 'decline'];
+  displayedColumns: string[] = ['image', 'firstName', 'lastName', 'action'];
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   searchForm: FormGroup = new FormGroup({
     search: new FormControl("", Validators.pattern('^([A-Z a-z]){3,35}$')),
@@ -33,32 +33,32 @@ export class InvitesComponent implements OnInit {
   constructor(private service: FriendService, private alertService: AlertService) {
   }
 
-  getInvites() {
+  getInvites(): void {
     this.inviteSearch = {
       search: this.searchForm.value.search,
       order: this.searchForm.value.order,
       gender: this.searchForm.value.gender,
       status: ""
     }
-    this.service.getInvitesBySearch(this.inviteSearch , this.pageSize)
+    this.service.getInvitesBySearch(this.inviteSearch, this.pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: response => {
           this.pageContent = response;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later");
+          this.alertService.error("Unexpected error, try later",true,true);
         }
       });
   }
 
-  acceptInvite(index: number, id: number) {
+  acceptInvite(index: number, id: number): void {
     this.service.acceptInvite(id)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
-          this.alertService.success("The invite has been accepted",true,true);
-          this.pageContent.content.splice(index,1);
+          this.alertService.success("The invite has been accepted", true, true);
+          this.pageContent.content.splice(index, 1);
           this.table.renderRows();
         },
         error: error => {
@@ -73,18 +73,18 @@ export class InvitesComponent implements OnInit {
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage,true,true);
+          this.alertService.error(this.alertMessage, true, true);
         }
       });
   }
 
-  declineInvite(index: number, id: number) {
+  declineInvite(index: number, id: number): void {
     this.service.declineInvite(id)
       .pipe(takeUntil(this.destroy))
       .subscribe({
-        next:()=>{
-          this.alertService.success("The invite has been declined",true,true);
-          this.pageContent.content.splice(index,1);
+        next: () => {
+          this.alertService.success("The invite has been declined", true, true);
+          this.pageContent.content.splice(index, 1);
           this.table.renderRows();
         },
         error: error => {
@@ -99,7 +99,7 @@ export class InvitesComponent implements OnInit {
               this.alertMessage = "There was an error on the server, please try again later."
               break;
           }
-          this.alertService.error(this.alertMessage,true,true);
+          this.alertService.error(this.alertMessage, true, true);
         }
       });
   }
@@ -115,7 +115,7 @@ export class InvitesComponent implements OnInit {
           this.pageSize = pageEvent.pageSize;
         },
         error: () => {
-          this.alertService.error("Unexpected error, try later",true,true);
+          this.alertService.error("Unexpected error, try later", true, true);
         }
       });
   }

@@ -1,14 +1,16 @@
-import { Ingredient } from ".";
-import { Kitchenware } from "./kitchenware";
+import { Ingredient, NewKitchenware } from ".";
 
 export interface Dish {
     description: string;
     dishCategory: string;
     dishName: string;
     dishType: string;
-    id: string;
+    id?: string;
     imgUrl: string;
     ingredients: Ingredient[];
-    kitchenwares: Kitchenware[];
+    kitchenwares: NewKitchenware[];
     receipt: string;
+    isLiked?: boolean;
+    isFavorite?: boolean;
+    totalLikes?: number;
 }

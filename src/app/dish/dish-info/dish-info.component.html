@@ -1,0 +1,49 @@
+<mat-card fxFlex="50%" fxFlex.xs="90%">
+  <mat-card-content> 
+    <div *ngIf="dishInfo">
+      <img mat-card-image class="dish-img" [src]="dishInfo.imgUrl">
+      <table class="mat-table">
+        <tr class="mat-row">
+          <td class="mat-cell">Name:</td>
+          <td class="mat-cell">{{dishInfo.dishName}}</td>
+        </tr>
+        <tr class="mat-row">
+          <td class="mat-cell">Type:</td>
+          <td class="mat-cell">{{dishInfo.dishType}}</td>
+        </tr>
+        <tr class="mat-row">
+          <td class="mat-cell">Category:</td>
+          <td class="mat-cell">{{dishInfo.dishCategory}}</td>
+        </tr>
+        <tr class="mat-row">
+          <td class="mat-cell">Description:</td>
+          <td class="mat-cell">{{dishInfo.description}}</td>
+        </tr>
+        <tr class="mat-row">
+          <td class="mat-cell">Receipt:</td>
+          <td class="mat-cell">{{dishInfo.receipt}}</td>
+        </tr>
+        <tr class="mat-row">
+          <td class="mat-cell">Ingredients:</td>
+          <td class="mat-cell ingredient-list">
+            <div *ngFor="let ingredient of dishInfo.ingredients">
+              {{ingredient.amount}} of {{ingredient.name}}
+            </div>
+          </td>
+        </tr>
+        <tr class="mat-row">
+          <td class="mat-cell">Kitchenware:</td>
+          <td class="mat-cell kitchenware-list">
+            <div *ngFor="let kitchenware of dishInfo.kitchenwares">
+              {{kitchenware.amount}} of {{kitchenware.name}}
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div *ngIf="isNotFound" class="dish-not-found">
+      <b>Dish not found</b>
+    </div>
+  </mat-card-content></mat-card>
+  
+  
