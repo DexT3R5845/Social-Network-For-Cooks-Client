@@ -45,6 +45,12 @@ export class ViewFriendsComponent implements OnInit {
   }
 
   getFriendsBySearch(): void {
+    this.friendSearch = {
+      search: this.searchForm.value.search,
+      order: this.searchForm.value.order,
+      gender: this.searchForm.value.gender,
+      status: ""
+    }
     this.service.getFriendsBySearch(this.friendSearch, this.pageSize)
       .pipe(takeUntil(this.destroy), finalize(() => this.isLoadingResults = false))
       .subscribe({
