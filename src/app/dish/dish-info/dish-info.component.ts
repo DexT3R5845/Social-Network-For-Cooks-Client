@@ -13,7 +13,7 @@ export class DishInfoComponent implements OnInit {
 
   dishInfo: Dish;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  alertMessage: string;
+  isNotFound: boolean = false;
 
   constructor(private dishService: DishService, private route: ActivatedRoute, private alertService: AlertService, private router: Router) {
   }
@@ -23,7 +23,7 @@ export class DishInfoComponent implements OnInit {
     if (id && Number(id)) {
       this.getDishInfo(id);
     }
-    else{
+    else {
       this.router.navigateByUrl("/dishes");
     }
   }
@@ -44,16 +44,16 @@ export class DishInfoComponent implements OnInit {
   displayError(error: any) : void {
     switch (error.status) {
       case 400:
-        this.alertMessage = "Something went wrong";
+        this.alertService.error("Something went wrong",true,true);
         break;
       case 404:
-        this.alertMessage = error.error.message;
+        this.isNotFound = true;
         break;
       default:
-        this.alertMessage = "There was an error on the server, please try again later."
+        this.alertService.error("There was an error on the server, please try again later.",true,true);
         break;
     }
-    this.alertService.error(this.alertMessage,true,true);
+    
   }
 
   ngOnDestroy(): void {

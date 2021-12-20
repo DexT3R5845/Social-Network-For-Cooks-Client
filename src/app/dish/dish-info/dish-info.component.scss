@@ -11,7 +11,6 @@
 
 .mat-card {
   position: relative;
-  min-height: 200px;
   max-height: 85%;
   overflow-y: auto;
 }
@@ -56,6 +55,11 @@ td.mat-cell:last-of-type {
 .ingredient-list, .kitchenware-list {
   padding: 5px;
   overflow-y: auto;
+}
+
+.dish-not-found {
+  font-size: 40px;
+  font-family: "Helvetica Neue", sans-serif;
 }
 
 
