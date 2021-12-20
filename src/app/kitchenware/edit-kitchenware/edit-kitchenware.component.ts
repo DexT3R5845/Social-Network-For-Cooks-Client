@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ReplaySubject, takeUntil} from "rxjs";
@@ -11,7 +11,7 @@ import {KitchenwareService} from "../../_services/kitchenware.service";
   templateUrl: './edit-kitchenware.component.html',
   styleUrls: ['./edit-kitchenware.component.scss']
 })
-export class EditKitchenwareComponent implements OnDestroy {
+export class EditKitchenwareComponent implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   form: FormGroup;
   kitchenware: Kitchenware;
@@ -25,14 +25,6 @@ export class EditKitchenwareComponent implements OnDestroy {
     private formBuilder: FormBuilder,
     private alertService: AlertService
   ) {
-    this.kitchenware = data.kitchenware;
-    this.categories = data.categories;
-    this.form = this.formBuilder.group({
-      id: [this.data.id],
-      imgUrl: [null, [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
-      name: [null, [Validators.required, Validators.pattern('^([A-Z a-z]){1,35}$')]],
-      category: ['', [Validators.required]]
-    });
   }
 
   close(): void {
@@ -66,5 +58,16 @@ export class EditKitchenwareComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
+  }
+
+  ngOnInit(): void {
+    this.kitchenware = this.data.kitchenware;
+    this.categories = this.data.categories;
+    this.form = this.formBuilder.group({
+      id: [this.data.kitchenware.id],
+      imgUrl: [this.data.kitchenware.imgUrl, [Validators.required, Validators.pattern('[^\s]+(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$')]],
+      name: [this.data.kitchenware.name, [Validators.required, Validators.pattern('^([A-Z a-z]){1,35}$')]],
+      category: [this.data.kitchenware.category, [Validators.required]]
+    });
   }
 }

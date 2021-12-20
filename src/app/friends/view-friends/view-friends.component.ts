@@ -28,12 +28,8 @@ export class ViewFriendsComponent implements OnInit {
     order: new FormControl("asc"),
     gender: new FormControl("")
   });
-// <<<<<<< refactor_vlasureguy
-//   friendSearch: SearchAccountParams;
-// =======
-//   friendSearch: SearchParams;
-//   isLoadingResults = true;
-// >>>>>>> dev
+  friendSearch: SearchAccountParams;
+  isLoadingResults = true;
 
   constructor(private service: FriendService, private alertService: AlertService) {
   }

@@ -44,7 +44,7 @@ export class EditModerComponent implements OnInit, OnDestroy {
     });
       },
         error: error => {
-          this.displayError(error);
+          this.alertService.error(error.error.message, false, false, "error-dialog");
       }});
   }
 
@@ -58,59 +58,19 @@ export class EditModerComponent implements OnInit, OnDestroy {
       this.service.editModerator(account)
         .pipe(takeUntil(this.destroy))
         .subscribe({
-// <<<<<<< refactor_vlasureguy
-//           next: () => {
-//             this.alertService.success("Account successfully updated.", true, true);
-//             this.dialogRef.close(account);
-//           },
-//           error: error => {
-//             this.alertService.error(error.error.message, false, false, "error-dialog");
-//           }
-//         });
-// =======
-//           next: response => {
-//             this.alertService.success('Edit successful');
-//             console.log(response)
-//           },
-//           error: error => {
-//             this.displayError(error);
-//           }});
-// >>>>>>> dev
+          next: () => {
+            this.alertService.success("Account successfully updated.", true, true);
+            this.dialogRef.close(account);
+          },
+          error: error => {
+            this.alertService.error(error.error.message, false, false, "error-dialog");
+          }
+        });
     }
-  }
-  
-  displayError(error: any) : void {
-    switch (error.status) {
-      case 400:
-        this.alertMessage = "Something went wrong";
-        break;
-      case 404:
-        this.alertMessage = error.error.message;
-        break;
-      default:
-        this.alertMessage = "There was an error on the server, please try again later."
-        break;
-    }
-    this.alertService.error(this.alertMessage,true,true);
   }
 
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
-// <<<<<<< refactor_vlasureguy
-
-//   ngOnInit(): void {
-//     this.service.getById(this.data.id)
-//       .pipe(takeUntil(this.destroy))
-//       .subscribe({
-//         next: (data: AccountInList) => {
-//         this.profile = data;
-//       },
-//         error: error => {
-//           this.alertService.error(error.error.message, false, false, "error-dialog");
-//         }});
-//   }
-// =======
-// >>>>>>> dev
 }

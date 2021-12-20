@@ -2,11 +2,8 @@
   <h3 class="title" mat-dialog-title>Moderator personal information</h3>
 
 
-  <form class="mat-dialog-content" [formGroup]="form">
-    <alert id="error-dialog"></alert>
-<!-- ======= -->
   <form class="mat-dialog-content" [formGroup]="form" *ngIf="profile">
-
+    <alert id="error-dialog"></alert>
     <div class="form">
       <mat-form-field>
         <input matInput placeholder="Identifier"  formControlName="id" value="this.data.id" [readonly]="true">
@@ -15,11 +12,7 @@
 
     <div class="form">
       <mat-form-field>
-
-<!--         <input matInput placeholder="Email"  formControlName="email" [(ngModel)]="this.profile.email" [readonly]="true"> -->
-<!-- ======= -->
         <input matInput placeholder="Email"  formControlName="email" value="profile.email" [readonly]="true">
-
       </mat-form-field>
     </div>
 

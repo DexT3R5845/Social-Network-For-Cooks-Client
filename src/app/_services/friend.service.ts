@@ -58,16 +58,12 @@ export class FriendService {
     return this.getAccount(currentPage, pageSize, this.searchParams);
   }
 
-   //getAccountBySearch(search: SearchAccountParams, pageSize: number) {
-// =======
-   getAccountBySearch(search: SearchParams, pageSize: number): Observable<Page<AccountInList>> {
+   getAccountBySearch(search: SearchAccountParams, pageSize: number): Observable<Page<AccountInList>> {
     this.searchParams = search;
     return this.getAccount(0, pageSize, this.searchParams);
   }
 
-   //getInvitesBySearch(search: SearchAccountParams, pageSize: number) {
-// =======
-   getInvitesBySearch(search: SearchParams, pageSize: number): Observable<Page<AccountInList>> {
+   getInvitesBySearch(search: SearchAccountParams, pageSize: number): Observable<Page<AccountInList>> {
     this.searchParams = search;
     return this.getInvites(0, pageSize, this.searchParams);
   }
