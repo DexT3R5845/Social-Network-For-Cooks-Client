@@ -96,7 +96,6 @@ export class DishListPageComponent {
 
 
   getBySearch(): void {
-    this.alertService.clear();
     const filter: SearchDishParams = this.searchForm.value;
     filter.order = this.sortOrder;
     filter.ingredients = this.selectedIngredientsIds.toString();
@@ -114,7 +113,6 @@ export class DishListPageComponent {
   }
 
   getDishPage(pageIndex: number, pageSize: number): void {
-    this.alertService.clear();
     this.dishService.getDishesByPageNum(pageIndex, pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
@@ -130,7 +128,6 @@ export class DishListPageComponent {
   }
 
   getStockDishPage(pageIndex: number, pageSize: number): void {
-    this.alertService.clear();
     this.dishService.getStockDishes(pageIndex, pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
@@ -146,7 +143,6 @@ export class DishListPageComponent {
   }
 
   getFavoriteDishPage(pageIndex: number, pageSize: number): void {
-    this.alertService.clear();
     this.dishService.getFavoriteDishes(pageIndex, pageSize)
       .pipe(takeUntil(this.destroy))
       .subscribe({
@@ -279,13 +275,12 @@ export class DishListPageComponent {
   }
 
   manageDishLike(dish: Dish) : void {
-    console.log(this.pageContent)
-    this.dishService.manageDishLike(dish.id, !dish.isLiked)
+    this.dishService.manageDishLike(dish.id!, !dish.isLiked)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {
           dish.isLiked = !dish.isLiked;
-          dish.isLiked ? dish.totalLikes++ : dish.totalLikes--;
+          dish.isLiked ? dish.totalLikes!++ : dish.totalLikes!--;
         },
         error: error => {
           this.displayError(error);
@@ -294,8 +289,7 @@ export class DishListPageComponent {
   }
 
   manageFavoriteDish(dish: Dish) : void {
-    console.log(this.pageContent)
-    this.dishService.manageFavoriteDish(dish.id, !dish.isFavorite)
+    this.dishService.manageFavoriteDish(dish.id!, !dish.isFavorite)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {

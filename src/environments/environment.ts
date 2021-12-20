@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  serverUrl: 'http://localhost:8080/api',
+  serverUrl: 'http://localhost:32456/api',
   tokenName: 'bakensweetsToken',
   siteKey: '6Lfd6rMdAAAAALCkEUF9GBFbtDmhsE7V_Rb4q2ZY',
   pageSize: 12

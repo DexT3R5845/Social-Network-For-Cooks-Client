@@ -2,6 +2,6 @@
     Are you sure want to {{this.ingredient.active ? "de" : ""}}activate '{{ingredient.name}}'?
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-    <button class="mat-raised-button" (click)="close()">Close</button>
+    <button class="mat-raised-button cancel-button" (click)="close()">Close</button>
     <button class="mat-raised-button mat-primary" (click)="confirm()">Confirm</button>
 </mat-dialog-actions>

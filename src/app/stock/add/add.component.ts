@@ -1,46 +1,41 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { finalize, merge, ReplaySubject, takeUntil } from 'rxjs';
-import { ingredientCategory, Stock } from 'src/app/_models';
+import { Stock } from 'src/app/_models';
 import { IngredientFilter } from 'src/app/_models/_filters';
-import { AlertService, IngredientService, StockService } from 'src/app/_services';
+import { AlertService, StockService } from 'src/app/_services';
 
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss']
 })
-export class AddComponent implements OnInit {
+export class AddComponent implements AfterViewInit, OnDestroy {
   formFilter: FormGroup;
   displayedColumns = ['image', 'name', 'ingredientCategory', 'actions'];
   dataSource: Stock[] = [];
   listButtons: boolean[] = [];
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
-  isLoadingResults = true;
-  resultsLength = 0;
-  listCategory: ingredientCategory[];
+  isLoadingResults: boolean = true;
+  resultsLength: number = 0;
+  listCategory: string[];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private stockService : StockService,
-              private ingredientService: IngredientService, 
               private formBuilder: FormBuilder,
               private alertService: AlertService,
-              private dialogRef: MatDialogRef<AddComponent>,
-              @Inject(MAT_DIALOG_DATA) data: ingredientCategory[]) {
+              @Inject(MAT_DIALOG_DATA) data: string[]) {
       this.listCategory = data;
       this.formFilter = this.formBuilder.group({
       searchText: [],
       status: [],
       ingredientCategories: [],
     });
-  }
-
-  ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
@@ -54,12 +49,12 @@ export class AddComponent implements OnInit {
     this.destroy.complete();
   }
 
-  OnSubmitFilter(){
+  OnSubmitFilter(): void {
     this.paginator.pageIndex = 0;
     this.loadData();
   }
 
-loadData(){
+loadData(): void {
   const ingredientFilter: IngredientFilter = {
     sortASC: this.sort.direction == 'asc', sortBy: this.sort.active, ingredientCategory: this.ingredientCategories, searchText: this.searchText,
      numPage: this.paginator.pageIndex, sizePage: this.paginator.pageSize
@@ -82,7 +77,7 @@ loadData(){
   });
 }
 
-  addIngredient(ingredientId: string, name: string, index: number){
+  addIngredient(ingredientId: string, name: string, index: number): void {
     this.stockService.addIngredientInStock(ingredientId).pipe(takeUntil(this.destroy))
     .subscribe({
       next: () => {
@@ -96,7 +91,7 @@ loadData(){
     });
   }
 
-  cancelAddIngredient(ingredientId: string, name: string, index: number){
+  cancelAddIngredient(ingredientId: string, name: string, index: number): void {
     this.stockService.deleteIngredientInStock(ingredientId).pipe(takeUntil(this.destroy))
     .subscribe({
       next: () => {
@@ -114,11 +109,11 @@ loadData(){
     return this.formFilter.controls;
   }
 
-  get searchText(){
+  get searchText(): string {
     return this.filterControl['searchText'].value;
   }
 
-  get ingredientCategories(){
+  get ingredientCategories(): string[] {
     return this.formFilter.controls['ingredientCategories'].value
   }
 

@@ -34,3 +34,24 @@ mat-form-field.ng-invalid.ng-touched {
   background-color: red;
 }
 
+@mixin mat-table-columns($columns)
+{
+  .mat-column-
+  {
+      @each $colName, $props in $columns {
+
+          $width: map-get($props, 'width');
+          
+          &#{$colName} 
+          {
+              flex: 0 0 $width;
+              min-width: $width;
+          }  
+      }
+  }
+}
+
+.cancel-button {
+  background-color: #e1e1e1;
+  margin-right: 5px;
+}

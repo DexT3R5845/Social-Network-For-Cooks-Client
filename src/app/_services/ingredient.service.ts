@@ -1,9 +1,8 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { Ingredient } from "../_models";
-import { ingredientCategory } from "../_models/ingredient.category";
-import { ListResponse } from "../_models/list.response";
+import { Ingredient, Page } from "../_models";
 import { IngredientFilter } from "../_models/_filters/ingredient.filter";
 
 const baseUrl = `${environment.serverUrl}/ingredient`;
@@ -17,23 +16,23 @@ export class IngredientService{
         private http: HttpClient
     ){}
 
-    getAll(ingredientFilter: IngredientFilter){
-        return this.http.post<ListResponse<Ingredient>>(`${baseUrl}`, ingredientFilter);
+    getAll(ingredientFilter: IngredientFilter): Observable<Page<Ingredient>> {
+        return this.http.post<Page<Ingredient>>(`${baseUrl}`, ingredientFilter);
     }
 
-    getAllIngredientCategory(){
-        return this.http.get<ingredientCategory[]>(`${baseUrl}/category`);
+    getAllIngredientCategory(): Observable<string[]> {
+        return this.http.get<string[]>(`${baseUrl}/category`);
     }
 
-    editIngredient(ingredient: Ingredient){
+    editIngredient(ingredient: Ingredient): Observable<Object> {
         return this.http.put(`${baseUrl}/${ingredient.id}`, ingredient)
     }
 
-    addIngredient(ingredient: Ingredient){
+    addIngredient(ingredient: Ingredient): Observable<Object> {
         return this.http.post(`${baseUrl}/create`, ingredient)
     }
 
-    changeIngredientStatus(id: string | undefined, status: boolean){
+    changeIngredientStatus(id: string, status: boolean): Observable<Object> {
         let params = new HttpParams().set('status', status);
         return this.http.patch(`${baseUrl}/${id}`, params);
     }

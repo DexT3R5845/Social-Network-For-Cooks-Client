@@ -5,8 +5,7 @@ import { IngredientRoutingModule } from './ingredient-routing.module';
 import { LayoutComponent } from './layout/layout.component';
 import { ListComponent } from './list/list.component';
 import { SharedModule } from '../shared/shared.module';
-import { EditComponent } from './edit/edit.component';
-import { AddComponent } from './add/add.component';
+import { AddEditComponent } from './add-edit/add-edit.component';
 import { DeleteComponent } from './delete/delete.component';
 
 
@@ -14,8 +13,7 @@ import { DeleteComponent } from './delete/delete.component';
   declarations: [
     LayoutComponent,
     ListComponent,
-    EditComponent,
-    AddComponent,
+    AddEditComponent,
     DeleteComponent
   ],
   imports: [

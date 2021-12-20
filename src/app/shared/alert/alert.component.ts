@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AlertMessage, TypeAlert } from 'src/app/_models/alert.message';
 import { AlertService } from 'src/app/_services';
 
 @Component({
@@ -8,33 +9,23 @@ import { AlertService } from 'src/app/_services';
 })
 export class AlertComponent implements OnInit, OnDestroy {
   subscription : Subscription;
-  message: any;
-  @Input() id = 'default-alert';
+  alertMessage: AlertMessage | null;
+  @Input() id: string = 'default-alert';
 
   constructor(private alertService: AlertService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
       this.subscription = this.alertService.OnAlert(this.id)
           .subscribe(message => {
-              switch (message && message.type) {
-                  case 'success':
-                      message.cssClass = 'alert alert-success';
-                      break;
-                  case 'error':
-                      message.cssClass = 'alert alert-danger';
-                      break;
-              }
-
-              this.message = message;
-
-              if(message.autoClose)
+              this.alertMessage = message;
+              if(this.alertMessage && this.alertMessage.autoClose)
                 setTimeout(() => {
-                    this.message = null;
+                    this.alertMessage = null;
                 }, 3000);
           });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
       this.subscription.unsubscribe();
   }
 

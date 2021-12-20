@@ -78,4 +78,12 @@ export class DishService {
       .set('id', id)
       .set('isFavorite', isFavorite)});
   }
+
+  createDish(dish: Dish): Observable<Object> {
+    return this.http.post(`${baseUrl}`, dish);
+  }
+
+  editDish(dish: Dish): Observable<Object>{
+    return this.http.put(`${baseUrl}/${dish.id}`, dish);
+  }
 }

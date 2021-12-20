@@ -17,9 +17,9 @@ export class SigninComponent implements OnInit,OnDestroy {
   form: FormGroup;
   destroy: ReplaySubject<any> = new ReplaySubject<any>();
   alertMessage: string;
-  hide = true;
-  siteKey = environment.siteKey;
-  isCaptcha = false;
+  hide: boolean = true;
+  siteKey: string = environment.siteKey;
+  isCaptcha: boolean = false;
   @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
 
 constructor(

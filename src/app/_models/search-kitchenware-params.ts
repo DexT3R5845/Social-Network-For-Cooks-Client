@@ -2,5 +2,5 @@ export interface SearchKitchenwareParams {
   name: string;
   order: string;
   categories: string;
-  active: string;
+  active: boolean;
 }

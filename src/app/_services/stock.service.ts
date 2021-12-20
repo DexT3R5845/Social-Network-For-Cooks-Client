@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { ListResponse } from "../_models/list.response";
+import { Page } from "../_models";
 import { Stock } from "../_models/stock";
 import { IngredientFilter } from "../_models/_filters/ingredient.filter";
 
@@ -16,7 +17,7 @@ export class StockService{
         private http: HttpClient
     ){}
 
-    getAll(ingredientFilter: IngredientFilter){
+    getAll(ingredientFilter: IngredientFilter): Observable<Page<Stock>> {
         let params = new HttpParams();
         if(ingredientFilter.ingredientCategory){
             for(let category of ingredientFilter.ingredientCategory){
@@ -30,18 +31,18 @@ export class StockService{
         params = params.append('size', ingredientFilter.sizePage);
         params = params.append('sortBy', ingredientFilter.sortBy)
 
-        return this.http.get<ListResponse<Stock>>(`${baseUrl}`, { params: params });
+        return this.http.get<Page<Stock>>(`${baseUrl}`, { params: params });
     }
 
-    editIngredientInStock(ingredientId: string, amount: number){
+    editIngredientInStock(ingredientId: string, amount: number): Observable<Object> {
         return this.http.patch(`${baseUrl}/${ingredientId}?amount=${amount}`, {});
     }
 
-    deleteIngredientInStock(ingredientId: string){
+    deleteIngredientInStock(ingredientId: string): Observable<Object> {
         return this.http.delete(`${baseUrl}/${ingredientId}`);
     }
 
-    getAvaibleIngredientForStock(ingredientFilter: IngredientFilter){
+    getAvaibleIngredientForStock(ingredientFilter: IngredientFilter): Observable<Page<Stock>> {
         let params = new HttpParams();
         if(ingredientFilter.ingredientCategory){
             for(let category of ingredientFilter.ingredientCategory){
@@ -55,10 +56,10 @@ export class StockService{
         params = params.append('size', ingredientFilter.sizePage);
         params = params.append('sortBy', ingredientFilter.sortBy)
 
-        return this.http.get<ListResponse<Stock>>(`${baseUrl}/new`, { params: params });
+        return this.http.get<Page<Stock>>(`${baseUrl}/new`, { params: params });
     }
 
-    addIngredientInStock(ingredientId: string){
+    addIngredientInStock(ingredientId: string): Observable<Object> {
         let params = new HttpParams().set('ingredientId', ingredientId);
         return this.http.post(`${baseUrl}`, params)
     }

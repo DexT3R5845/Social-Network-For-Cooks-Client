@@ -27,7 +27,7 @@ export class KitchenwareService {
   }
 
 
-  private getKitchenwareList(currentPage: number, searchedParams: SearchKitchenwareParams, pageSize: number): Observable<Page<Kitchenware>> {
+  getKitchenwareList(currentPage: number, searchedParams: SearchKitchenwareParams, pageSize: number): Observable<Page<Kitchenware>> {
     return this.http.get<Page<Kitchenware>>(`${baseUrl}?`, {
         params: new HttpParams()
           .set('pageSize', pageSize)
