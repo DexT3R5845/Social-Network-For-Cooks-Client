@@ -265,12 +265,10 @@ export class DishListPageComponent {
     {
       this.searchForm.controls['name'].reset({ value: '', disabled: true });
       this.searchForm.controls['categories'].reset({ value: '', disabled: true });
-      this.searchForm.controls['ingredients'].reset({ value: '', disabled: true });
     }
     else {
       this.searchForm.controls['name'].reset({ value: '', disabled: false });
       this.searchForm.controls['categories'].reset({ value: '', disabled: false });
-      this.searchForm.controls['ingredients'].reset({ value: '', disabled: false });
     }
   }
 
