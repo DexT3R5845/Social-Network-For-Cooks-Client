@@ -18,7 +18,7 @@
     <div class="ingredient-filter">
     <mat-form-field class="full-width-input chip-list">
       <mat-label>Select ingredients</mat-label>
-      <mat-chip-list #chipList aria-label="Ingredient selection">
+      <mat-chip-list #chipList aria-label="Ingredient selection" [disabled] = "isFilteredByFavorite || isFilteredByStock">
         <mat-chip
           *ngFor="let ingredient of selectedIngredients"
           (removed)="removeIngredientFromList(ingredient)">
@@ -33,7 +33,7 @@
           [formControl]="ingredientControl"
           [matAutocomplete]="auto"
           [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [disabled] = "isFilteredByFavorite || isFilteredByStock">
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onIngredientSelected($event)">
         <mat-option *ngFor="let ingredient of filteredIngredients | async" [value]="ingredient">
@@ -72,7 +72,7 @@
 
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
-      <mat-cell class="content-text" *matCellDef="let item">{{item.description}}</mat-cell>
+      <mat-cell class="content-text" *matCellDef="let item">{{ (item.description.length>40)? (item.description | slice:0:40)+'...':(item.description) }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions"  *ngIf = "userRole !== 'ROLE_ADMIN'">
