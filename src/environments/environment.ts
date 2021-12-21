@@ -4,7 +4,7 @@
 
 export const environment = {
   production: true,
-  serverUrl: 'http://bakensweets-server.herokuapp.com/api',
+  serverUrl: 'https://bakensweets-server.herokuapp.com/api',
   tokenName: 'bakensweetsToken',
   siteKey: '6Le3qCodAAAAAJWMyzjp3R7igz2rIEQoM7UWRbns',
   pageSize: 12
